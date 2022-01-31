@@ -1,0 +1,131 @@
+﻿@using NWTradersWeb.Models;
+
+@model Customer
+
+@{
+    ViewBag.Title = "Details";
+
+    List<Order> CustomerOrders = 
+        Model.Orders.OrderByDescending(o => o.OrderDate).Take(5).ToList();
+
+}
+
+<div>
+
+    <div class="container shadow py-2 alert-secondary">
+        <h4 class="text-center ">
+            Welcome @Model.CompanyName
+        </h4>
+    </div>
+
+    <!-- spacer-->
+    <div class="py-2">&nbsp;</div>
+
+    <div class="card-deck shadow rounded-lg">
+
+        <!-- Customer information -->
+        <div class="card border-0 shadow">
+            <div class="card-header h5" style="background-color: beige">
+                Contact
+            </div>
+
+            <div class="container card-body">
+                <div class="alert-heading py-2 text-lg-center">
+                    @Model.ContactName (@Model.CompanyName)
+                    </
+
+                    <div class=" alert-light shadow rounded-lg p-4">
+
+                        Address: &nbsp; @Html.DisplayFor(model => model.Address),<br />
+                        @Html.DisplayFor(model => model.City) ,&nbsp;
+                        @Html.DisplayFor(model => model.Region) ,&nbsp;
+                        @Html.DisplayFor(model => model.Country)&nbsp;<br />
+
+                        Phone: &thinsp;@Html.DisplayFor(model => model.Phone) <br />
+
+                        Fax: &thinsp;@Html.DisplayFor(model => model.Fax)
+                    </div>
+                </div>
+
+                <div class="card-footer text-center " style="background-color: beige; font-size:small">
+                    &nbsp;
+                </div>
+            </div>
+
+            <!-- Orders information -->
+            <div class="card">
+                <div class="card-header h5" style="background-color: beige">
+                    Recent Orders
+                </div>
+                <div class="card-body">
+                    <table class="table-bordered table-striped" style="width:100%">
+                        <tr>
+                            <th>Date <br /> Placed</th>
+                            <th>Order <br /> Total</th>
+                            <th># of <br /> Items</th>
+                            <th>View <br /> Details</th>
+
+                        </tr>
+                        @foreach (Order o in CustomerOrders)
+                        {
+                            <tr class="py-3 text-center ">
+
+                                <td class="w3-padding-small py-2">
+                                    @Html.DisplayFor(item => o.OrderDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => o.orderTotal)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => o.Order_Details.ToList().Count)
+                                </td>
+
+                                <td>
+                                    @Html.ActionLink(
+                                  "Details", // the link displayed
+                                  "Details", // the function to call
+                                  "Orders", // the name of the controller
+                                  new { @id = o.OrderID }, // Any paramters sent to the function.
+                                  new { @class = "btn-sm btn-dark", @style = "font-size:small" } // Any formatting applied
+                                  )
+                                </td>
+
+                            </tr>
+                        }
+                    </table>
+
+                </div>
+                <div class="card-footer text-center " style="background-color: beige">
+                </div>
+
+            </div>
+
+            <!-- Products information -->
+            <div class="card">
+                <div class="card-header h5" style="background-color: beige">
+                    Products
+                </div>
+
+                <div class="card-body">
+                    Information about products recently purchased goes here.
+                </div>
+                <div class="card-footer text-center" style="background-color: beige">
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="navbar ">
+            <div class="" style="margin-left:80%">
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-dark" })
+            </div>
+        </div>
+    </div>
+
+    <!-- spacer-->
+    <div class="py-2">&nbsp;</div>
+
+</div>

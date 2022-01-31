@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Home Page for ISM NWTraders";
+}
+<!-- A spacer to add an empty line-->
+<div>&nbsp;</div>
+
+<!-- A card deck is a container that organizes the visual appearance of cards on a page.-->
+<div class="card-deck">
+
+    <!-- 
+        A card has a header, a body, and a footer. 
+        These are preformatted components for quick and easy display of multiple pieces of informaiton
+        -->
+    
+    <div class="card">
+
+        <div class="card-header h4 text-center">
+            Our Customers
+        </div>
+
+        <div class="card-body rounded">
+            <div class="alert-dark py-2">
+                Customer information:
+            </div>
+
+            <div type=" button" class="btn btn-light">
+                <i class="material-icons align-text-bottom">group</i>
+                @Html.ActionLink("NW Traders Customers", "Index", "Customers")
+            </div>
+        
+        </div>
+
+        <div class="card-footer">
+            Cilck on customers to browse and search North Wind Traders Customers
+        </div>
+    </div>
+
+    <div class="card">
+
+        <div class="card-header h4 text-center">
+            Our Products
+        </div>
+
+        <div class="card-body">
+            <div class="alert-dark py-2">
+                Browse our products
+            </div>
+            <div type=" button" class="btn btn-light"
+                 title=" Products will go here">
+                <i class="material-icons align-text-bottom">business</i>
+                @Html.ActionLink("NW Traders Products", "Index", "Products")
+            </div>
+        </div>
+
+        <div class="card-footer">
+            Clilck on Products to get information about the North Wind Traders Customers.
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header h4 text-center">
+            Your Orders
+        </div>
+
+        <div class="card-body">
+            <div class="alert-dark py-2">
+                Requires Login
+            </div>
+            <div type=" button" class="btn btn-light  rounded shadow-lg"
+                 title=" Orders will go here">
+                <i class="material-icons align-text-bottom">shopping_basket</i>
+                @Html.ActionLink("NW Traders Orders", "Index", "Orders")
+            </div>
+        </div>
+
+        <div class="card-footer">
+            Clilck on Orders to get information about the orders you have placed and place new orders.
+        </div>
+    </div>
+</div>

@@ -1,0 +1,202 @@
+﻿<!--
+    This begins an html comment ... "<!-- "
+    Index page for Customer - No Login required.
+    This a Razor Page ... it combines standard HTML (HTML 5.0) with C# code ...
+    each C# block of code begins with an "at" sign ... multiple lines of C# code are enclosed in a block {}
+    The corresponding close is here.
+    -->
+<!-- The using directives are exactly the same as in the C# code ... just like we have done in every C# file we wrote.
+    -->
+@using NWTradersWeb.Models;
+@using PagedList.Mvc;
+@using PagedList;
+
+
+<!--
+    Every MVC page has a model supplied by the controller.
+    It is the data provided to the controller to the page ...
+    it is the data supplied by the return View(model) statement in the function with the same name as the page.
+
+    The model for this page is specified below as a (Paged) List of Customer Objects.
+    A paged list is a list that can be displayed as individual pages with a page number and a size.
+
+-->
+@model IPagedList<Customer>
+
+@{
+
+    // A viewbag is used to carry information (other than the model) from the controller function to a page.
+    // You essentially put informaiton into the view bag in the controller and it is available to collect or use in the page.
+    ViewBag.Title = "Customers of NW Traders ";
+
+    // Page Sizing - The paged list gives you a property that counts the TOTAL number of items in the list.
+    int NumberOfCustomers = Model.TotalItemCount;
+
+    List<string> itemsPerPage = NWTradersUtilities.itemsPerPage;
+
+    // Here we use the viewbag to remember the values of our paging variables.
+    // The values were written to in the index function in the controller and are read from here to get the first and last pages.
+
+    // First is the first customer to be displayed ..
+    // for example customer # 16 in you are on the second page of a 15 customers per page list.
+    int? First = (ViewBag.pageNumber - 1) * ViewBag.pageSize + 1;
+
+    // Last is the last customer to display ...
+    // continuing the example ... customer # 30 on the second page of a 15 customers/per page list
+    int? Last = ViewBag.pageNumber * ViewBag.pageSize;
+
+    //if Last == 30 and there are only 23 customers, then Last must become 23.
+    Last = (Last > NumberOfCustomers) ? NumberOfCustomers : Last;
+
+    // Get the list of countries from utilities
+    List<string> countries = NWTradersUtilities.AllCountries().ToList();
+    countries.Insert(0, ""); // Add an empty string to represent All - you could also use the word all here.
+
+    // Get the list of contact titles from utilities
+    List<string> titles = NWTradersUtilities.AllTitles().ToList();
+    titles.Insert(0, ""); // Add an empty string to represent All - you could also use the word all here.
+
+    Customer aCustomer = Model.FirstOrDefault();
+
+}
+
+
+<!-- Begin Search  Form -->
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="h6">Customers Search </div>
+    <!-- Search routines ... add more fields here.-->
+    <div class="navbar py-2 small shadow rounded-lg" style="background-color:white">
+
+        <!-- Search by Product..-->
+
+        <div class="input-group-sm  ">
+            Customer Company Name
+            @Html.TextBox("SearchCompanyName",
+                    @ViewBag.searchCompanyName as string,
+             new
+             {
+                 @class = "form-control",
+                 @type = "text",
+                 @name = "searchCompanyName",
+                 @placeholder = "Search by Company",
+                 onchange = "this.form.submit();",
+                 value = ViewBag.currentSearchCompanyName
+             })
+        </div>
+
+        <!-- Select Country..-->
+        <div class="input-group-sm">
+            Country
+            @Html.DropDownList("searchCountryName",
+                    new SelectList(countries),
+             new
+             {
+                 @class = "custom-select",
+                 @name = "searchCountryName",
+                 onchange = "this.form.submit();"
+             })
+        </div>
+
+        <!-- Select title..-->
+        <div class="input-group-sm ">
+            Contact Title
+            @Html.DropDownList("searchTitle", new SelectList(titles),
+             new
+             {
+                 @class = "custom-select",
+                 @name = "searchTitle",
+                 onchange = "this.form.submit();"
+             })
+        </div>
+
+
+
+
+    </div>
+    <div> &nbsp;</div>
+}
+
+<div class="container shadow pt-4">
+
+    <table class="table-bordered table-striped" style="font-size:small; width:100%">
+        <tr class="">
+            <th>@Html.DisplayNameFor(model => aCustomer.CompanyName) </th>
+            <th>@Html.DisplayNameFor(model => aCustomer.ContactName)</th>
+            <th>@Html.DisplayNameFor(model => aCustomer.ContactTitle)</th>
+            <th>@Html.DisplayNameFor(model => aCustomer.Address)</th>
+            <th>@Html.DisplayNameFor(model => aCustomer.City)</th>
+            <th>@Html.DisplayNameFor(model => aCustomer.Country)</th>
+            <th>@Html.DisplayNameFor(model => aCustomer.Phone)</th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div class="container border-dark" style="font-size:small;width:100%">
+    <!-- Begin Search  Form -->
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        if (NumberOfCustomers > 0)
+        {
+            <nav class="navbar">
+                <div class=" " style=" ">
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                          new
+                          {
+                              page,
+                              sortOrder = ViewBag.sortOrder,
+                          }))
+                </div>
+                <div class="" style="">
+                    @First  .... @Last of @NumberOfCustomers Customers
+                </div>
+
+                <!-- Select Items Per Page -->
+                <div class="align-content-end " style="">
+                    Customers per Page:
+                    @Html.DropDownList("itemsPerPage", new SelectList(itemsPerPage),
+                 new
+                 {
+                     @class = "custom-select-sm",
+                     @style = "width:50%",
+                     @type = "submit",
+                     onchange = "this.form.submit();"
+                 })
+                </div>
+            </nav>
+        }
+    }
+</div>
