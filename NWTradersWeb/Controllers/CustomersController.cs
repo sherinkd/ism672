@@ -1,13 +1,11 @@
-﻿using System;
+﻿using NWTradersWeb.Models;
+using PagedList;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using PagedList;
-using NWTradersWeb.Models;
 
 namespace NWTradersWeb.Controllers
 {
@@ -37,7 +35,7 @@ namespace NWTradersWeb.Controllers
             string sortOrder = "", // A sortby field - empty (by default ) - means that a default sort order is applied.
             string searchCompanyName = "", // if searchCompany name is not provided, we are NOT searching by CompanyName.
             string searchCountryName = "", // if searchCountry is provided, we ARE searching by Country Name.
-            string searchTitle="")
+            string searchTitle = "")
         {
 
             // begin by getting all the customers from the db
