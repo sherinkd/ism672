@@ -8,6 +8,11 @@ using System.ComponentModel.DataAnnotations;
 namespace NWTradersWeb.Models
 {
 
+    /// <summary>
+    /// The "MetaData" Class is introduced here for illustrative purposes ... 
+    /// We will work a lot more on this class in Assignment 2. 
+    /// Here we are only using this to illustrate the concept.
+    /// </summary>
     public class SupplierMetaData
     {
 

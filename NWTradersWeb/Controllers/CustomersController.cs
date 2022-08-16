@@ -1,5 +1,9 @@
-﻿using NWTradersWeb.Models;
-using PagedList;
+﻿/*
+ * Every class or page will typically begin by stating the sets of functions that it needs to use to perform its functions.
+ * These are expressed in the "using" statements.
+ * Most commonly, the usings are the 
+ */
+
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -7,10 +11,43 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
+using NWTradersWeb.Models;
+using PagedList;
+
+/// A namespace is like a folder or a path.
+/// So - we are saying here that all are controllers - current and future,
+/// will be in the "NWTradersWeb.Controllers" Folder or have this path.
+/// Typically, the Root Namespace is the name of the solution - "NWTradersWeb"
+/// Then sub-folders or sub-paths are placed in Root Namespace.
+/// From another perspective, a Namespace is a collection of classes. 
+/// So - NWTradersWeb.Controllers is the collection of all the Controllers in the Application.
+/// ToDo: Review the other controllers and you will see the same namespace that the controllers are placed in.
 namespace NWTradersWeb.Controllers
 {
+    /// <summary>
+    /// The CustomersController is the class that manages objects of the type - Customer; 
+    /// as well as provide data for the web pages that relate to the Customer class.
+    /// It manages access to the database using the "NorthwindEntities" object called "nwEntities"
+    /// So - it acts the bridge between the database, the model (in this case the Customer Class), and the View Pages.
+    /// In this sense, it represents the go-between, middle tier or the "middle-ware" that provides managed access to data.
+    /// 
+    /// It "derives" from an MVC Contoller - hence the ": Controller". 
+    /// </summary>
     public class CustomersController : Controller
     {
+
+        /// <summary>
+        /// nwEntities is the name of the object of type NorthwindEntities and it is your handle to the database.
+        /// It provides direct Read/Write access to all the data in the Northwind Database and 
+        /// uses the relationships in the model to provide the access.
+        /// 
+        /// nwEntities is the instantiation of the Entity Framework in your application. 
+        /// By making it private, we are not allowing anyone (object or function) to get access to the database.
+        /// Therefore, the only way access to data is provided is by requesting the controller.
+        /// The controller brokers the request, typically from the view, gets the data from the DB 
+        /// and provides this "managed" access to the requestor - typically the Views.
+        /// 
+        /// </summary>
         private NorthwindEntities nwEntities = new NorthwindEntities();
 
         // GET: Customers
@@ -30,7 +67,7 @@ namespace NWTradersWeb.Controllers
         /// <param name="searchTitle"></param>
         /// <returns></returns>
         public ActionResult Index(
-            int? page, // which page # 
+            int? page, // which page # in the list of pages that the list of Customers is displayed with
             string itemsPerPage = "15", // the number of items (customers) to display on each page.
             string sortOrder = "", // A sortby field - empty (by default ) - means that a default sort order is applied.
             string searchCompanyName = "", // if searchCompany name is not provided, we are NOT searching by CompanyName.
@@ -72,8 +109,9 @@ namespace NWTradersWeb.Controllers
             if (theCustomers.Count() > 0)
                 if (string.IsNullOrEmpty(searchTitle) == false)
                 {
+                    // This is an easy and equally effective way to manage case-insensitive searches.
                     theCustomers = theCustomers.
-                        Where(c => c.ContactTitle.Contains(searchTitle)).
+                        Where(c => c.ContactTitle.ToUpper().Contains(searchTitle.ToUpper())).
                         OrderBy(c => c.CompanyName).
                         Select(c => c);
                 }
@@ -111,6 +149,12 @@ namespace NWTradersWeb.Controllers
         }
 
         // GET: Customers/Details/5
+        /// <summary>
+        /// The index function returns an actionResult (typically a page) which shows a list of objects, 
+        /// the details function returns an actionResult (typically a page) which shows ONE object, 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -126,6 +170,21 @@ namespace NWTradersWeb.Controllers
         }
 
 
+        /// <summary>
+        /// The above functions (Index and Details) are "Read" functions.
+        /// They do not change the data in any way.
+        /// They are called "Get" functions - in that they supply a View of the data.
+        /// 
+        /// The functions (below) here are responsible for both reading and writing data. 
+        /// They come in "Get/Post" pairs - 
+        /// Get functions to show a page with current (or empty) data. 
+        /// Post functions bring the data from the page (form) and write (POST) that data to the DB.
+        /// 
+        /// Get functions do very little beyond finding an object and returning the data to the page.
+        /// Post functions collect the data from the page (Data that is "bound") in the form.
+        /// They then update the object and send it to "POST" to the database
+        /// using the provided by the EF Object - nwEntities
+        /// </summary>
 
         // GET: Customers/Create
         public ActionResult Create()

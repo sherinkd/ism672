@@ -3,6 +3,7 @@
 namespace NWTradersWeb.Models
 {
 
+    
     public partial class Customer
     {
     }
