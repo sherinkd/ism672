@@ -1,83 +1,102 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
 
-    <!-- This link allows you to use google material icons in your site -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- JQuery should be the first script you load since multiple other scripts depend on it.-->
+    <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validate/jquery.validate.min.js"></script>
 
 
-    <!-- This link helps the paged lists control display according to their style sheet-->
-    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <!-- Data Tables-->
+    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="~/lib/datatables/DateTime-1.5.1/js/dataTables.dateTime.min.js"></script>
+
+    <!-- Moment is a JavaScript Library used to manage dates and times.-->
+    <script type="text/javascript" src="~/lib/moment.js/moment.min.js"></script>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/font-awesome")
+
+    <!-- Bootstrap 5+ requires that the library be explicitly called and not bundled. -->
+    <script type="text/javascript" src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 
 </head>
 
-<body>
-    <!-- The common header will appear on all pages.-->
-    <div class="container shadow-lg rounded-lg py-2" style="background-color: lightsteelblue">
-
-        <div class="text-right">
-            <span class="h2 container rounded-lg">Northwind Traders </span>
-            <span class="">Your one stop shop for delectable eats and delightful beveragers.</span>
-        </div>
+<body class="container" style="">
+    <!-- Header: The common header will appear on all pages.-->
+    <div class="container shadow rounded-3 my-2" style="background-color: lightsteelblue">
 
         <div class="navbar">
-
-            <div class="btn border-dark w3-hover-shadow">
-                <i class="material-icons align-text-bottom">home</i>
-                @Html.ActionLink("Home", "Index", "Home")
+            <div class="container-md ">
+                <div class="h2 nav-item">Northwind Traders </div>
+                <div class="nav-item">Delectable eats and Delightful beveragers.</div>
             </div>
+        </div>
 
-            <div class="btn border-dark w3-hover-shadow"
-                title="Search and browse our customers">
-                <i class="material-icons align-text-bottom">business</i>
-                @Html.ActionLink("Customers", "Index", "Customers")
+        <div class="navbar mb-2 container">
+            <div class="container-md ">
+                <div class="btn border-dark w3-hover-shadow">
+                    <i class="fa-solid fa-house fa-lg"></i>
+                    @Html.ActionLink("Home", "Index", "Home")
+                </div>
+
+                <div class="btn border-dark w3-hover-shadow"
+                     title="Search and browse our customers">
+                    <i class="fa-solid fa-users fa-lg"></i>&nbsp;
+                    @Html.ActionLink("NW Traders Customers", "Index", "Customers")
+                </div>
+
+                <div class="btn border-dark w3-hover-shadow"
+                     title=" Products will go here">
+                    <i class="fa-solid fa-shopping-basket fa-lg"></i> &nbsp;
+                    @Html.ActionLink("NW Traders Products", "Index", "Products")
+                </div>
+
+                <div class="btn border-dark w3-hover-shadow"
+                     title=" Orders will go here">
+                    <i class="fa-solid fa-table-list fa-lg"></i> &nbsp;
+                    @Html.ActionLink("NW Traders Orders", "Index", "Orders")
+                </div>
+
+                <div class="btn border-dark w3-hover-shadow"
+                     title=" Suppliers will go here">
+                    <i class="fa-solid fa-boxes-packing fa-lg"></i> &nbsp;
+                    @Html.ActionLink("NW Traders Suppliers", "Index", "Suppliers")
+                </div>
             </div>
-
-            <div class="btn border-dark w3-hover-shadow"
-                 title=" Products will go here">
-                <i class="material-icons align-text-bottom">business</i>
-                @Html.ActionLink("Products", "Index", "Home")
-            </div>
-
-            <div class="btn border-dark w3-hover-shadow"
-                 title=" Orders will go here">
-                <i class="material-icons align-text-bottom">shopping_basket</i>
-                @Html.ActionLink("Orders", "Index", "Home")
-            </div>
-
         </div>
     </div>
 
-    <!-- spacer-->
-    <div>&nbsp;</div>
-
-    <!-- main body for all pages-->
-    <div class="container body-content">
+    <!-- Body Content - The main content of all pages-->
+    <div class="body-content">
         @RenderBody()
-        <hr />
     </div>
 
+    <!-- footer -->
+    <footer class="navbar container shadow rounded-lg mt-2 pt-2 px-4 small" 
+         style="background-color: palegoldenrod">
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+        <div class="">
+            <img src="~/images/UNCG.png" width="150" height="40" alt="Alternate Text" />
+          </div>
+
+            <div class="">
+                &copy; @DateTime.Now.Year - ISSCM Northwind Traders Web Application
+            </div>
+        
+
+    </footer>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
-<footer class="container  rounded-lg shadow-lg fixed-bottom " style="background-color: steelblue">
-    <div class=" navbar">
-        <img src="~/images/UNCG.png" width="150" height="40" alt="Alternate Text" />
-        &nbsp;&nbsp;
 
-        <span class="text-right">
-            &copy; @DateTime.Now.Year - ISSCM Northwind Traders Web Application
-        </span>
-    </div>
 
-</footer>
 

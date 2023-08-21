@@ -12,7 +12,7 @@ using System.Net;
 using System.Web.Mvc;
 
 using NWTradersWeb.Models;
-using PagedList;
+
 
 /// A namespace is like a folder or a path.
 /// So - we are saying here that all are controllers - current and future,
@@ -67,19 +67,22 @@ namespace NWTradersWeb.Controllers
         /// <param name="searchTitle"></param>
         /// <returns></returns>
         public ActionResult Index(
-            int? page, // which page # in the list of pages that the list of Customers is displayed with
-            string itemsPerPage = "15", // the number of items (customers) to display on each page.
-            string sortOrder = "", // A sortby field - empty (by default ) - means that a default sort order is applied.
-            string searchCompanyName = "", // if searchCompany name is not provided, we are NOT searching by CompanyName.
-            string searchCountryName = "", // if searchCountry is provided, we ARE searching by Country Name.
+            string searchCompanyName = "", // if searchCompany name is , we are searching by CompanyName.
+            string searchCountryName = "", // if searchCountry is NOT provided, we are NOT searching by Country Name.
             string searchTitle = "")
         {
+
+            //if(string.IsNullOrEmpty(searchCompanyName) && 
+            //    string.IsNullOrEmpty(searchCountryName) &&
+            //    string.IsNullOrEmpty(searchTitle))
+            //{
+            //    return View(new List<Customer>());
+            //}
 
             // begin by getting all the customers from the db
             IEnumerable<Customer> theCustomers = nwEntities.Customers.
                 OrderBy(c => c.CompanyName).
                 Select(c => c).ToList();
-
 
             if (theCustomers.Count() > 0)
                 // Here the ignore case allows for searches that are not case sensitive.
@@ -88,14 +91,18 @@ namespace NWTradersWeb.Controllers
                 {
                     // Here the ignore case allows for searches that are not case sensitive.
                     // Use this to do case insensitive searches for any field.
+                    //Also - note the "Contains" will look for the search string in any place.
+                    // Experiment with ... StartsWith instead of contains.
                     theCustomers = theCustomers.
-                        Where(c => c.CompanyName.StartsWith(searchCompanyName, ignoreCase: true, new System.Globalization.CultureInfo("en-US"))).
+                        Where(c => c.CompanyName.ToUpper().Contains(searchCompanyName.ToUpper())).
                         OrderBy(c => c.CompanyName).
                         Select(c => c);
                 }
             ViewBag.searchCompanyName = searchCompanyName;
 
 
+            //Since the value comes from the dropdown, we know the name will be exact - 
+            // no typos are possible since the user is not typing.
             if (theCustomers.Count() > 0)
                 if (string.IsNullOrEmpty(searchCountryName) == false)
                 {
@@ -117,35 +124,7 @@ namespace NWTradersWeb.Controllers
                 }
             ViewBag.searchTitle = searchTitle;
 
-
-            switch (sortOrder)
-            {
-                case "CompName_desc":
-                    theCustomers = theCustomers.
-                        Where(c => c.CompanyName.StartsWith(searchCompanyName)).
-                        OrderBy(c => c.CompanyName);
-                    break;
-
-                default: //All - do nothing
-                    break;
-
-            }
-
-            // page size is supplied 
-            int pageSize;
-            if (itemsPerPage == "All")
-                pageSize = theCustomers.Count();
-            else
-                // If the user provides a selection for items per page, then read that string as an integer into pageSize
-                pageSize = (int.Parse(itemsPerPage));
-
-            int pageNumber = (page ?? 1);
-
-            ViewBag.itemsPerPage = itemsPerPage;
-            ViewBag.pageNumber = pageNumber;
-            ViewBag.pageSize = pageSize;
-
-            return View(theCustomers.ToList().ToPagedList(pageNumber, pageSize));
+            return View(theCustomers);
         }
 
         // GET: Customers/Details/5

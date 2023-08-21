@@ -8,8 +8,6 @@
 <!-- The using directives are exactly the same as in the C# code ... just like we have done in every C# file we wrote.
     -->
 @using NWTradersWeb.Models;
-@using PagedList.Mvc;
-@using PagedList;
 
 
 <!--
@@ -20,9 +18,9 @@
     The model for this page is specified below as a (Paged) List of Customer Objects.
     A paged list is a list that can be displayed as individual pages with a page number and a size.
     It is literally a list that can be broken into customizable size pages and allows you to navigate pages.
-
 -->
-@model IPagedList<Customer>
+
+@model IEnumerable<Customer>
 
 @{
 
@@ -31,23 +29,7 @@
     ViewBag.Title = "Customers of NW Traders ";
 
     // Page Sizing - The paged list gives you a property that counts the TOTAL number of items in the list.
-    int NumberOfCustomers = Model.TotalItemCount;
-
-    List<string> itemsPerPage = NWTradersUtilities.itemsPerPage;
-
-    // Here we use the viewbag to remember the values of our paging variables.
-    // The values were written to in the index function in the controller and are read from here to get the first and last pages.
-
-    // First is the first customer to be displayed ..
-    // for example customer # 16 in you are on the second page of a 15 customers per page list.
-    int? First = (ViewBag.pageNumber - 1) * ViewBag.pageSize + 1;
-
-    // Last is the last customer to display ...
-    // continuing the example ... customer # 30 on the second page of a 15 customers/per page list
-    int? Last = ViewBag.pageNumber * ViewBag.pageSize;
-
-    //if Last == 30 and there are only 23 customers, then Last must become 23.
-    Last = (Last > NumberOfCustomers) ? NumberOfCustomers : Last;
+    int NumberOfCustomers = Model.Count();
 
     // Get the list of countries from utilities
     List<string> countries = NWTradersUtilities.AllCountries().ToList();
@@ -57,18 +39,6 @@
     List<string> titles = NWTradersUtilities.AllTitles().ToList();
     titles.Insert(0, ""); // Add an empty string to represent All - you could also use the word all here.
 
-    // The "aCustomer" is just a "dummy" Customer Object,
-    // We create it so we can use the "DisplayNameFor" helper to display our titles etc. 
-    //
-    // We may abandon this practice as we progress, since we will need greater customization.
-    // As with many default options, you get standardization but lose some level of customizability.
-    //
-    // It is useful to know since you can use properties from the class
-    // Also, this is the default manner that Scaffolding (Automatic Generation of pages) works.
-    // Another benefit is that it chooses the type of display based on the data type
-    // so you dont have to worry about what type of input or output container to display your values in.
-
-    Customer aCustomer = Model.FirstOrDefault();
 
 }
 
@@ -79,8 +49,7 @@
     to send information to the Controller on the web server in the form of a Request
     and get information back from the Controller as a "Response".
     The calling page (the page that sends the request) sends the request with two
-    get the response back
-    in the form of two objects, in the MVC model:
+    get the response back in the form of two objects, in the MVC model:
         i.      A Model that provides the main data for the page.
         ii.     A ViewBag that contains a collection of objects which the controller adds,
                 and "carries" them to the calling page as part of the response.
@@ -88,157 +57,184 @@
     More on the viewbag, the Viewbag is a collection of object that carries information from the page to the controller
     and then brings information from the controller to the page.
    -->
-
+<!-- Search Bar-->
 @using (Html.BeginForm())
-{// The form begins and ends on the with the curly braces.
- <div> &nbsp;</div>
+// The form begins and ends on the with the curly braces.
+{
     @Html.AntiForgeryToken()
 
-    <div class="h6">Customers Search </div>
+<div class="container shadow rounded-2 w3-leftbar w3-bottombar py-2">
     <!-- Search routines ...
-
-            Test and show results of this for Assignment #0
-            add more fields here for Assignment #1
-
-    -->
-    <div class="navbar py-2 small shadow rounded-lg" style="background-color:white">
-
-        <!-- Search by Product..-->
-
-        <div class="input-group-sm  ">
-            Customer Company Name
-            @Html.TextBox("SearchCompanyName", // Name of the variable that is passed to the controller - typically the same as "name" below.
-                    @ViewBag.searchCompanyName as string, // the variable that is displayed.
-             new
-             { // these are HTML properties used to manage the display of the text box.
-                 @class = "form-control",
-                 @type = "text",
-                 @name = "searchCompanyName",
-                 @placeholder = "Search by Company",
-                 onchange = "this.form.submit();",
-                 value = ViewBag.currentSearchCompanyName
-             })
+        Test and show results of this for Assignment #0 add more fields here for Assignment #1 -->
+    <!-- Top Search Bar-->
+    <div class="navbar mb-n4">
+        <div class="nav">
+            <div class="navitem">
+                <h5>
+                    Search for Customers
+                </h5>
+            </div>
         </div>
 
-        <!-- Select Country..-->
-        <div class="input-group-sm">
-            Country
-            @Html.DropDownList("searchCountryName",
-                    new SelectList(countries), // this is the only functional difference from the textbox - it is the list of strings displayed in the dropdown.
-             new
-             {
-                 @class = "custom-select",
-                 @name = "searchCountryName",
-                 onchange = "this.form.submit();"
-             })
+        <div>
+
         </div>
 
-        <!-- Select title..-->
-        <div class="input-group-sm ">
-            Contact Title
-            @Html.DropDownList("searchTitle", new SelectList(titles),
-             new
-             {
-                 @class = "custom-select",
-                 @name = "searchTitle",
-                 onchange = "this.form.submit();"
-             })
+        <div class="navbar" style="">
+            <!-- Search Button -->
+            <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"
+                 onclick="this.form.submit();"
+                 title="Click to Search Customers">
+                <i class="fa-solid fa-magnifying-glass fa-lg" style="color:darkblue"> </i>
+                <span class="small"> Search  </span>
+            </div>
+
+            <!-- Reset View-->
+            <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"
+                 title="Click to reset view - The reset needs to be implemented."
+                 onclick="alert('A Place Holder - Add more search fields and other functionality in Assignment 1');">
+                <i class="fa-solid fa-rotate fa-lg" style="color: forestgreen"> </i>
+                <span class="small"> Reset </span>
+            </div>
+
         </div>
     </div>
 
+    <!-- Bottom Search Bar-->
+    <div class="navbar mt-n4 small">
+
+        <div>
+            <!-- Search by Customer Company Name.-->
+            <span class="p-1">Customer Company Name</span>
+            <div class="input-group-sm  nav-item">
+                @Html.TextBox("SearchCompanyName", // Name of the variable passed to the controller - typically the same as "name" below.
+                        @ViewBag.searchCompanyName as string, // the variable that is displayed.
+                 new
+                 {
+                     // these are HTML properties used to manage the display of the text box.
+                     @class = "form-control",
+                     @type = "text",
+                     @name = "searchCompanyName",
+                     @placeholder = "Search by Company",
+                     onchange = "this.form.submit();",
+                     value = ViewBag.currentSearchCompanyName
+                 })
+            </div>
+        </div>
+
+        <div>
+            <!-- Select Country..-->
+            <span class="p-1">Country</span>
+            <div class="input-group-sm  nav-item">
+                @Html.DropDownList("searchCountryName",
+                        new SelectList(countries), // this is the only functional difference from the textbox - it is the list of strings displayed in the dropdown.
+                 new
+                 {
+                     @class = "form-select form-control",
+                     @name = "searchCountryName",
+                     onchange = "this.form.submit();"
+                 })
+            </div>
+        </div>
+
+        <div>
+            <!-- Select title..-->
+            <span class="p-1">Title</span>
+            <div class="input-group-sm  nav-item">
+                @Html.DropDownList("searchTitle", new SelectList(titles),
+                 new
+                 {
+                     @class = "form-select form-control",
+                     @name = "searchTitle",
+                     onchange = "this.form.submit();"
+                 })
+            </div>
+        </div>
+    </div>
+
+</div>
+}
+
+<!-- Table of Results -->
+<div class="container shadow-sm rounded-2 p-4 mt-2">
+
+    @if (NumberOfCustomers > 0)
+    {
+
+        <table class="table table-hover"
+               id="CustomersTable"
+               style="font-size:small; width:100%">
+
+            <thead>
+                <tr class="">
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Title</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    // What is the data type - this is a question you should always ask when you read or write code.
+                    // What is the data type of "item"?
+                    // What is the data type of Model?
+                    // What is the data type of each item."Field Name"?
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ContactName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ContactTitle)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                        <td>@Html.DisplayFor(modelItem => item.City)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+            <div class="container my-4 py-5 w3-topbar w3-bottombar col-6 rounded-2 shadow">
+                <div class="card-body  text-center">
+                    <h5> Use the search bar to enter Customer Search Criteria. </h5>
+                </div>
+            </div>
     }
 
-    <div> &nbsp;</div>
+</div>
 
-    <div class="container shadow py-4">
 
-        <table class="table-bordered table-striped" style="font-size:small; width:100%">
-            <tr class="">
-                <th></th>
-                <th>@Html.DisplayNameFor(model => aCustomer.CompanyName) </th>
-                <th>@Html.DisplayNameFor(model => aCustomer.ContactName)</th>
-                <th>@Html.DisplayNameFor(model => aCustomer.ContactTitle)</th>
-                <th>@Html.DisplayNameFor(model => aCustomer.Address)</th>
-                <th>@Html.DisplayNameFor(model => aCustomer.City)</th>
-                <th>@Html.DisplayNameFor(model => aCustomer.Country)</th>
-                <th>@Html.DisplayNameFor(model => aCustomer.Phone)</th>
 
-            </tr>
-            @{ int i = 0;} 
-            @foreach (var item in Model)
-            {
-                // What is the data type - this is a question you should always ask when you read or write code.
-                // What is the data type of "i"?
-                // What is the data type of "item"?
-                // What is the data type of Model?
-               // What is the data type of each item."Field Name"?
-                i++;
-                <tr>
-                    <td class="text-right px-2"> @i </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CompanyName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ContactName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ContactTitle)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Country)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                </tr>
-            }
+<script type="text/javascript">
 
-        </table>
-    </div>
+    $(document).ready(function ()
+    {
 
-    <div class="container border-dark" style="font-size:small;width:100%">
-        <!-- Begin Search  Form -->
-        @using (Html.BeginForm())
-        {
-            // You can have multiple forms on a page.
-            // The AntiForgery Token is a way for the controller to make sure the
-            // requesting page is the page that sent the request, and
-            // it is the page that the response should be sent to.
-            @Html.AntiForgeryToken()
-            if (NumberOfCustomers > 0)
-            {
-                <nav class="navbar">
-                    <div class=" " style=" ">
-                        @Html.PagedListPager(Model, page => Url.Action("Index",
-                              new
-                              {
-                                  page,
-                                  sortOrder = ViewBag.sortOrder,
-                              }))
-                    </div>
-                    <div class="" style="">
-                        @First  .... @Last of @NumberOfCustomers Customers
-                    </div>
+    /*
+    The variable from the page (C#) is not directly available to the script - JS
+    We need to get the value of the JS variable - numberOfCustomers from the C# variable NumberOfCustomers.
+    */
+    var numberOfCustomers = '@NumberOfCustomers';
 
-                    <!-- Select Items Per Page -->
-                    <div class="align-content-end " style="">
-                        Customers per Page:
-                        @Html.DropDownList("itemsPerPage", new SelectList(itemsPerPage),
-                     new
-                     {
-                         @class = "custom-select-sm",
-                         @style = "width:50%",
-                         @type = "submit",
-                         onchange = "this.form.submit();"
-                     })
-                    </div>
-                </nav>
-            }
+        if (numberOfCustomers > 0) {
+            $('#CustomersTable').DataTable(
+                {
+                    scrollCollapse:true,
+                    scrollX: false,
+                    scrollY: 500,
+
+                    paging: true,
+                    pageLength: 20,
+
+                    searching: true,
+                    order: [0, 'asc'],
+
+                }
+            );
         }
-    </div>
+    });
+
+
+</script>

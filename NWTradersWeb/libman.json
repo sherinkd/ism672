@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@6.4.2",
+      "destination": "lib/font-awesome/"
+    },
+    {
+      "library": "bootstrap@5.3.1",
+      "destination": "lib/bootstrap/"
+    },
+    {
+      "library": "popper.js@2.11.8",
+      "destination": "lib/popper.js/"
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "lib/datatables/"
+    },
+    {
+      "library": "datatables-buttons@2.4.1",
+      "destination": "lib/datatables/datatables-buttons/"
+    },
+    {
+      "library": "moment.js@2.29.4",
+      "destination": "lib/moment.js/"
+    },
+    {
+      "library": "jquery@3.7.0",
+      "destination": "lib/jquery/"
+    },
+    {
+      "library": "jquery-validate@1.19.5",
+      "destination": "lib/jquery-validate/"
+    }
+  ]
+}
