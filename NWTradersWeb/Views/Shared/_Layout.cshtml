@@ -33,10 +33,19 @@
     <!-- Header: The common header will appear on all pages.-->
     <div class="container shadow rounded-3 my-2" style="background-color: lightsteelblue">
 
-        <div class="navbar">
+        <div class="navbar pt-2">
             <div class="container-md ">
                 <div class="h2 nav-item">Northwind Traders </div>
-                <div class="nav-item">Delectable eats and Delightful beveragers.</div>
+
+                <div class="nav-item btn rounded-lg w3-hover-shadow">
+                    <i class="fa-solid fa-right-from-bracket fa-lg"></i>
+                    @Html.ActionLink("NW Login", "Login", "Customers", new { },
+                        new
+                        {
+                            @class = "text-decoration-none",
+                            @title = "Login to view your information"
+                        })
+                </div>
             </div>
         </div>
 
@@ -50,25 +59,25 @@
                 <div class="btn border-dark w3-hover-shadow"
                      title="Search and browse our customers">
                     <i class="fa-solid fa-users fa-lg"></i>&nbsp;
-                    @Html.ActionLink("NW Traders Customers", "Index", "Customers")
+                    @Html.ActionLink("Customers", "Index", "Customers")
                 </div>
 
                 <div class="btn border-dark w3-hover-shadow"
                      title=" Products will go here">
                     <i class="fa-solid fa-shopping-basket fa-lg"></i> &nbsp;
-                    @Html.ActionLink("NW Traders Products", "Index", "Products")
+                    @Html.ActionLink("Products", "Index", "Products")
                 </div>
 
                 <div class="btn border-dark w3-hover-shadow"
                      title=" Orders will go here">
                     <i class="fa-solid fa-table-list fa-lg"></i> &nbsp;
-                    @Html.ActionLink("NW Traders Orders", "Index", "Orders")
+                    @Html.ActionLink("Orders", "Index", "Orders")
                 </div>
 
                 <div class="btn border-dark w3-hover-shadow"
                      title=" Suppliers will go here">
                     <i class="fa-solid fa-boxes-packing fa-lg"></i> &nbsp;
-                    @Html.ActionLink("NW Traders Suppliers", "Index", "Suppliers")
+                    @Html.ActionLink("Suppliers", "Index", "Suppliers")
                 </div>
             </div>
         </div>
@@ -88,7 +97,7 @@
           </div>
 
             <div class="">
-                &copy; @DateTime.Now.Year - ISSCM Northwind Traders Web Application
+                &copy; @DateTime.Now.Year - ISM 672: Northwind Traders 
             </div>
         
 
