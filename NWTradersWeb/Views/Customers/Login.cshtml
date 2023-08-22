@@ -46,12 +46,11 @@
 
                             <!-- User Name-->
                             <div>
-                                <div class="input-group my-4">
-
+                                <div class="my-4">
                                     @Html.DropDownList("CompanyName", allCompanies as SelectList,
                                             new
                                                  {
-                                                @class = "form-select",
+                                                @class = "w3-select rounded-2",
                                                 @type = "submit",
                                                 onchange = "this.form.submit();"
                                             })
