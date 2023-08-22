@@ -33,6 +33,10 @@
     {
       "library": "jquery-validate@1.19.5",
       "destination": "lib/jquery-validate/"
+    },
+    {
+      "library": "jqueryui@1.13.2",
+      "destination": "lib/jqueryui/"
     }
   ]
 }
