@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NWTradersWeb.Models;
+using NWTradersWeb.Utilities;
 
 namespace NWTradersWeb.Controllers
 {
@@ -19,19 +20,13 @@ namespace NWTradersWeb.Controllers
             string searchProductName = ""
             )
         {
-            var products = db.Products.Include(p => p.Category).Include(p => p.Supplier).ToList();
-
-            if (products.Count == 0) {
-                return View(products);
-            }
-
-            if (!string.IsNullOrEmpty(searchProductName)) {
-                products = products
-                    .Where(p => p.ProductName.ToUpper().Contains(searchProductName.ToUpper()))
-                    .ToList();
-            }
-
-            return View(products);
+            return View(
+                 new ProductSearchUtil(
+                      db.Products.Include(p => p.Category).Include(p => p.Supplier).ToList()
+                     )
+                 .ByProductName(searchProductName)
+                 .GetProducts()
+                );
         }
 
         // GET: Products/Details/5
