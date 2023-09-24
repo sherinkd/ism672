@@ -16,13 +16,25 @@ namespace NWTradersWeb.Utilities
             this.products = products;
         }
 
-        public ProductSearchUtil ByProductName(
-            string productName
+        public ProductSearchUtil ByName(
+            string name
          ) {
-            if (string.IsNullOrWhiteSpace(productName)) { return this; }
+            if (string.IsNullOrWhiteSpace(name)) { return this; }
 
             products = products
-                    .Where(p => p.ProductName.ToUpper().Contains(productName.ToUpper()))
+                    .Where(p => p.ProductName.ToUpper().Contains(name.ToUpper()))
+                    .ToList();
+            return this;
+        }
+
+        public ProductSearchUtil ByCategory(
+                string category
+        )
+        {
+            if (string.IsNullOrWhiteSpace(category)) { return this; }
+
+            products = products
+                    .Where(p => p.Category.CategoryName.Equals(category))
                     .ToList();
             return this;
         }

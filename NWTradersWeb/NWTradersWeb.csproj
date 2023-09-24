@@ -201,6 +201,7 @@
       <DependentUpon>NWTradersEF.tt</DependentUpon>
     </Compile>
     <Compile Include="Utilities\ProductSearchUtil.cs" />
+    <Compile Include="Utilities\ProductUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\datatables\AutoFill-2.6.0\css\autoFill.bootstrap.css" />

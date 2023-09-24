@@ -17,14 +17,16 @@ namespace NWTradersWeb.Controllers
 
         // GET: Products
         public ActionResult Index(
-            string searchProductName = ""
+            string searchProductName = "",
+            string searchCategory = ""
             )
         {
             return View(
                  new ProductSearchUtil(
                       db.Products.Include(p => p.Category).Include(p => p.Supplier).ToList()
                      )
-                 .ByProductName(searchProductName)
+                 .ByName(searchProductName)
+                 .ByCategory(searchCategory)
                  .GetProducts()
                 );
         }
