@@ -18,7 +18,8 @@ namespace NWTradersWeb.Controllers
         // GET: Products
         public ActionResult Index(
             string searchProductName = "",
-            string searchCategory = ""
+            string searchCategory = "",
+            string searchSupplier = ""
             )
         {
             return View(
@@ -27,6 +28,7 @@ namespace NWTradersWeb.Controllers
                      )
                  .ByName(searchProductName)
                  .ByCategory(searchCategory)
+                 .BySupplier(searchSupplier)
                  .GetProducts()
                 );
         }

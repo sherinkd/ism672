@@ -8,6 +8,9 @@
 
     List<string> categories = ProductUtil.AllCategories();
     categories.Insert(0, "");
+
+    List<string> suppliers = ProductUtil.AllSuppliers();
+    suppliers.Insert(0, "");
 }
 
 <h2>Manage Products</h2>
@@ -63,7 +66,7 @@
                 </div>
             </div>
 
-            
+
             <div>
                 <span class="p-1">Category</span>
                 <div class="input-group-sm  nav-item">
@@ -72,6 +75,19 @@
                      {
                          @class = "form-select form-control",
                          @name = "searchCategory",
+                         onchange = "this.form.submit();"
+                     })
+                </div>
+            </div>
+
+            <div>
+                <span class="p-1">Supplier</span>
+                <div class="input-group-sm  nav-item">
+                    @Html.DropDownList("searchSupplier", new SelectList(suppliers),
+                     new
+                     {
+                         @class = "form-select form-control",
+                         @name = "searchSupplier",
                          onchange = "this.form.submit();"
                      })
                 </div>

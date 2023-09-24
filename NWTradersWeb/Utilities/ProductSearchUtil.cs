@@ -39,6 +39,18 @@ namespace NWTradersWeb.Utilities
             return this;
         }
 
+        public ProductSearchUtil BySupplier(
+                string supplier
+        )
+        {
+            if (string.IsNullOrWhiteSpace(supplier)) { return this; }
+
+            products = products
+                    .Where(p => p.Supplier.CompanyName.Equals(supplier))
+                    .ToList();
+            return this;
+        }
+
         public List<Product> GetProducts() {  return products; }
     }
 }

@@ -11,10 +11,18 @@ namespace NWTradersWeb.Utilities
         private static NorthwindEntities nwEntities = new NorthwindEntities();
 
         public static List<string> AllCategories() => nwEntities
-               .Products
-               .Select(c => c.Category.CategoryName)               
+               .Categories
+               .Select(c => c.CategoryName)               
                .Distinct()
                .OrderBy(c => c)
                .ToList();
+
+
+        public static List<string> AllSuppliers() => nwEntities
+       .Suppliers
+       .Select(s => s.CompanyName)
+       .Distinct()
+       .OrderBy(s => s)
+       .ToList();
     }
 }
