@@ -4,103 +4,155 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Manage Products</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table table-hover"
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container shadow rounded-2 w3-leftbar w3-bottombar py-2">
+        <div class="navbar mb-n4">
+            <div class="nav">
+                <div class="navitem">
+                    <h5>
+                        Search for Products
+                    </h5>
+                </div>
+            </div>
+
+            <div>
+
+            </div>
+
+            <div class="navbar" style="">
+                <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"
+                     onclick="this.form.submit();"
+                     title="Click to Search Products">
+                    <i class="fa-solid fa-magnifying-glass fa-lg" style="color:darkblue"> </i>
+                    <span class="small"> Search  </span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="navbar mt-n4 small">           
+            <div>
+                <span class="p-1">Product</span>
+                <div class="input-group-sm  nav-item">
+                    @Html.TextBox("SearchProductName",
+                            @ViewBag.searchProductName as string,
+                     new
+                     {
+                         @class = "form-control",
+                         @type = "text",
+                         @name = "searchProductName",
+                         @placeholder = "Search by Product",
+                         onchange = "this.form.submit();",
+                         value = ViewBag.currentSearchProductName
+                     })
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    <div class="container shadow-sm rounded-2 p-4 mt-2">
+        <table class="table table-hover"
                id="productTable"
                style="font-size:small; width:100%">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuantityPerUnit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitsInStock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitsOnOrder)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReorderLevel)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Discontinued)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category.CategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Supplier.CompanyName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QuantityPerUnit)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnitPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnitsInStock)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnitsOnOrder)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReorderLevel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Discontinued)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
-                </td>
-                <td>                    
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuantityPerUnit)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnitPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnitsInStock)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnitsOnOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ReorderLevel)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Discontinued)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Supplier.CompanyName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitsInStock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReorderLevel)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Discontinued)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#productTable').DataTable({
+                scrollCollapse: true,
+                scrollX: false,
+                scrollY: 500,
+                paging: true,
+                pageLength: 20,
+                searching: true,
+                order: [0, 'asc'],
+            });
+        });
 
 
-<script type="text/javascript">
-
-    $(document).ready(function ()
-    {
-
-        $('#productTable').DataTable({
-        scrollCollapse:true,
-        scrollX: false,
-        scrollY: 500,
-        paging: true,
-        pageLength: 20,
-        searching: true,
-        order: [0, 'asc'],
-       });
-    });
-
-
-</script>
+    </script>

@@ -15,10 +15,23 @@ namespace NWTradersWeb.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(
+            string searchProductName = ""
+            )
         {
-            var products = db.Products.Include(p => p.Category).Include(p => p.Supplier);
-            return View(products.ToList());
+            var products = db.Products.Include(p => p.Category).Include(p => p.Supplier).ToList();
+
+            if (products.Count == 0) {
+                return View(products);
+            }
+
+            if (!string.IsNullOrEmpty(searchProductName)) {
+                products = products
+                    .Where(p => p.ProductName.ToUpper().Contains(searchProductName.ToUpper()))
+                    .ToList();
+            }
+
+            return View(products);
         }
 
         // GET: Products/Details/5
