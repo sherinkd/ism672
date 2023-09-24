@@ -200,8 +200,9 @@
     <Compile Include="Models\Territory.cs">
       <DependentUpon>NWTradersEF.tt</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\ProductSearchUtil.cs" />
-    <Compile Include="Utilities\ProductUtil.cs" />
+    <Compile Include="Utilities\Customer\CustomerSearchUtil.cs" />
+    <Compile Include="Utilities\Product\ProductSearchUtil.cs" />
+    <Compile Include="Utilities\Product\ProductUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\datatables\AutoFill-2.6.0\css\autoFill.bootstrap.css" />

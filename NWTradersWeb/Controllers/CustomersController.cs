@@ -12,7 +12,7 @@ using System.Net;
 using System.Web.Mvc;
 
 using NWTradersWeb.Models;
-
+using NWTradersWeb.Utilities;
 
 /// A namespace is like a folder or a path.
 /// So - we are saying here that all are controllers - current and future,
@@ -75,15 +75,7 @@ namespace NWTradersWeb.Controllers
             string searchCity = "")
         {
 
-            //if(string.IsNullOrEmpty(searchCompanyName) && 
-            //    string.IsNullOrEmpty(searchCountryName) &&
-            //    string.IsNullOrEmpty(searchTitle))
-            //{
-            //    return View(new List<Customer>());
-            //}
-
-            // begin by getting all the customers from the db
-            IEnumerable<Customer> theCustomers = nwEntities.Customers.
+            List<Customer> theCustomers = nwEntities.Customers.
                 OrderBy(c => c.CompanyName).
                 Select(c => c).ToList();
 
@@ -93,71 +85,26 @@ namespace NWTradersWeb.Controllers
             }
 
 
-            // Here the ignore case allows for searches that are not case sensitive.
-            // Use this to do case insensitive searches for any field.
-            if (string.IsNullOrEmpty(searchCompanyName) == false)
-                {
-                    // Here the ignore case allows for searches that are not case sensitive.
-                    // Use this to do case insensitive searches for any field.
-                    //Also - note the "Contains" will look for the search string in any place.
-                    // Experiment with ... StartsWith instead of contains.
-                    theCustomers = theCustomers.
-                        Where(c => c.CompanyName.ToUpper().Contains(searchCompanyName.ToUpper())).
-                        OrderBy(c => c.CompanyName).
-                        Select(c => c);
-                }
             ViewBag.searchCompanyName = searchCompanyName;
-
-            //Since the value comes from the dropdown, we know the name will be exact - 
-            // no typos are possible since the user is not typing.           
-            if (string.IsNullOrEmpty(searchCountryName) == false)
-                {
-                    theCustomers = theCustomers.
-                        Where(c => c.Country.Equals(searchCountryName)).
-                        OrderBy(c => c.CompanyName).
-                        Select(c => c);
-                }
             ViewBag.searchCountryName = searchCountryName;
-
-            if (string.IsNullOrEmpty(searchTitle) == false)
-                {
-                    // This is an easy and equally effective way to manage case-insensitive searches.
-                    theCustomers = theCustomers.
-                        Where(c => c.ContactTitle.ToUpper().Contains(searchTitle.ToUpper())).
-                        OrderBy(c => c.CompanyName).
-                        Select(c => c);
-                }
             ViewBag.searchTitle = searchTitle;
-
-            if (!string.IsNullOrEmpty(searchContact))
-            {                
-                theCustomers = theCustomers.
-                    Where(c => c.ContactName.ToUpper().Contains(searchContact.ToUpper())).
-                    OrderBy(c => c.CompanyName).
-                    Select(c => c);
-            }
             ViewBag.searchContact = searchContact;
-
-            if (!string.IsNullOrEmpty(searchRegion))
-            {
-                theCustomers = theCustomers.
-                    Where(c => !string.IsNullOrEmpty(c.Region) && c.Region.Equals(searchRegion)).
-                    OrderBy(c => c.CompanyName).
-                    Select(c => c);
-            }
             ViewBag.searchRegion = searchRegion;
-
-            if (!string.IsNullOrEmpty(searchCity))
-            {
-                theCustomers = theCustomers.
-                    Where(c => c.City.Equals(searchCity)).
-                    OrderBy(c => c.CompanyName).
-                    Select(c => c);
-            }
-            ViewBag.searchRegion = searchCity;
+            ViewBag.searchCity = searchCity;
 
 
-            return View(theCustomers);
+            return View(
+                new CustomerSearchUtil(
+                    theCustomers
+                )
+                .ByCompanyName(searchCompanyName)
+                .ByCountryName(searchCountryName)
+                .ByTitle(searchTitle)
+                .ByContact(searchContact)
+                .ByRegion(searchRegion)
+                .ByCity(searchCity)
+                .GetCustomers()
+                );
         }
 
         // GET: Customers/Details/5

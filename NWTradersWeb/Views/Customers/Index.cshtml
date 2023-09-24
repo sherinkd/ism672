@@ -87,7 +87,7 @@
         <div class="navbar" style="">
             <!-- Search Button -->
             <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"
-                 onclick="this.form.submit();"
+                 onclick="form.submit();"
                  title="Click to Search Customers">
                 <i class="fa-solid fa-magnifying-glass fa-lg" style="color:darkblue"> </i>
                 <span class="small"> Search  </span>
@@ -96,7 +96,7 @@
             <!-- Reset View-->
             <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"
                  title="Click to reset view - The reset needs to be implemented."
-                 onclick="alert('A Place Holder - Add more search fields and other functionality in Assignment 1');">
+                 onclick="form.submit();">
                 <i class="fa-solid fa-rotate fa-lg" style="color: forestgreen"> </i>
                 <span class="small"> Reset </span>
             </div>
@@ -153,7 +153,8 @@
                  {
                      @class = "form-select form-control",
                      @name = "searchTitle",
-                     onchange = "this.form.submit();"
+                     onchange = "this.form.submit();",
+                     value = ViewBag.searchTitle
                  })
             </div>
         </div>
@@ -171,7 +172,8 @@
                  {
                      @class = "form-select form-control",
                      @name = "searchCountryName",
-                     onchange = "this.form.submit();"
+                     onchange = "this.form.submit();",
+                     value = ViewBag.searchCountryName
                  })
             </div>
         </div>
@@ -186,7 +188,8 @@
                  {
                      @class = "form-select form-control",
                      @name = "searchRegion",
-                     onchange = "this.form.submit();"
+                     onchange = "this.form.submit();",
+                     value = ViewBag.searchRegion
                  })
             </div>
         </div>
@@ -201,7 +204,8 @@
                  {
                      @class = "form-select form-control",
                      @name = "searchCity",
-                     onchange = "this.form.submit();"
+                     onchange = "this.form.submit();",
+                     value = ViewBag.searchCity
                  })
             </div>
         </div>

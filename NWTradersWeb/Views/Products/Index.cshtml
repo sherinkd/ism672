@@ -38,8 +38,7 @@
             </div>
 
             <div class="navbar" style="">
-                <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"
-                     onclick="this.form.submit();"
+                <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"                                          
                      title="Click to Search Products">
                     <i class="fa-solid fa-magnifying-glass fa-lg" style="color:darkblue"> </i>
                     <span class="small"> Search  </span>
@@ -61,7 +60,7 @@
                          @name = "searchProductName",
                          @placeholder = "Search by Product",
                          onchange = "this.form.submit();",
-                         value = ViewBag.currentSearchProductName
+                         value = ViewBag.searchProductName
                      })
                 </div>
             </div>
@@ -70,7 +69,8 @@
             <div>
                 <span class="p-1">Category</span>
                 <div class="input-group-sm  nav-item">
-                    @Html.DropDownList("searchCategory", new SelectList(categories),
+                    @Html.DropDownList("searchCategory", 
+                   new SelectList(categories),                  
                      new
                      {
                          @class = "form-select form-control",
@@ -83,7 +83,7 @@
             <div>
                 <span class="p-1">Supplier</span>
                 <div class="input-group-sm  nav-item">
-                    @Html.DropDownList("searchSupplier", new SelectList(suppliers),
+                    @Html.DropDownList("searchSupplier", new SelectList(suppliers),                  
                      new
                      {
                          @class = "form-select form-control",
@@ -96,7 +96,7 @@
             <div>
                 <span class="p-1">Discontinued</span>
                 <div class="input-group-sm  nav-item">
-                    @Html.DropDownList("searchDiscontinued", new SelectList(new string[] { "", "Yes", "No" }),
+                    @Html.DropDownList("searchDiscontinued", new SelectList(new string[] { "", "Yes", "No" }),                   
                      new
                      {
                          @class = "form-select form-control",
@@ -176,7 +176,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
                         </td>
-                        <td>
+                        <td>                            
                             @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
                             @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })

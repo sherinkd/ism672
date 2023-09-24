@@ -23,10 +23,23 @@ namespace NWTradersWeb.Controllers
             string searchDiscontinued = ""
             )
         {
+            List<Product> products = db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Supplier)
+                .ToList();
+
+            if (products.Count == 0)
+            {
+                return View(products);
+            }
+
+            ViewBag.searchProductName = searchProductName;
+            ViewBag.searchCategory = searchCategory;
+            ViewBag.searchSupplier = searchSupplier;
+            ViewBag.searchDiscontinued = searchDiscontinued;
+
             return View(
-                 new ProductSearchUtil(
-                      db.Products.Include(p => p.Category).Include(p => p.Supplier).ToList()
-                     )
+                 new ProductSearchUtil(products)
                  .ByName(searchProductName)
                  .ByCategory(searchCategory)
                  .BySupplier(searchSupplier)
