@@ -92,6 +92,19 @@
                      })
                 </div>
             </div>
+
+            <div>
+                <span class="p-1">Discontinued</span>
+                <div class="input-group-sm  nav-item">
+                    @Html.DropDownList("searchDiscontinued", new SelectList(new string[] { "", "Yes", "No" }),
+                     new
+                     {
+                         @class = "form-select form-control",
+                         @name = "searchDiscontinued",
+                         onchange = "this.form.submit();"
+                     })
+                </div>
+            </div>
         </div>
     </div>
     }

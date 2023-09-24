@@ -51,6 +51,18 @@ namespace NWTradersWeb.Utilities
             return this;
         }
 
+        public ProductSearchUtil ByDiscontinued(
+               string discontinued
+        )
+        {
+            if (string.IsNullOrWhiteSpace(discontinued)) { return this; }
+
+            products = products
+                    .Where(p => p.Discontinued.Equals(discontinued.Equals("Yes")))
+                    .ToList();
+            return this;
+        }
+
         public List<Product> GetProducts() {  return products; }
     }
 }

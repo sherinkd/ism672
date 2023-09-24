@@ -19,7 +19,8 @@ namespace NWTradersWeb.Controllers
         public ActionResult Index(
             string searchProductName = "",
             string searchCategory = "",
-            string searchSupplier = ""
+            string searchSupplier = "",
+            string searchDiscontinued = ""
             )
         {
             return View(
@@ -29,6 +30,7 @@ namespace NWTradersWeb.Controllers
                  .ByName(searchProductName)
                  .ByCategory(searchCategory)
                  .BySupplier(searchSupplier)
+                 .ByDiscontinued(searchDiscontinued)
                  .GetProducts()
                 );
         }
