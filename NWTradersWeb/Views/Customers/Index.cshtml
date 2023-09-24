@@ -39,7 +39,11 @@
     List<string> titles = NWTradersUtilities.AllTitles().ToList();
     titles.Insert(0, ""); // Add an empty string to represent All - you could also use the word all here.
 
+    List<string> regions = NWTradersUtilities.AllRegions().ToList();
+    regions.Insert(0, "");
 
+    List<string> cities = NWTradersUtilities.AllCities().ToList();
+    cities.Insert(0, "");
 }
 
 
@@ -123,6 +127,41 @@
         </div>
 
         <div>
+            <!-- Search by Customer Contact -->
+            <span class="p-1">Contact</span>
+            <div class="input-group-sm  nav-item">
+                @Html.TextBox("SearchContact",
+                        @ViewBag.searchContact as string,
+                 new
+                 {
+                     @class = "form-control",
+                     @type = "text",
+                     @name = "searchContact",
+                     @placeholder = "Search by Contact",
+                     onchange = "this.form.submit();",
+                     value = ViewBag.currentSearchContact
+                 })
+            </div>
+        </div>
+
+        <div>
+            <!-- Select title..-->
+            <span class="p-1">Title</span>
+            <div class="input-group-sm  nav-item">
+                @Html.DropDownList("searchTitle", new SelectList(titles),
+                 new
+                 {
+                     @class = "form-select form-control",
+                     @name = "searchTitle",
+                     onchange = "this.form.submit();"
+                 })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="navbar mt-n4 small">
+        <div>
             <!-- Select Country..-->
             <span class="p-1">Country</span>
             <div class="input-group-sm  nav-item">
@@ -138,14 +177,30 @@
         </div>
 
         <div>
-            <!-- Select title..-->
-            <span class="p-1">Title</span>
+            <!-- Select Region.-->
+            <span class="p-1">Region</span>
             <div class="input-group-sm  nav-item">
-                @Html.DropDownList("searchTitle", new SelectList(titles),
+                @Html.DropDownList("searchRegion",
+                        new SelectList(regions), // this is the only functional difference from the textbox - it is the list of strings displayed in the dropdown.
                  new
                  {
                      @class = "form-select form-control",
-                     @name = "searchTitle",
+                     @name = "searchRegion",
+                     onchange = "this.form.submit();"
+                 })
+            </div>
+        </div>
+
+        <div>
+            <!-- Select City.-->
+            <span class="p-1">City</span>
+            <div class="input-group-sm  nav-item">
+                @Html.DropDownList("searchCity",
+                        new SelectList(cities), // this is the only functional difference from the textbox - it is the list of strings displayed in the dropdown.
+                 new
+                 {
+                     @class = "form-select form-control",
+                     @name = "searchCity",
                      onchange = "this.form.submit();"
                  })
             </div>
@@ -171,8 +226,9 @@
                     <th>Contact</th>
                     <th>Title</th>
                     <th>Address</th>
-                    <th>City</th>
                     <th>Country</th>
+                    <th>Region</th>
+                    <th>City</th>
                 </tr>
             </thead>
             <tbody>
@@ -187,8 +243,9 @@
                         <td>@Html.DisplayFor(modelItem => item.ContactName)</td>
                         <td>@Html.DisplayFor(modelItem => item.ContactTitle)</td>
                         <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                        <td>@Html.DisplayFor(modelItem => item.City)</td>
                         <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Region)</td>
+                        <td>@Html.DisplayFor(modelItem => item.City)</td>
                     </tr>
                 }
             </tbody>

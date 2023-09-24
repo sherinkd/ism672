@@ -69,7 +69,10 @@ namespace NWTradersWeb.Controllers
         public ActionResult Index(
             string searchCompanyName = "", // if searchCompany name is , we are searching by CompanyName.
             string searchCountryName = "", // if searchCountry is NOT provided, we are NOT searching by Country Name.
-            string searchTitle = "")
+            string searchTitle = "",
+            string searchContact = "",
+            string searchRegion = "",
+            string searchCity = "")
         {
 
             //if(string.IsNullOrEmpty(searchCompanyName) && 
@@ -84,10 +87,15 @@ namespace NWTradersWeb.Controllers
                 OrderBy(c => c.CompanyName).
                 Select(c => c).ToList();
 
-            if (theCustomers.Count() > 0)
-                // Here the ignore case allows for searches that are not case sensitive.
-                // Use this to do case insensitive searches for any field.
-                if (string.IsNullOrEmpty(searchCompanyName) == false)
+            if (theCustomers.Count() == 0)
+            {
+                return View(theCustomers);
+            }
+
+
+            // Here the ignore case allows for searches that are not case sensitive.
+            // Use this to do case insensitive searches for any field.
+            if (string.IsNullOrEmpty(searchCompanyName) == false)
                 {
                     // Here the ignore case allows for searches that are not case sensitive.
                     // Use this to do case insensitive searches for any field.
@@ -100,11 +108,9 @@ namespace NWTradersWeb.Controllers
                 }
             ViewBag.searchCompanyName = searchCompanyName;
 
-
             //Since the value comes from the dropdown, we know the name will be exact - 
-            // no typos are possible since the user is not typing.
-            if (theCustomers.Count() > 0)
-                if (string.IsNullOrEmpty(searchCountryName) == false)
+            // no typos are possible since the user is not typing.           
+            if (string.IsNullOrEmpty(searchCountryName) == false)
                 {
                     theCustomers = theCustomers.
                         Where(c => c.Country.Equals(searchCountryName)).
@@ -113,8 +119,7 @@ namespace NWTradersWeb.Controllers
                 }
             ViewBag.searchCountryName = searchCountryName;
 
-            if (theCustomers.Count() > 0)
-                if (string.IsNullOrEmpty(searchTitle) == false)
+            if (string.IsNullOrEmpty(searchTitle) == false)
                 {
                     // This is an easy and equally effective way to manage case-insensitive searches.
                     theCustomers = theCustomers.
@@ -123,6 +128,34 @@ namespace NWTradersWeb.Controllers
                         Select(c => c);
                 }
             ViewBag.searchTitle = searchTitle;
+
+            if (!string.IsNullOrEmpty(searchContact))
+            {                
+                theCustomers = theCustomers.
+                    Where(c => c.ContactName.ToUpper().Contains(searchContact.ToUpper())).
+                    OrderBy(c => c.CompanyName).
+                    Select(c => c);
+            }
+            ViewBag.searchContact = searchContact;
+
+            if (!string.IsNullOrEmpty(searchRegion))
+            {
+                theCustomers = theCustomers.
+                    Where(c => !string.IsNullOrEmpty(c.Region) && c.Region.Equals(searchRegion)).
+                    OrderBy(c => c.CompanyName).
+                    Select(c => c);
+            }
+            ViewBag.searchRegion = searchRegion;
+
+            if (!string.IsNullOrEmpty(searchCity))
+            {
+                theCustomers = theCustomers.
+                    Where(c => c.City.Equals(searchCity)).
+                    OrderBy(c => c.CompanyName).
+                    Select(c => c);
+            }
+            ViewBag.searchRegion = searchCity;
+
 
             return View(theCustomers);
         }

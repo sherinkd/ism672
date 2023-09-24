@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,17 +10,26 @@ namespace NWTradersWeb.Models
 
         private static NorthwindEntities nwEntities = new NorthwindEntities();
 
+        public static List<string> AllCities() => nwEntities
+                .Customers               
+                .Select(c => c.City)
+                .Distinct()
+                .ToList();
+
+        public static List<string> AllRegions() => nwEntities
+                .Customers               
+                .Where(c => c.Region != null)
+                .Select(c => c.Region)
+                .Distinct()
+                .ToList();
+
         public static List<string> AllCountries()
         {
-            List<string> allCountries = new List<string>();
-            allCountries =
-                nwEntities.
+           return nwEntities.
                 Customers.
                 Select(c => c.Country).
                 Distinct().
                 ToList();
-
-            return allCountries;
         }
 
         public static List<string> AllCompanyNames()
