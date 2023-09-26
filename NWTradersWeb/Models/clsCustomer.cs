@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NWTradersWeb.Models
@@ -23,6 +24,25 @@ namespace NWTradersWeb.Models
                        Select(o => o.OrderDate.Value).
                        FirstOrDefault();
             return lastOrderPlacedOn;
+        }
+
+        public List<Order> RecentOrders(int limit) { 
+            return Orders
+                .OrderByDescending(o => o.OrderDate)
+                .Take(limit)
+                .ToList();
+        }
+
+        public List<Product> RecentlyPurchasedProducts(int limit)
+        {
+            return Orders
+                .OrderByDescending(o => o.OrderDate)
+                .SelectMany(o => o.Order_Details)
+                .Select(od => od.Product)
+                .OrderByDescending(od => od.UnitPrice)
+                .Distinct()
+                .Take(limit)
+                .ToList();
         }
 
     }

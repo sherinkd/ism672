@@ -12,10 +12,7 @@
     List<string> suppliers = ProductUtil.AllSuppliers();
     suppliers.Insert(0, "");
 }
-
-<h2>Manage Products</h2>
-
-<p>
+<p class="d-flex justify-content-end">
     @Html.ActionLink("Create New", "Create")
 </p>
 
@@ -34,15 +31,6 @@
             </div>
 
             <div>
-
-            </div>
-
-            <div class="navbar" style="">
-                <div class="button btn rounded-lg w3-hover-shadow small nav-item mt-n1"                                          
-                     title="Click to Search Products">
-                    <i class="fa-solid fa-magnifying-glass fa-lg" style="color:darkblue"> </i>
-                    <span class="small"> Search  </span>
-                </div>
 
             </div>
         </div>
@@ -156,15 +144,15 @@
                             @Html.DisplayFor(modelItem => item.QuantityPerUnit)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                            $@string.Format("{0:C}", @Html.DisplayFor(modelItem => item.UnitPrice))
                         </td>
-                        <td>
+                        <td class="text-align-center">
                             @Html.DisplayFor(modelItem => item.UnitsInStock)
                         </td>
-                        <td>
+                        <td class="text-align-center">
                             @Html.DisplayFor(modelItem => item.UnitsOnOrder)
                         </td>
-                        <td>
+                        <td class="text-align-center">
                             @Html.DisplayFor(modelItem => item.ReorderLevel)
                         </td>
                         <td>
@@ -175,11 +163,10 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
-                        </td>
-                        <td>                            
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+                        </td>                       
+                        <td>
+                            @Html.ActionLink("Details", "Details", new { id = item.ProductID })
+                                            
                         </td>
                     </tr>
                 }
@@ -200,6 +187,7 @@
                 pageLength: 20,
                 searching: true,
                 order: [0, 'asc'],
+                autoWidth: true
             });
         });
 

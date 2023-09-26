@@ -1,0 +1,15 @@
+﻿:root {
+    --primary: #f2e143;
+    --secondary: #434343;
+    --primary-lite: #fcf6c4;
+    --secondary-lite: #9f9f9f;
+}
+
+.primary {
+    background-color: var(--primary);
+}
+
+.secondary {
+    background-color: var(--secondary);
+}
+

@@ -136,6 +136,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\Alignment.css" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -205,6 +206,9 @@
     <Compile Include="Utilities\Product\ProductUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Card.css" />
+    <Content Include="Content\Color.css" />
+    <Content Include="Content\Table.css" />
     <Content Include="lib\datatables\AutoFill-2.6.0\css\autoFill.bootstrap.css" />
     <Content Include="lib\datatables\AutoFill-2.6.0\css\autoFill.bootstrap.min.css" />
     <Content Include="lib\datatables\AutoFill-2.6.0\css\autoFill.bootstrap4.css" />

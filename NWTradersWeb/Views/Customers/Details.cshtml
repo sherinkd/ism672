@@ -5,8 +5,9 @@
 @{
     ViewBag.Title = "Details";
 
-    List<Order> CustomerOrders =
-        Model.Orders.OrderByDescending(o => o.OrderDate).Take(5).ToList();
+    List<Order> CustomerOrders = Model.RecentOrders(5);
+
+    List<Product> RecentPurchasedProduct = Model.RecentlyPurchasedProducts(5);
 
 }
 
@@ -63,7 +64,7 @@
                             <th>Date </th>
                             <th>Total</th>
                             <th># of Items</th>
-                            <th>Details</th>
+                            <th></th>
                         </tr>
                         @foreach (Order o in CustomerOrders)
                         {
@@ -105,11 +106,38 @@
             <div class="card rounded-2 mx-2">
 
                 <div class="card-header h5 py-4" style="background-color: beige">
-                    Products
+                    Recently Purchased Products
                 </div>
 
                 <div class="card-body">
-                    Information about products recently purchased goes here.
+                    <table class="table table-hover small">
+                        <tr>
+                            <th>Product Name </th>
+                            <th>Unit Price</th>
+                            <th></th>
+                        </tr>
+                        @foreach (Product p in RecentPurchasedProduct)
+                        {
+                            <tr class="py-3">
+
+                                <td class="w3-padding-small py-2">
+                                    @p.ProductName
+                                </td>
+                                <td>
+                                    @string.Format("{0:C}", @p.UnitPrice)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(
+                                    "Details",
+                                    "Details",
+                                    "Products",
+                                    new { @id = p.ProductID },
+                                    new { @class = "btn-sm btn-dark", @style = "font-size:small" }
+                                    )
+                                </td>
+                            </tr>
+                        }
+                    </table>
                 </div>
 
                 <div class="card-footer text-center py-4" style="background-color:beige">
@@ -120,10 +148,8 @@
 
     </div>
 
-    <div class="navbar container mt-2 rounded-2">
-        <div class="" style="margin-left:80%">
-            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-dark" })
-        </div>
+    <div class="navbar container mt-2 rounded-2 d-flex flex-row-reverse">
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-dark" })
     </div>
 
 </div>

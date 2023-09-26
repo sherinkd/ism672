@@ -8,6 +8,6 @@ using System.ComponentModel;
 namespace NWTradersWeb.Models
 {
     public partial class Product
-    {
+    {   
     }
 }

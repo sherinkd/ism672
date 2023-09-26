@@ -1,0 +1,8 @@
+﻿thead tr th {
+    background-color: var(--secondary) !important;
+    color: white !important;
+}
+
+table {
+    padding-top: 10px;
+}
