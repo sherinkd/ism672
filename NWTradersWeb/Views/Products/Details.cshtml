@@ -6,101 +6,58 @@
 
 <h2>Details</h2>
 
-<div>
-    <h4>Product: @Html.DisplayFor(model => model.ProductName)</h4>
-    <hr />
-    <div class="container mt-5">
-
-        <div class="card-group mx-5">
-
-            <div class="card rounded-2 mx-2">
-
-                <div class="card-header h5 py-4" style="background-color: beige">
-                    Details
+<div class="container">
+    <div class="sub-header">
+        <h4>Product: @Html.DisplayFor(model => model.ProductName)</h4>
+    </div>
+    <div class="sub-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.QuantityPerUnit)</div>
+                    <div>@Html.DisplayFor(model => model.QuantityPerUnit)</div>
                 </div>
-
-                <div style="font-size:small; height: 40vh; overflow-y: auto"
-                     class="card-body">
-                    <dl>
-                        <dt>
-                            @Html.DisplayNameFor(model => model.QuantityPerUnit)
-                        </dt>
-
-                        <dd>
-                            @Html.DisplayFor(model => model.QuantityPerUnit)
-                        </dd>
-
-                        <dt>
-                            @Html.DisplayNameFor(model => model.UnitPrice)
-                        </dt>
-
-                        <dd>
-                            $@string.Format("{0:C}", @Html.DisplayFor(model => model.UnitPrice))
-                        </dd>
-
-                        <dt>
-                            @Html.DisplayNameFor(model => model.UnitsInStock)
-                        </dt>
-
-                        <dd>
-                            @Html.DisplayFor(model => model.UnitsInStock)
-                        </dd>
-
-                        <dt>
-                            @Html.DisplayNameFor(model => model.UnitsOnOrder)
-                        </dt>
-
-                        <dd>
-                            @Html.DisplayFor(model => model.UnitsOnOrder)
-                        </dd>
-
-                        <dt>
-                            @Html.DisplayNameFor(model => model.ReorderLevel)
-                        </dt>
-
-                        <dd>
-                            @Html.DisplayFor(model => model.ReorderLevel)
-                        </dd>
-
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Discontinued)
-                        </dt>
-
-                        <dd>
-                            @Html.DisplayFor(model => model.Discontinued)
-                        </dd>
-
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Category.CategoryName)
-                        </dt>
-
-                        <dd>
-                            @Html.DisplayFor(model => model.Category.CategoryName)
-                        </dd>
-
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Supplier.CompanyName)
-                        </dt>
-
-                        <dd>
-                            @Html.DisplayFor(model => model.Supplier.CompanyName)
-                        </dd>
-
-                    </dl>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.QuantityPerUnit)</div>
+                    <div>@Html.DisplayFor(model => model.QuantityPerUnit)</div>
                 </div>
-
-                <div class="card-footer text-center py-4" style="background-color: beige; font-size:small">
-                    &nbsp;
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.UnitPrice)</div>
+                    <div>$@string.Format("{0:C}", @Html.DisplayFor(model => model.UnitPrice))</div>
                 </div>
-
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.UnitsInStock)</div>
+                    <div> @Html.DisplayFor(model => model.UnitsInStock)</div>
+                </div>
             </div>
-
-         
+            <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.UnitsOnOrder)</div>
+                    <div>@Html.DisplayFor(model => model.UnitsOnOrder)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ReorderLevel)</div>
+                    <div>@Html.DisplayFor(model => model.ReorderLevel)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Discontinued)</div>
+                    <div>@Html.DisplayFor(model => model.Discontinued)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Category.CategoryName)</div>
+                    <div>@Html.DisplayFor(model => model.Category.CategoryName)</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Supplier.CompanyName)</div>
+                    <div>@Html.DisplayFor(model => model.Supplier.CompanyName)</div>
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
-<p>
+<p class="pt-4">
     @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

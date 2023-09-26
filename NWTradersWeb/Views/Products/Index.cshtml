@@ -104,31 +104,19 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProductName)
+                        Name
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.QuantityPerUnit)
+                        Category
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.UnitPrice)
+                        Supplier
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.UnitsInStock)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.UnitsOnOrder)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ReorderLevel)
-                    </th>
+                        Unit Price
+                    </th>                                 
                     <th>
                         @Html.DisplayNameFor(model => model.Discontinued)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Category.CategoryName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Supplier.CompanyName)
                     </th>
                     <th></th>
                 </tr>
@@ -141,32 +129,19 @@
                             @Html.DisplayFor(modelItem => item.ProductName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
                         </td>
                         <td>
                             $@string.Format("{0:C}", @Html.DisplayFor(modelItem => item.UnitPrice))
-                        </td>
-                        <td class="text-align-center">
-                            @Html.DisplayFor(modelItem => item.UnitsInStock)
-                        </td>
-                        <td class="text-align-center">
-                            @Html.DisplayFor(modelItem => item.UnitsOnOrder)
-                        </td>
-                        <td class="text-align-center">
-                            @Html.DisplayFor(modelItem => item.ReorderLevel)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Discontinued)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
-                        </td>                       
-                        <td>
                             @Html.ActionLink("Details", "Details", new { id = item.ProductID })
-                                            
                         </td>
                     </tr>
                 }

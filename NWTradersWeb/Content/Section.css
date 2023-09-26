@@ -1,0 +1,22 @@
+﻿.sub-header {
+    background-color: var(--secondary);
+    padding: 2px 2px 2px 10px;
+    color: white;
+    border-radius: 5px 5px 0 0;
+}
+
+.sub-body {
+    background-color: var(--secondary-x-lite);
+    height: 100%;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;
+    font-size: small;
+}
+
+.sub-group-label {
+    padding-bottom: 22px;
+}
+
+.content-header {
+    font-weight: bold;
+}
