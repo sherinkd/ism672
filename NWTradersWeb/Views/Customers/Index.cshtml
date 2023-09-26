@@ -128,7 +128,7 @@
 
         <div>
             <!-- Search by Customer Contact -->
-            <span class="p-1">Contact</span>
+            <span class="p-1">Contact Name</span>
             <div class="input-group-sm  nav-item">
                 @Html.TextBox("SearchContact",
                         @ViewBag.searchContact as string,
@@ -146,7 +146,7 @@
 
         <div>
             <!-- Select title..-->
-            <span class="p-1">Title</span>
+            <span class="p-1">Contact Title</span>
             <div class="input-group-sm  nav-item">
                 @Html.DropDownList("searchTitle", new SelectList(titles),
                  new
@@ -226,9 +226,9 @@
 
             <thead>
                 <tr class="">
-                    <th>Customer</th>
-                    <th>Contact</th>
-                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Contact Name</th>
+                    <th>Contact Title</th>
                     <th>Address</th>
                     <th>Country</th>
                     <th>Region</th>

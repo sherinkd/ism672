@@ -10,7 +10,9 @@
     height: 100%;
     border-radius: 0 0 5px 5px;
     padding: 20px;
+    max-height: 50vh;
     font-size: small;
+    overflow-y: auto;
 }
 
 .sub-group-label {

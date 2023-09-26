@@ -1,4 +1,5 @@
-﻿@model NWTradersWeb.Models.Product
+﻿@using NWTradersWeb.Models;
+@model NWTradersWeb.Models.Product
 
 @{
     ViewBag.Title = "Details";
@@ -55,6 +56,61 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+
+<div class="container pt-3">
+    <div class="sub-header">
+        <h4>Sold In Regions</h4>
+    </div>
+    <div class="sub-body">
+        @if (@Model.GetSoldRegions().Count == 0)
+        {
+            <span> No Data Available.</span>
+        }
+        else
+        {
+            <table class="table table-hover small">               
+                @foreach (string region in @Model.GetSoldRegions())
+                {
+                    <tr class="py-3">
+
+                        <td class="w3-padding-small py-2">
+                            @region
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>
+
+<div class="container pt-3">
+    <div class="sub-header">
+        <h4>Sold By Employees</h4>
+    </div>
+    <div class="sub-body">
+        @if (@Model.GetSoldEmployees().Count == 0)
+        {
+            <span> No Data Available.</span>
+        }
+        else
+        {
+            <table class="table table-hover small">                
+                @foreach (string employee in @Model.GetSoldEmployees())
+                {
+                    <tr class="py-3">
+
+                        <td class="w3-padding-small py-2">
+                            @employee
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+        }
     </div>
 </div>
 
