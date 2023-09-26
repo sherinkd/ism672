@@ -1,4 +1,5 @@
 ﻿using NWTradersWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -58,6 +59,18 @@ namespace NWTradersWeb.Utilities
             products = products
                     .Where(p => p.Discontinued.Equals(discontinued.Equals("Yes")))
                     .ToList();
+            return this;
+        }
+
+        public ProductSearchUtil ByBestSeller(
+            Boolean isBestSeller) {
+            if (!isBestSeller) { return this; }
+
+            products = products
+                .OrderByDescending(p => p.Order_Details.Count())
+                .Take(1)
+                .ToList();
+
             return this;
         }
 

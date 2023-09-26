@@ -57,8 +57,8 @@
             <div>
                 <span class="p-1">Category</span>
                 <div class="input-group-sm  nav-item">
-                    @Html.DropDownList("searchCategory", 
-                   new SelectList(categories),                  
+                    @Html.DropDownList("searchCategory",
+                   new SelectList(categories),
                      new
                      {
                          @class = "form-select form-control",
@@ -71,7 +71,7 @@
             <div>
                 <span class="p-1">Supplier</span>
                 <div class="input-group-sm  nav-item">
-                    @Html.DropDownList("searchSupplier", new SelectList(suppliers),                  
+                    @Html.DropDownList("searchSupplier", new SelectList(suppliers),
                      new
                      {
                          @class = "form-select form-control",
@@ -84,11 +84,24 @@
             <div>
                 <span class="p-1">Discontinued</span>
                 <div class="input-group-sm  nav-item">
-                    @Html.DropDownList("searchDiscontinued", new SelectList(new string[] { "", "Yes", "No" }),                   
+                    @Html.DropDownList("searchDiscontinued", new SelectList(new string[] { "", "Yes", "No" }),
                      new
                      {
                          @class = "form-select form-control",
                          @name = "searchDiscontinued",
+                         onchange = "this.form.submit();"
+                     })
+                </div>
+            </div>
+
+            <div>
+                <span>Best Seller</span>
+                <div>
+                    @Html.CheckBox("searchBestSeller",
+                     new
+                     {
+                         @class = "form-check-input form-control",
+                         @name = "searchBestSeller",
                          onchange = "this.form.submit();"
                      })
                 </div>
@@ -114,7 +127,7 @@
                     </th>
                     <th>
                         Unit Price
-                    </th>                                 
+                    </th>                    
                     <th>
                         @Html.DisplayNameFor(model => model.Discontinued)
                     </th>
@@ -136,7 +149,7 @@
                         </td>
                         <td>
                             $@string.Format("{0:C}", @Html.DisplayFor(modelItem => item.UnitPrice))
-                        </td>
+                        </td>                        
                         <td>
                             @Html.DisplayFor(modelItem => item.Discontinued)
                         </td>

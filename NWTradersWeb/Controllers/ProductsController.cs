@@ -20,7 +20,8 @@ namespace NWTradersWeb.Controllers
             string searchProductName = "",
             string searchCategory = "",
             string searchSupplier = "",
-            string searchDiscontinued = ""
+            string searchDiscontinued = "",
+            Boolean searchBestSeller = false
             )
         {
             List<Product> products = db.Products
@@ -44,6 +45,7 @@ namespace NWTradersWeb.Controllers
                  .ByCategory(searchCategory)
                  .BySupplier(searchSupplier)
                  .ByDiscontinued(searchDiscontinued)
+                 .ByBestSeller(searchBestSeller)
                  .GetProducts()
                 );
         }
