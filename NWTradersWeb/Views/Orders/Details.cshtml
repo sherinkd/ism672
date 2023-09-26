@@ -1,122 +1,121 @@
-﻿@model NWTradersWeb.Models.Order
+﻿@using NWTradersWeb.Models;
+
+@model NWTradersWeb.Models.Order
+
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Order Details</h2>
 
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
+<div class="container">
+    <div class="sub-header">
+        <h4>Order#: @Model.OrderID</h4>
+    </div>
+    <div class="sub-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.OrderDate)</div>
+                    <div>@Html.DisplayFor(model => model.OrderDate)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.RequiredDate)</div>
+                    <div>@Html.DisplayFor(model => model.RequiredDate)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ShippedDate)</div>
+                    <div>@Html.DisplayFor(model => model.ShippedDate)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Freight)</div>
+                    <div> @Html.DisplayFor(model => model.Freight)</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ShipName)</div>
+                    <div>@Html.DisplayFor(model => model.ShipName)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ShipAddress)</div>
+                    <div>@Html.DisplayFor(model => model.ShipAddress)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ShipCity)</div>
+                    <div>@Html.DisplayFor(model => model.ShipCity)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ShipRegion)</div>
+                    <div>@Html.DisplayFor(model => model.ShipRegion)</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ShipPostalCode)</div>
+                    <div>@Html.DisplayFor(model => model.ShipPostalCode)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.ShipCountry)</div>
+                    <div>@Html.DisplayFor(model => model.ShipCountry)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Customer.CompanyName)</div>
+                    <div>@Html.DisplayFor(model => model.Customer.CompanyName)</div>
+                </div>
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Employee.LastName)</div>
+                    <div>@Html.DisplayFor(model => model.Employee.LastName)</div>
+                </div>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RequiredDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RequiredDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShippedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShippedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Freight)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Freight)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShipName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShipAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipAddress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShipCity)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipCity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShipRegion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipRegion)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShipPostalCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipPostalCode)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShipCountry)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipCountry)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Customer.CompanyName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Customer.CompanyName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Employee.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Shipper.CompanyName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Shipper.CompanyName)
-        </dd>
-
-    </dl>
+            <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Shipper.CompanyName)</div>
+                    <div>@Html.DisplayFor(model => model.Shipper.CompanyName)</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
+
+<div class="container pt-3">
+    <div class="sub-header">
+        <h4>Products</h4>
+    </div>
+    <div class="sub-body">
+        <table class="table table-hover small">
+            <tr>
+                <th>Product Name </th>
+                <th>Unit Price</th>
+                <th></th>
+            </tr>
+            @foreach (Order_Detail od in Model.Order_Details)
+            {
+                <tr class="py-3">
+
+                    <td class="w3-padding-small py-2">
+                        @od.Product.ProductName
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @od.Product.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.ActionLink(
+                        "Details",
+                        "Details",
+                        "Products",
+                        new { @id = od.Product.ProductID },
+                        new { @class = "btn-sm btn-dark", @style = "font-size:small" }
+                        )
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<p class="pt-4">
     @Html.ActionLink("Edit", "Edit", new { id = Model.OrderID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -39,7 +39,6 @@ namespace NWTradersWeb.Models
                 .OrderByDescending(o => o.OrderDate)
                 .SelectMany(o => o.Order_Details)
                 .Select(od => od.Product)
-                .OrderByDescending(od => od.UnitPrice)
                 .Distinct()
                 .Take(limit)
                 .ToList();
