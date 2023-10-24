@@ -137,6 +137,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\Alignment.css" />
+    <Content Include="Content\Button.css" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
