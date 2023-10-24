@@ -208,6 +208,7 @@
   <ItemGroup>
     <Content Include="Content\Card.css" />
     <Content Include="Content\Color.css" />
+    <Content Include="Content\Font.css" />
     <Content Include="Content\Section.css" />
     <Content Include="Content\Table.css" />
     <Content Include="lib\datatables\AutoFill-2.6.0\css\autoFill.bootstrap.css" />

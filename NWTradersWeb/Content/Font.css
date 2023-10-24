@@ -1,0 +1,20 @@
+﻿.font-lg {
+    font-size: large;
+}
+
+.font-md {
+    font-size: medium;
+}
+
+.font-sm {
+    font-size: small;
+}
+
+
+.font-dark {
+    color: black;
+}
+
+.font-lite {
+    color: white;
+}
