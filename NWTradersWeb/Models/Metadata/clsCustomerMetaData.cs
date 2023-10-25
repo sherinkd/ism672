@@ -49,7 +49,7 @@ namespace NWTradersWeb.Models
 
         [Required(ErrorMessage = "The Country is required")]       
         [StringLength(15, MinimumLength = 2, ErrorMessage = "Country must have atleast 2 and upto 15 characters")]
-        [RegularExpression(@"^([A-Za-z]+)$", ErrorMessage = "Country is invalid")]
+        [RegularExpression(@"^([A-Za-z ]+)$", ErrorMessage = "Country is invalid")]
         public string Country;
         
         [StringLength(24, MinimumLength = 4, ErrorMessage = "Phone must have atleast 8 and upto 24 characters")]
