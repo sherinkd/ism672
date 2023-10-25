@@ -162,8 +162,27 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Discontinued)
                         </td>
-                        <td>
-                            @Html.ActionLink("Details", "Details", new { id = item.ProductID })
+                        <td class="d-flex gap-3">
+                            @*@Html.ActionLink("Details", "Details", new { id = item.ProductID })
+        @Html.ActionLink("Edit", "Edit", new { id = item.ProductID })
+        @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })*@
+
+
+
+                            <a title="Delete"
+                               href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
+                                <i class="fa-solid fa-trash-can text-danger"></i>
+                            </a>
+
+                            <a title="Edit"
+                               href="@Url.Action("Edit", "Products", new { id = item.ProductID })">
+                                <i class="fa-solid fa-pencil text-p"></i>
+                            </a>
+
+                            <a title="View Details"
+                               href="@Url.Action("Details", "Products", new { id = item.ProductID })">
+                                <i class="fa-solid fa-angle-double-right text-s"></i>
+                            </a>
                         </td>
                     </tr>
                 }

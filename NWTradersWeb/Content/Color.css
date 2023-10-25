@@ -14,3 +14,10 @@
     background-color: var(--secondary);
 }
 
+.text-p {
+    color: var(--primary) !important;
+}
+
+.text-s {
+    color: var(--secondary) !important;
+}
