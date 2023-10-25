@@ -138,6 +138,9 @@
                             Supplier
                         </th>
                         <th>
+                            Available Units
+                        </th>
+                        <th>
                             Unit Price
                         </th>
                         <th class="no-sort">
@@ -163,6 +166,9 @@
                                 @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
                             </td>
                             <td>
+                                @Html.DisplayFor(modelItem => item.UnitsInStock)
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.UnitPrice)
                             </td>
                             <td>
@@ -173,7 +179,7 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-3">
-                                    @if (!item.Discontinued)
+                                    @if (!item.Discontinued || item.UnitsInStock == 0)
                                     {
 
                                         if (currentCustomer == null)

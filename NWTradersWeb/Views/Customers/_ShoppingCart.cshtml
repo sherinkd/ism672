@@ -51,14 +51,15 @@
                                        new
                                             {// Any
                                              // ting applied
-                                           @class = "btn badge rounded-pill text-bg-success",
-                                           @style = "color:green",
+                                           @class = "btn badge rounded-pill text-bg-success" + ((od.Quantity >= od.Product.UnitsInStock) ? "disabled" : ""),
+                                           @style = "" + ((od.Quantity >= od.Product.UnitsInStock) ? "background: lightgrey" : "color: green"),
                                            @title = "Add one item"
                                        }
                                    )
                                     </div>
                                     <div>
-                                        @Html.DisplayFor(item => od.Quantity)
+                                        @Html.DisplayFor(item => od.Quantity) | 
+                                        @Html.DisplayFor(item => od.Product.UnitsInStock)
                                     </div>
                                     <div>
                                         @Html.ActionLink(
