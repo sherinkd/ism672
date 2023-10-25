@@ -39,10 +39,43 @@ namespace NWTradersWeb.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+
+            if (currentCustomer == null)
+            { return RedirectToAction("Login", "Customers"); }
+
+            if (currentCustomer.myShoppingCart == null)
+            { return RedirectToAction("Index", "Products"); }
+
+            // Capture the order from the Current customer's shopping cart.
+            Order order = currentCustomer.myShoppingCart;
+
+            // Make sure there is a customer ID since we are not allowing edits to this field on the Create Page.
+            order.CustomerID = currentCustomer.CustomerID;
+
+            // Set some defaults for the Order and its dates - Allow the user to change the values in the Create Page.
+            if (order.OrderDate == null)
+                order.OrderDate = System.DateTime.Today;
+
+            if (order.ShippedDate == null)
+                order.ShippedDate = order.OrderDate.Value.AddDays(7);
+
+            if (order.RequiredDate == null)
+                order.RequiredDate = order.OrderDate.Value.AddDays(14);
+
+            order.ShipName = currentCustomer.CompanyName;
+            order.ShipAddress = currentCustomer.Address;
+            order.ShipCity = currentCustomer.City;
+            order.ShipRegion = currentCustomer.Region;
+            order.ShipPostalCode = currentCustomer.PostalCode;
+            order.ShipCountry = currentCustomer.Country;
+
+
             ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CompanyName");
             ViewBag.EmployeeID = new SelectList(db.Employees, "EmployeeID", "LastName");
             ViewBag.ShipVia = new SelectList(db.Shippers, "ShipperID", "CompanyName");
-            return View();
+
+            return View(order);
         }
 
         // POST: Orders/Create
@@ -52,11 +85,44 @@ namespace NWTradersWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "OrderID,CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipVia,Freight,ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry")] Order order)
         {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+
+            if (currentCustomer == null)
+            { RedirectToAction("Login", "Customers"); }
+
+            if (currentCustomer.myShoppingCart == null)
+            { RedirectToAction("Index", "Products"); }
+
+            // Have to add this since the user is not typing in the customer ID.
+            order.CustomerID = currentCustomer.CustomerID;
+            order.OrderDate = System.DateTime.Today;
+
+            // The user has the order details in their shopping cart
+            // Capture that information into the order that needs to be saved.
+            order.Order_Details = currentCustomer.myShoppingCart.Order_Details;
+
+            // Each order detail has a product object, to show information about the product bought.
+            // This product is already in the DB - so we should NOT add it again
+            // - otherwise it creates garbage data by adding duplicate products.
+            // If we dont remove the product before saving,
+            // the DB will think we have a new Product and
+            // add garbage duplicate products to the database.
+            // Note: We are not removing the product ID, just the Product Object.
+            foreach (Order_Detail item in order.Order_Details)
+            {
+                item.Product = null;
+            }
+
             if (ModelState.IsValid)
             {
                 db.Orders.Add(order);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                // After the changes are saved, clear the shopping cart.
+                currentCustomer.myShoppingCart = null;
+
+                return RedirectToAction("Details", "Customers", new { @id = currentCustomer.CustomerID });
+                //return RedirectToAction("Index", "Products");
             }
 
             ViewBag.CustomerID = new SelectList(db.Customers, "CustomerID", "CompanyName", order.CustomerID);
