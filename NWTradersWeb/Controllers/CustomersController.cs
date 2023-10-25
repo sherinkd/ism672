@@ -157,8 +157,16 @@ namespace NWTradersWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CustomerID,CompanyName,ContactName,ContactTitle,Address,City,Region,PostalCode,Country,Phone,Fax")] Customer customer)
         {
+            customer.isCustomerIDNotUnique = true;
             if (ModelState.IsValid)
             {
+
+                if (nwEntities.Customers.Any(c => c.CustomerID == customer.CustomerID)) {
+                    customer.isCustomerIDNotUnique = false;
+                    return View(customer);
+                }
+
+                customer.CustomerID = customer.CustomerID.Trim();
                 nwEntities.Customers.Add(customer);
                 nwEntities.SaveChanges();
                 return RedirectToAction("Index");

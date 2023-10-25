@@ -117,7 +117,7 @@ namespace NWTradersWeb.Controllers
         public ActionResult Edit([Bind(Include = "ProductID,ProductName,SupplierID,CategoryID,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder,ReorderLevel,Discontinued")] Product product)
         {
             if (ModelState.IsValid)
-            {
+            {                
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -149,6 +149,7 @@ namespace NWTradersWeb.Controllers
         {
             Product product = db.Products.Find(id);
             product.Discontinued = true;
+            product.DiscontinuedDate = DateTime.Now;
             db.Entry(product).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");

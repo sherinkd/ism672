@@ -45,6 +45,8 @@ namespace NWTradersWeb.Models
                 .ToList();
         }
 
+
+        public bool isCustomerIDNotUnique;
     }
 
 }

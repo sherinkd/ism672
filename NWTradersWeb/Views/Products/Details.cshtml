@@ -43,11 +43,15 @@
                     <div>@Html.DisplayFor(model => model.Discontinued)</div>
                 </div>
                 <div class="col-md-3 sub-group-label">
-                    <div class="content-header">@Html.DisplayNameFor(model => model.Category.CategoryName)</div>
-                    <div>@Html.DisplayFor(model => model.Category.CategoryName)</div>
+                    <div class="content-header">@Html.DisplayNameFor(model => model.DiscontinuedDate)</div>
+                    <div>@Html.DisplayFor(model => model.DiscontinuedDate)</div>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3 sub-group-label">
+                    <div class="content-header">@Html.DisplayNameFor(model => model.Category.CategoryName)</div>
+                    <div>@Html.DisplayFor(model => model.Category.CategoryName)</div>
+                </div>
                 <div class="col-md-3 sub-group-label">
                     <div class="content-header">@Html.DisplayNameFor(model => model.Supplier.CompanyName)</div>
                     <div>@Html.DisplayFor(model => model.Supplier.CompanyName)</div>
