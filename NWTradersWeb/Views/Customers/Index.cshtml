@@ -46,7 +46,17 @@
     cities.Insert(0, "");
 }
 
-
+<div class="d-flex justify-content-end">
+    <div class="btn rounded-lg">
+        <i class="fa-solid fa-plus fa-lg"></i>
+        @Html.ActionLink("Create New", "Create", new { },
+            new
+            {
+                @class = "text-decoration-none font-sm",
+                @title = "Create New Customer"
+            })
+    </div>
+</div>
 <!--
     Begin Search  Form
     A form is an HTML client-side mechanism
@@ -233,6 +243,7 @@
                     <th>Country</th>
                     <th>Region</th>
                     <th>City</th>
+                    <th class="no-sort"></th>
                 </tr>
             </thead>
             <tbody>
@@ -250,6 +261,26 @@
                         <td>@Html.DisplayFor(modelItem => item.Country)</td>
                         <td>@Html.DisplayFor(modelItem => item.Region)</td>
                         <td>@Html.DisplayFor(modelItem => item.City)</td>
+                        <td>
+
+                            <div class="d-flex gap-3">
+                                <a title="Delete"
+                                   href="@Url.Action("Delete", "Customers", new { id = item.CustomerID })">
+                                    <i class="fa-solid fa-trash-can text-danger"></i>
+                                </a>
+
+
+                                <a title="Edit"
+                                   href="@Url.Action("Edit", "Customers", new { id = item.CustomerID })">
+                                    <i class="fa-solid fa-pencil text-p"></i>
+                                </a>
+
+                                <a title="View Details"
+                                   href="@Url.Action("Details", "Customers", new { id = item.CustomerID })">
+                                    <i class="fa-solid fa-angle-double-right text-s"></i>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -285,13 +316,15 @@
                     scrollCollapse:true,
                     scrollX: false,
                     scrollY: 500,
-
                     paging: true,
                     pageLength: 20,
-
+                    autoWidth: true,
                     searching: true,
                     order: [0, 'asc'],
-
+                    columnDefs: [{
+                        "targets": 'no-sort',
+                        "orderable": false,
+                    }]
                 }
             );
         }

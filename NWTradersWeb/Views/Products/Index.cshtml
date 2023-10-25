@@ -12,8 +12,7 @@
     List<string> suppliers = ProductUtil.AllSuppliers();
     suppliers.Insert(0, "");
 }
-<div class="d-flex justify-content-end">
-    @*@Html.ActionLink("Create New", "Create")*@
+<div class="d-flex justify-content-end">    
     <div class="btn rounded-lg">
         <i class="fa-solid fa-plus fa-lg"></i>
         @Html.ActionLink("Create New", "Create", new { },
@@ -162,32 +161,33 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Discontinued)
                         </td>
-                        <td class="d-flex gap-3">
+                        <td>
+                            <div class="d-flex gap-3">
+                                @if (!item.Discontinued)
+                                {
+                                    <a title="Delete"
+                                       href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a title="Delete" class="text-disabled">
+                                        <i class="fa-solid fa-trash-can" style="color: lightgrey"></i>
+                                    </a>
+                                }
 
-                            @if (!item.Discontinued)
-                            {
-                                <a title="Delete"
-                                   href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
-                                    <i class="fa-solid fa-trash-can text-danger"></i>
+
+                                <a title="Edit"
+                                   href="@Url.Action("Edit", "Products", new { id = item.ProductID })">
+                                    <i class="fa-solid fa-pencil text-p"></i>
                                 </a>
-                            }
-                            else
-                            {
-                                <a title="Delete" class="text-disabled">
-                                    <i class="fa-solid fa-trash-can" style="color: lightgrey"></i>
+
+                                <a title="View Details"
+                                   href="@Url.Action("Details", "Products", new { id = item.ProductID })">
+                                    <i class="fa-solid fa-angle-double-right text-s"></i>
                                 </a>
-                            }
-
-
-                            <a title="Edit"
-                               href="@Url.Action("Edit", "Products", new { id = item.ProductID })">
-                                <i class="fa-solid fa-pencil text-p"></i>
-                            </a>
-
-                            <a title="View Details"
-                               href="@Url.Action("Details", "Products", new { id = item.ProductID })">
-                                <i class="fa-solid fa-angle-double-right text-s"></i>
-                            </a>
+                            </div>                            
                         </td>
                     </tr>
                 }
