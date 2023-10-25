@@ -4,6 +4,8 @@
 
 @{
     ViewBag.Title = "Details";
+
+    List<BestSellingProduct> BestSellingProducts = Model.BestSellingProducts(5);
 }
 
 <div>
@@ -26,7 +28,14 @@
 
                 <div class="card-body">
                     <div class="py-2 text-lg-center">
-                       
+                        <div>Total Orders Placed# @Model.Orders.Count() </div>
+                        <div>
+                            Territories: @foreach (Territory t in Model.Territories.Distinct())
+                            {
+                                @Html.DisplayFor(item => t.Region.RegionDescription)
+                                
+                                        }
+                        </div>
                     </div>
                 </div>
 
@@ -36,14 +45,30 @@
 
             </div>
 
-            <!-- Orders information -->
+            
             <div class="card rounded-2 mx-2">
                 <div class="card-header h5 py-4" style="background-color: beige">
                     Best Selling Products
                 </div>
 
                 <div class="card-body ">
-                   
+                    <table class="table table-hover small">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Total Sales# </th>
+                        </tr>
+                        @foreach (BestSellingProduct product in BestSellingProducts)
+                        {
+                            <tr class="py-3">
+                                <td>
+                                    @product.ProductName
+                                </td>
+                                <td>
+                                    @product.NumberOfSales
+                                </td>
+                            </tr>
+                        }
+                    </table>
                 </div>
 
                 <div class="card-footer text-center py-4 " style="background-color: beige">

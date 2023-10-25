@@ -149,6 +149,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\clsCategory.cs" />
     <Compile Include="Models\clsCustomer.cs" />
+    <Compile Include="Models\clsEmployee.cs" />
     <Compile Include="Models\clsNWTradersUtilities.cs" />
     <Compile Include="Models\clsOrderDetails.cs" />
     <Compile Include="Models\clsOrders.cs" />
