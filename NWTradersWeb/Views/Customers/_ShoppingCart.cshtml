@@ -8,8 +8,8 @@
 }
 
 <!-- Shopping Cart (CurrentOrder) for the customer.-->
-<div class="d-flex flex-column gap-0 shopping-cart">
-    <div class="py-2 text-center primary cart-radius">
+<div class="d-flex flex-column gap-0 shopping-cart w3-hover-shadow shadow">
+    <div class="py-2 text-center primary cart-radius sticky-top">
         <i class="fas fa-shopping-cart fa-lg"> </i>
         Your Cart
     </div>
@@ -19,55 +19,65 @@
         }
     else
             {
-            <div class="d-flex flex-column gap-1">
+            <div class="d-flex flex-column gap-3 m-2">
                 @foreach (Order_Detail od in currentCustomer.myShoppingCart.Order_Details)
                 {
                     <div class="d-flex flex-column gap-0">
-                        <div class="sub-header">
+                        <div class="sub-header d-flex flex-row justify-content-between">
                             @Html.DisplayFor(item => od.Product.ProductName)
+
+                            <a title="Delete"
+                               class="px-3"
+                               href="@Url.Action("Delete", "Products")">
+                                <i class="fa-solid fa-trash-can text-danger"></i>
+                            </a>
                         </div>
-                        <div class="sub-body">
+                        <div class="sub-body p-2">
                             <div class="d-flex flex-row">
-                                <div>
-                                    @Html.ActionLink(
-                                   "+", // the link displayed
-                                   "AddToCart", // the function to call
-                                   "Customers", // the name of the controller
-                                   new { @ProductID = od.ProductID }, // Any paramters sent to the function.
-                                   new
-                                        {// Any formatting applied
-                                       @class = "btn badge rounded-pill text-bg-success",
-                                       @style = "color:green",
-                                       @title = "Add one item"
-                                   }
-                               )
-                                </div>
-                                <div>
-                                    Quantity: @Html.DisplayFor(item => od.Quantity)
-                                </div>
-                                <div>
-                                    @Html.ActionLink(
-                                   "-", // the link displayed
-                                   "RemoveFromCart", // the function to call
-                                   "Customers", // the name of the controller
-                                   new { @ProductID = od.ProductID }, // Any paramters sent to the function.
-                                   new
-                                        { // Any formatting applied
-                                       @class = "btn badge rounded-pill text-bg-danger",
-                                       @style = "color:firebrick",
-                                       @title = "Remove one item"
-                                   }
-                               )
+                                <div>Quantity:</div>
+                                <div class="d-flex flex-row gap-2 mx-1">
+                                    <div>
+                                        @Html.ActionLink(
+                                       "+", // the link displayed
+                                       "AddToCart", // the function to call
+                                       "Customers", // the name of the controller
+                                       new { @ProductID = od.ProductID }, // Any paramters sent to the function.
+                                       new
+                                            {// Any
+                                             // ting applied
+                                           @class = "btn badge rounded-pill text-bg-success",
+                                           @style = "color:green",
+                                           @title = "Add one item"
+                                       }
+                                   )
+                                    </div>
+                                    <div>
+                                        @Html.DisplayFor(item => od.Quantity)
+                                    </div>
+                                    <div>
+                                        @Html.ActionLink(
+                                       "-", // the link displayed
+                                       "RemoveFromCart", // the function to call
+                                       "Customers", // the name of the controller
+                                       new { @ProductID = od.ProductID }, // Any paramters sent to the function.
+                                       new
+                                            { // Any formatting applied
+                                           @class = "btn badge rounded-pill text-bg-danger",
+                                           @style = "color:firebrick",
+                                           @title = "Remove one item"
+                                       }
+                                   )
+                                    </div>
                                 </div>
                             </div>
-                            <div>Sub-Total: @Html.DisplayFor(item => od.Total)</div>
+                            <div>Sub-Total:    $@string.Format("{0:C}", @Html.DisplayFor(item => od.Total))</div>
                         </div>
                     </div>
                 }
             </div>
             }
 
-<div class="d-flex p-2 justify-content-end">
+<div class="d-flex p-2 justify-content-end sticky-bottom checkout">
     @if (hasOrderDetails)
     {
         @Html.ActionLink("Check Out", "Create", "Orders",
@@ -94,7 +104,8 @@
 
 <style>
     .shopping-cart {
-        border: 1px solid var(--secondary); 
+        max-height: 650px;
+        overflow: auto;
         border-radius: 4px;
     }
     .cart-radius {
@@ -104,6 +115,11 @@
     .empty-cart {
         border-top: 1px solid var(--secondary);
         font-size: small;
+    }
+
+    .checkout {
+        border-top: 1px solid lightgrey;
+        background: white;
     }
 </style>
 
