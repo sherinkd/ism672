@@ -6,6 +6,8 @@
     ViewBag.Title = "Details";
 
     List<BestSellingProduct> BestSellingProducts = Model.BestSellingProducts(5);
+
+    List<BestCustomer> BestCustomers = Model.BestCustomers(5);
 }
 
 <div>
@@ -85,7 +87,23 @@
                 </div>
 
                 <div class="card-body">
-                    
+                    <table class="table table-hover small">
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Total Orders# </th>
+                        </tr>
+                        @foreach (BestCustomer customer in BestCustomers)
+                        {
+                            <tr class="py-3">
+                                <td>
+                                    @customer.CompanyName
+                                </td>
+                                <td>
+                                    @customer.NumberOfOrders
+                                </td>
+                            </tr>
+                        }
+                    </table>
                 </div>
 
                 <div class="card-footer text-center py-4" style="background-color:beige">

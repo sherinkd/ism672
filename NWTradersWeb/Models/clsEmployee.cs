@@ -17,11 +17,27 @@ namespace NWTradersWeb.Models
                 .Take(limit)
                 .ToList();
         }
+
+        public List<BestCustomer> BestCustomers(int limit)
+        {
+            return Orders
+                .Select(s => s.Customer)
+                .GroupBy(s => s.CompanyName, s => s.CustomerID, (key, g) => new BestCustomer { CompanyName = key, NumberOfOrders = g.ToList().Count() })
+                .OrderByDescending(s => s.NumberOfOrders)
+                .Take(limit)
+                .ToList();
+        }
     }
 
     public class BestSellingProduct
     {
         public string ProductName { get; set; }
         public int NumberOfSales { get; set; }
+    }
+
+    public class BestCustomer
+    {
+        public string CompanyName { get; set; }
+        public int NumberOfOrders { get; set; }
     }
 }
