@@ -148,8 +148,16 @@
 
     </div>
 
-    <div class="navbar container mt-2 rounded-2 d-flex flex-row-reverse">
-        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-dark" })
+    <div class="d-flex justify-content-end align-items-center gap-3 p-2 action-panel w3-hover-shadow sticky-bottom mt-3">
+        @Html.ActionLink("Back to List", "Index", null, new
+        {
+            @class = "btn btn-light"
+         })
+        @Html.ActionLink("Edit", "Edit", new { id = Model.CustomerID }, new
+    {
+        @class = "btn btn-primary"
+    })
+
     </div>
 
 </div>
