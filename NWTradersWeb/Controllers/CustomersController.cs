@@ -166,7 +166,7 @@ namespace NWTradersWeb.Controllers
                     return View(customer);
                 }
 
-                customer.CustomerID = customer.CustomerID.Trim();
+                customer.CustomerID = customer.CustomerID.TrimEnd().TrimStart();
                 nwEntities.Customers.Add(customer);
                 nwEntities.SaveChanges();
                 return RedirectToAction("Index");

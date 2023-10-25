@@ -179,7 +179,7 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-3">
-                                    @if (!item.Discontinued || item.UnitsInStock == 0)
+                                    @if (!item.Discontinued && item.UnitsInStock > 0)
                                     {
 
                                         if (currentCustomer == null)
