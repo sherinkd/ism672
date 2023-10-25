@@ -9,3 +9,7 @@
     border-radius: 4px;
     background: white;
 }
+
+.field-validation-error {
+    font-size: 12px !important;
+}

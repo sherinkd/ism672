@@ -7,6 +7,7 @@ using System.ComponentModel;
 
 namespace NWTradersWeb.Models
 {
+    [MetadataType(typeof(ProductMetadata))]
     public partial class Product
     {
         public List<string> GetSoldRegions() {
