@@ -351,6 +351,17 @@ namespace NWTradersWeb.Controllers
             return RedirectToAction("Index", "Products");
         }
 
+        public ActionResult RemoveAllFromCart()
+        {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null)
+                return RedirectToAction("Login", "Customers");
+
+            bool success = currentCustomer.RemoveAllFromCart();
+
+            return RedirectToAction("Index", "Products");
+        }
+
         public ActionResult RemoveFromCart(int? ProductID = null)
         {
 

@@ -12,6 +12,12 @@
     <div class="py-2 text-center primary cart-radius sticky-top">
         <i class="fas fa-shopping-cart fa-lg"> </i>
         Your Cart
+
+        <a title="Clear"
+           class="px-3"
+           href="@Url.Action("RemoveAllFromCart", "Customers")">
+            <i class="fa-solid fa-remove"></i>
+        </a>
     </div>
     @if (!hasOrderDetails)
         {
@@ -24,7 +30,7 @@
                 {
                     <div class="d-flex flex-column gap-0">
                         <div class="sub-header d-flex flex-row justify-content-between">
-                            @Html.DisplayFor(item => od.Product.ProductName)
+                            <span class="text-ecllipsis">@Html.DisplayFor(item => od.Product.ProductName)</span>
 
                             <a title="Delete"
                                class="px-3"
@@ -108,6 +114,12 @@
         overflow: auto;
         border-radius: 4px;
     }
+    .text-ecllipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .cart-radius {
         border-radius: 4px 4px 0 0;
     }

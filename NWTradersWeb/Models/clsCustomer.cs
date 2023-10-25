@@ -68,6 +68,11 @@ namespace NWTradersWeb.Models
             return this.myShoppingCart.RemoveFromOrder(theProductToRemove, howMany);
         }
 
+        public Boolean RemoveAllFromCart()
+        {
+            return myShoppingCart.RemoveAllFromCart();
+        }
+
         public Boolean RemoveProductFromCart(Product theProductToRemove)
         {
             return this.myShoppingCart.RemoveProductFromOrder(theProductToRemove);

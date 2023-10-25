@@ -88,6 +88,12 @@ namespace NWTradersWeb.Models
 
         }
 
+        public bool RemoveAllFromCart()
+        {
+            this.Order_Details.Clear();
+            return true;
+        }
+
         public bool RemoveFromOrder(Product theProductToRemove, short QuantityToRemove = 1)
         {
             Order_Detail TheOneWiththeProductToAdd = this.
