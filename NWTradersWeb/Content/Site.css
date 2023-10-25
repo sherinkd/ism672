@@ -13,3 +13,7 @@
 .field-validation-error {
     font-size: 12px !important;
 }
+
+.border-1px {
+    border: 1px solid red;
+}

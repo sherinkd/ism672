@@ -175,6 +175,21 @@
                                 <div class="d-flex gap-3">
                                     @if (!item.Discontinued)
                                     {
+
+                                        if (currentCustomer == null)
+                                        {
+                                            <a title="Add To Cart">
+                                                <i class="fa-solid fa-cart-shopping" style="color: lightgrey"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a title="Add To Cart"
+                                               href="@Url.Action("AddToCart", "Customers", new { id = item.ProductID })">
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </a>
+                                        }
+
                                         <a title="Delete"
                                            href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
                                             <i class="fa-solid fa-trash-can text-danger"></i>
@@ -182,6 +197,10 @@
                                     }
                                     else
                                     {
+                                        <a title="Add To Cart">
+                                            <i class="fa-solid fa-cart-shopping" style="color: lightgrey"></i>
+                                        </a>
+
                                         <a title="Delete" class="text-disabled">
                                             <i class="fa-solid fa-trash-can" style="color: lightgrey"></i>
                                         </a>
@@ -209,7 +228,7 @@
             {
                 <table class="shadow rounded-2 w-100 sticky-top">
                     <tr>
-                        <td class="h5 py-2 pt-4 text-center" style="background-color: lightsteelblue">
+                        <td class="h5 py-2 pt-4 text-center primary">
                             <i class="fa-solid fa-cart-shopping fa-lg"> </i> &nbsp;
                             Your Cart
                         </td>
