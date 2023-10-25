@@ -4,93 +4,59 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<div class="secondary font-lite font-lg rounded-2 p-2 sticky-top">
+    <span>Delete Product: @Html.DisplayFor(model => model.ProductName)</span>
+</div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
+<div class="text-danger font-lg m-2 mb-3 mt-3">Are you sure you want to delete this?</div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.QuantityPerUnit)
-        </dt>
+<div class="container">
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.QuantityPerUnit)</div>
+        <div>@Html.DisplayFor(model => model.QuantityPerUnit)</div>
+    </div>
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.UnitPrice)</div>
+        <div>@Html.DisplayFor(model => model.UnitPrice)</div>
+    </div>
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.UnitsInStock)</div>
+        <div> @Html.DisplayFor(model => model.UnitsInStock)</div>
+    </div>
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.UnitsOnOrder)</div>
+        <div>@Html.DisplayFor(model => model.UnitsOnOrder)</div>
+    </div>
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.ReorderLevel)</div>
+        <div>@Html.DisplayFor(model => model.ReorderLevel)</div>
+    </div>
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.Discontinued)</div>
+        <div>@Html.DisplayFor(model => model.Discontinued)</div>
+    </div>
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.Category.CategoryName)</div>
+        <div>@Html.DisplayFor(model => model.Category.CategoryName)</div>
+    </div>
+    <div class="col-md-3 sub-group-label">
+        <div class="content-header">@Html.DisplayNameFor(model => model.Supplier.CompanyName)</div>
+        <div>@Html.DisplayFor(model => model.Supplier.CompanyName)</div>
+    </div>
+</div>
 
-        <dd>
-            @Html.DisplayFor(model => model.QuantityPerUnit)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UnitPrice)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UnitPrice)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UnitsInStock)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UnitsInStock)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UnitsOnOrder)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UnitsOnOrder)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReorderLevel)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReorderLevel)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Discontinued)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Discontinued)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Supplier.CompanyName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Supplier.CompanyName)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+        <div class="d-flex justify-content-end align-items-center gap-3 p-2 action-panel w3-hover-shadow sticky-bottom">
+            @Html.ActionLink("Back to List", "Index", new { }, new
+       {
+           @class = "btn btn-light"
+       })
+            <input type="submit" value="Delete" class="btn btn-primary" />
         </div>
     }
-</div>
+
