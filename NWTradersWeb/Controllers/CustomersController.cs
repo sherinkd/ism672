@@ -346,6 +346,8 @@ namespace NWTradersWeb.Controllers
             if (productToRemove == null)
                 return RedirectToAction("Index", "Products");
 
+            currentCustomer.RemoveProductFromCart(productToRemove);
+
             return RedirectToAction("Index", "Products");
         }
 
@@ -364,7 +366,7 @@ namespace NWTradersWeb.Controllers
             if (productToRemove == null)
                 return RedirectToAction("Index", "Products");
 
-            bool success = currentCustomer.RemoveProductFromCart(productToRemove);
+            bool success = currentCustomer.RemoveProductFromCart(productToRemove , 1);
 
             return RedirectToAction("Index", "Products");
 

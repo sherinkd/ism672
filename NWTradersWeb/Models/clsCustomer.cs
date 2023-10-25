@@ -67,6 +67,11 @@ namespace NWTradersWeb.Models
         {
             return this.myShoppingCart.RemoveFromOrder(theProductToRemove, howMany);
         }
+
+        public Boolean RemoveProductFromCart(Product theProductToRemove)
+        {
+            return this.myShoppingCart.RemoveProductFromOrder(theProductToRemove);
+        }
     }
 
 }

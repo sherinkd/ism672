@@ -102,10 +102,14 @@ namespace NWTradersWeb.Models
                 this.Order_Details = this.Order_Details.Where(od => od.ProductID != theProductToRemove.ProductID).ToList();
             }
 
-            return false;
+            return true;
         }
 
-
+        public bool RemoveProductFromOrder(Product theProductToRemove)
+        {
+            this.Order_Details = this.Order_Details.Where(od => od.ProductID != theProductToRemove.ProductID).ToList();
+            return true;
+        }
     }
 
 
