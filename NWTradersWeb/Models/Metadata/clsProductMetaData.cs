@@ -57,6 +57,10 @@ namespace NWTradersWeb.Models
         [Display(Name = "Discontinued?")]
         [DefaultValue(false)]
         public bool Discontinued { get; set; }
+
+
+        [Display(Name = "Discontinued Date ")]
+        public Nullable<DateTime> DiscontinuedDate;
     }
 
 }

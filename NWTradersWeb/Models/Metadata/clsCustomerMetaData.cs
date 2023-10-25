@@ -60,8 +60,5 @@ namespace NWTradersWeb.Models
         [StringLength(24, MinimumLength = 4, ErrorMessage = "Fax must have atleast 8 and upto 24 characters")]
         [DataType(DataType.PhoneNumber)]
         public string Fax;
-
-        [Display(Name = "Discontinued Date ")]
-        public Nullable<DateTime> DiscontinuedDate;
     }
 }
