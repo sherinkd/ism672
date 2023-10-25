@@ -163,16 +163,21 @@
                             @Html.DisplayFor(modelItem => item.Discontinued)
                         </td>
                         <td class="d-flex gap-3">
-                            @*@Html.ActionLink("Details", "Details", new { id = item.ProductID })
-        @Html.ActionLink("Edit", "Edit", new { id = item.ProductID })
-        @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })*@
 
+                            @if (!item.Discontinued)
+                            {
+                                <a title="Delete"
+                                   href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
+                                    <i class="fa-solid fa-trash-can text-danger"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a title="Delete" class="text-disabled">
+                                    <i class="fa-solid fa-trash-can" style="color: lightgrey"></i>
+                                </a>
+                            }
 
-
-                            <a title="Delete"
-                               href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
-                                <i class="fa-solid fa-trash-can text-danger"></i>
-                            </a>
 
                             <a title="Edit"
                                href="@Url.Action("Edit", "Products", new { id = item.ProductID })">

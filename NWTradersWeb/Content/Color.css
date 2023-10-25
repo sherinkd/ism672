@@ -21,3 +21,8 @@
 .text-s {
     color: var(--secondary) !important;
 }
+
+.text-disabled {
+    color: lightgray !important;
+    opacity: 0.7;
+}
