@@ -32,6 +32,15 @@ namespace NWTradersWeb.Models
                 ToList();
         }
 
+        public static List<string> AllEmployees()
+        {
+            return nwEntities.
+                 Employees.
+                 Select(c => c.FirstName + ", " + c.LastName).
+                 Distinct().
+                 ToList();
+        }
+
         public static List<string> AllCompanyNames()
         {
             return nwEntities.

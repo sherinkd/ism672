@@ -1,25 +1,21 @@
 ﻿@using NWTradersWeb.Models;
 
-@model Customer
+@model Employee
 @{
 
     // Clear the session so that current users may be logged out.
     Session.Clear();
 
     ViewBag.Title = "North Wind Traders User Login.";
-    SelectList allCompanies = new SelectList(NWTradersUtilities.AllCompanyNames());
-
-    string CompanyNameMessage = ViewBag.CompanyNameMessage as string;
-    string CustomerIDMessage = ViewBag.CustomerIDMessage as string;
-
-    string CompanyName = ViewBag.CompanyName as string;
+    SelectList allEmployees = new SelectList(NWTradersUtilities.AllEmployees());
+    string EmployeeName = ViewBag.EmployeeName as string;
+    string EmployeeIDMessage = ViewBag.EmployeeIDMessage as string;
 
 }
 
 
 <div class="mt-5" style="min-height:600px">
     <table class="container" style="width:80%">
-
         <tr class="">
             <td class="">
                 <h2 class="text-center">
@@ -38,7 +34,7 @@
                     <div class="card my-5" style="min-height:450px">
 
                         <div class="card-header shadow-sm text-center py-4" style="background-color: palegoldenrod">
-                            <h4> Please select your Company Name and enter your password to continue.</h4>
+                            <h4> Please enter your Employee ID and Password to continue.</h4>
                         </div>
 
                         <!--Card content-->
@@ -47,18 +43,18 @@
                             <!-- User Name-->
                             <div>
                                 <div class="my-4">
-                                    @Html.DropDownList("CompanyName", allCompanies as SelectList,
-                                            new
-                                                 {
-                                                @class = "w3-select rounded-2",
-                                                @type = "submit",
-                                                onchange = "this.form.submit();"
-                                            })
+                                    @Html.TextBoxFor(model => model.EmployeeID,
+                                    new
+                                        {
+                                       @class = "form-control ",
+                                       @style = "font-size: small",
+                                       placeholder = "Enter EmployeeID"
+                                        })
+
+                                    @Html.ValidationMessageFor(model => model.Password, "",
+                                        new { @class = "text-danger font-sm" })
                                 </div>
-                                @if (!string.IsNullOrEmpty(CompanyNameMessage))
-                                {
-                                    <div class="alert-danger"> @CompanyNameMessage</div>
-                                }
+                                <div class="alert-danger"></div>
                             </div>
 
 
@@ -67,22 +63,21 @@
                                 <div class="input-group my-4">
 
 
-                                    @Html.PasswordFor(model => model.CustomerID,
+                                    @Html.PasswordFor(model => model.Password,
                                    new
                                         {
                                        @class = "form-control ",
                                        @style = "font-size: small",
-                                       placeholder = "Enter Password (Customer ID)"
+                                       placeholder = "Enter Password"
                                         })
 
-                                    @Html.ValidationMessageFor(model => model.CustomerID, "",
+                                    @Html.ValidationMessageFor(model => model.Password, "",
                                         new { @class = "text-danger font-sm" })
                                 </div>
-                                @if (!string.IsNullOrEmpty(CustomerIDMessage))
+                                @if (!string.IsNullOrEmpty(EmployeeIDMessage))
                                 {
-                                    <div class="alert-danger">@CustomerIDMessage</div>
+                                    <div class="alert-danger">@EmployeeIDMessage</div>
                                 }
-
                             </div>
                         </div>
 

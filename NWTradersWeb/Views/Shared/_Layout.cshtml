@@ -41,6 +41,7 @@
 <body class="container" style="">
     @{
         Customer currentCustomer = Session["currentCustomer"] as Customer;
+        Employee currentEmployee = Session["currentEmployee"] as Employee;
     }
     <!-- Header: The common header will appear on all pages.-->
     <div class="container shadow rounded-3 my-2 primary">
@@ -50,17 +51,34 @@
                 <div class="h2 nav-item">Northwind Traders </div>
 
                 <div class="nav-item btn rounded-lg w3-hover-shadow">
-                    @if (currentCustomer == null)
+                    @if (currentCustomer == null && currentEmployee == null)
                     {
-                        <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                        @Html.ActionLink("NW Login", "Login", "Customers", new { },
-                             new
-                             {
-                                 @class = "text-decoration-none",
-                                 @title = "Login to view your information"
-                             })
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Login
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Customer", "Login", "Customers", new { },
+                                    new
+                                    {
+                                    @class = "text-decoration-none dropdown-item",
+                                    @title = "Login to view your information"
+                                    })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Employee", "Login", "Employees", new { },
+                                     new
+                                     {
+                                         @class = "text-decoration-none dropdown-item",
+                                         @title = "Login to view your information"
+                                     })
+                                </li>
+                            </ul>
+                        </div>
                     }
-                    else
+
+                    @if (currentCustomer != null)
                     {
                         <span>
                             @Html.ActionLink(currentCustomer.CompanyName,
@@ -75,12 +93,35 @@
                         </span>
 
                         @Html.ActionLink("Logout", "Login", "Customers",
-        new { },
-        new
-             {
-            @class = "btn btn-secondary btn-sm small"
-        }
-        )
+                        new { },
+                        new
+                             {
+                            @class = "btn btn-secondary btn-sm small"
+                        }
+                        )
+                    }
+
+                    @if (currentEmployee != null)
+                    {
+                        <span>
+                            @Html.ActionLink(currentEmployee.FirstName + ", " + currentEmployee.LastName,
+                            "Details", "Employees",
+                            new { @id = currentEmployee.EmployeeID },
+                            new
+                                 {
+                                @class = "text-decoration-none",
+                                @title = "Login to view your information"
+                                 }
+                            )
+                        </span>
+
+                        @Html.ActionLink("Logout", "Login", "Employees",
+                        new { },
+                        new
+                             {
+                            @class = "btn btn-secondary btn-sm small"
+                        }
+                        )
                     }
                 </div>
             </div>
