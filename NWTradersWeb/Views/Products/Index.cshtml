@@ -135,9 +135,12 @@
                     </th>
                     <th>
                         Unit Price
-                    </th>                    
+                    </th>
                     <th class="no-sort">
                         @Html.DisplayNameFor(model => model.Discontinued)
+                    </th>
+                    <th class="no-sort">
+                        @Html.DisplayNameFor(model => model.DiscontinuedDate)
                     </th>
                     <th class="no-sort"></th>
                 </tr>
@@ -157,9 +160,12 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.UnitPrice)
-                        </td>                        
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Discontinued)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DiscontinuedDate)
                         </td>
                         <td>
                             <div class="d-flex gap-3">
@@ -187,7 +193,7 @@
                                    href="@Url.Action("Details", "Products", new { id = item.ProductID })">
                                     <i class="fa-solid fa-angle-double-right text-s"></i>
                                 </a>
-                            </div>                            
+                            </div>
                         </td>
                     </tr>
                 }

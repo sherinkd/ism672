@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Rahul\source\repos\NWTradersWeb\NWTradersWeb\Models\NWTradersEF.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\sheri\Documents\ISM-672\RSNWTradersWeb v0\RSNWTradersWeb v0\NWTradersWeb\NWTradersWeb\Models\NWTradersEF.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

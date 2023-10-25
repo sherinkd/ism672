@@ -118,6 +118,10 @@ namespace NWTradersWeb.Controllers
         {
             if (ModelState.IsValid)
             {                
+                if (product.Discontinued && product.DiscontinuedDate == null)
+                {
+                    product.DiscontinuedDate = DateTime.Now;
+                }
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
