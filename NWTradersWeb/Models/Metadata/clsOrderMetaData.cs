@@ -64,7 +64,7 @@ namespace NWTradersWeb.Models
         [Required(ErrorMessage = "The Ship PostalCode is required")]
         [Display(Name = "Ship PostalCode")]
         [DataType(DataType.PostalCode)]
-        [StringLength(10, MinimumLength = 5, ErrorMessage = "Ship PostalCode must have atleast 5 and upto 10 characters")]
+        [StringLength(10, MinimumLength = 3, ErrorMessage = "Ship PostalCode must have atleast 5 and upto 10 characters")]
         public string ShipPostalCode { get; set; }
 
         [Required(ErrorMessage = "The Ship Country is required")]
