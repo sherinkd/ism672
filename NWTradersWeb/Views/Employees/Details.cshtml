@@ -1,1 +1,73 @@
-﻿
+﻿@using NWTradersWeb.Models;
+
+@model Employee
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div>
+    <div class="rounded-4 shadow my-2 py-2 alert-secondary w3-bottombar">
+        <h4 class="text-center ">
+            Welcome @Model.FirstName, @Model.LastName
+        </h4>
+    </div>
+
+    <div class="container mt-5">
+
+        <div class="card-group mx-5">
+
+           
+            <div class="card rounded-2 mx-2">
+
+                <div class="card-header h5 py-4" style="background-color: beige">
+                    Sales
+                </div>
+
+                <div class="card-body">
+                    <div class="py-2 text-lg-center">
+                       
+                    </div>
+                </div>
+
+                <div class="card-footer text-center py-4" style="background-color: beige; font-size:small">
+                    &nbsp;
+                </div>
+
+            </div>
+
+            <!-- Orders information -->
+            <div class="card rounded-2 mx-2">
+                <div class="card-header h5 py-4" style="background-color: beige">
+                    Best Selling Products
+                </div>
+
+                <div class="card-body ">
+                   
+                </div>
+
+                <div class="card-footer text-center py-4 " style="background-color: beige">
+                    &nbsp;
+                </div>
+
+            </div>
+
+          
+            <div class="card rounded-2 mx-2">
+
+                <div class="card-header h5 py-4" style="background-color: beige">
+                    Best Customers
+                </div>
+
+                <div class="card-body">
+                    
+                </div>
+
+                <div class="card-footer text-center py-4" style="background-color:beige">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
