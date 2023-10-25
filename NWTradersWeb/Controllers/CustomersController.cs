@@ -296,6 +296,66 @@ namespace NWTradersWeb.Controllers
                 return RedirectToAction("Details", "Customers", new { @id = currentCustomer.CustomerID });
         }
 
+        #region Shopping Cart functions
+
+        public ActionResult ShoppingCart(string customerId)
+        {
+            if (customerId == null)
+            { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+
+            Customer theCustomer = nwEntities.Customers.Find(customerId);
+
+            if (theCustomer == null) { return HttpNotFound(); }
+
+            return PartialView("_ShoppingCart", theCustomer);
+        }
+
+        public ActionResult AddToCart(int? ProductID = null)
+        {
+
+            if (ProductID == null)
+                return RedirectToAction("Index", "Products");
+
+            // If the current customer is Null - the customer is not logged in - 
+            // Redirect them to the Login page for customer.
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null)
+                return RedirectToAction("Login", "Customers");
+
+            // Get the Product
+            Product productToAdd = nwEntities.Products.Find(ProductID);
+            if (productToAdd == null)
+                return RedirectToAction("Index", "Products");
+
+            bool success = currentCustomer.AddProductToCart(productToAdd);
+
+            return RedirectToAction("Index", "Products");
+
+        }
+
+        public ActionResult RemoveFromCart(int? ProductID = null)
+        {
+
+            if (ProductID == null)
+                return RedirectToAction("Index", "Products");
+
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null)
+                return RedirectToAction("Login", "Customers");
+
+            // Get the Product
+            Product productToRemove = nwEntities.Products.Find(ProductID);
+            if (productToRemove == null)
+                return RedirectToAction("Index", "Products");
+
+            bool success = currentCustomer.RemoveProductFromCart(productToRemove);
+
+            return RedirectToAction("Index", "Products");
+
+        }
+
+        #endregion
+
 
         protected override void Dispose(bool disposing)
         {

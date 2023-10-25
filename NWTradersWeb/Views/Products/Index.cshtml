@@ -1,7 +1,7 @@
 ﻿@using NWTradersWeb.Utilities
 
 @model IEnumerable<NWTradersWeb.Models.Product>
-
+@using NWTradersWeb.Models;
 
 @{
     ViewBag.Title = "Index";
@@ -11,8 +11,10 @@
 
     List<string> suppliers = ProductUtil.AllSuppliers();
     suppliers.Insert(0, "");
+
+    Customer currentCustomer = Session["currentCustomer"] as Customer;
 }
-<div class="d-flex justify-content-end">    
+<div class="d-flex justify-content-end">
     <div class="btn rounded-lg">
         <i class="fa-solid fa-plus fa-lg"></i>
         @Html.ActionLink("Create New", "Create", new { },
@@ -118,109 +120,145 @@
     </div>
 }
 
-    <div class="container shadow-sm rounded-2 p-4 mt-2">
-        <table class="table table-hover"
-               id="productTable"
-               style="font-size:small; width:100%">
-            <thead>
-                <tr>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Category
-                    </th>
-                    <th>
-                        Supplier
-                    </th>
-                    <th>
-                        Unit Price
-                    </th>
-                    <th class="no-sort">
-                        @Html.DisplayNameFor(model => model.Discontinued)
-                    </th>
-                    <th class="no-sort">
-                        @Html.DisplayNameFor(model => model.DiscontinuedDate)
-                    </th>
-                    <th class="no-sort"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+<div class="container shadow-sm rounded-2 p-4 mt-2">
+    <div class="row">
+        <div class="col-9">
+            <table class="table table-hover"
+                   id="productTable"
+                   style="font-size:small; width:100%">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProductName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UnitPrice)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Discontinued)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DiscontinuedDate)
-                        </td>
-                        <td>
-                            <div class="d-flex gap-3">
-                                @if (!item.Discontinued)
-                                {
-                                    <a title="Delete"
-                                       href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
-                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Supplier
+                        </th>
+                        <th>
+                            Unit Price
+                        </th>
+                        <th class="no-sort">
+                            @Html.DisplayNameFor(model => model.Discontinued)
+                        </th>
+                        <th class="no-sort">
+                            @Html.DisplayNameFor(model => model.DiscontinuedDate)
+                        </th>
+                        <th class="no-sort"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UnitPrice)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Discontinued)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DiscontinuedDate)
+                            </td>
+                            <td>
+                                <div class="d-flex gap-3">
+                                    @if (!item.Discontinued)
+                                    {
+                                        <a title="Delete"
+                                           href="@Url.Action("Delete", "Products", new { id = item.ProductID })">
+                                            <i class="fa-solid fa-trash-can text-danger"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a title="Delete" class="text-disabled">
+                                            <i class="fa-solid fa-trash-can" style="color: lightgrey"></i>
+                                        </a>
+                                    }
+
+
+                                    <a title="Edit"
+                                       href="@Url.Action("Edit", "Products", new { id = item.ProductID })">
+                                        <i class="fa-solid fa-pencil text-p"></i>
                                     </a>
-                                }
-                                else
-                                {
-                                    <a title="Delete" class="text-disabled">
-                                        <i class="fa-solid fa-trash-can" style="color: lightgrey"></i>
+
+                                    <a title="View Details"
+                                       href="@Url.Action("Details", "Products", new { id = item.ProductID })">
+                                        <i class="fa-solid fa-angle-double-right text-s"></i>
                                     </a>
-                                }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-3">
+            @if (currentCustomer == null)
+            {
+                <table class="shadow rounded-2 w-100 sticky-top">
+                    <tr>
+                        <td class="h5 py-2 pt-4 text-center" style="background-color: lightsteelblue">
+                            <i class="fa-solid fa-cart-shopping fa-lg"> </i> &nbsp;
+                            Your Cart
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="py-4 text-center">
+                            <div>Please Log-In to add items to your shopping cart</div>
 
-
-                                <a title="Edit"
-                                   href="@Url.Action("Edit", "Products", new { id = item.ProductID })">
-                                    <i class="fa-solid fa-pencil text-p"></i>
-                                </a>
-
-                                <a title="View Details"
-                                   href="@Url.Action("Details", "Products", new { id = item.ProductID })">
-                                    <i class="fa-solid fa-angle-double-right text-s"></i>
-                                </a>
+                            <div class=" btn btn-sm rounded-lg w3-hover-shadow">
+                                <i class="fa-solid fa-right-from-bracket fa-2x"></i> &nbsp;
+                                @Html.ActionLink("Login", "Login", "Customers", new { },
+                                new { @class = "btn text-decoration-none" })
                             </div>
                         </td>
                     </tr>
-                }
-            </tbody>
-        </table>
-
+                </table>
+            }
+            else
+            {
+                <!-- Call an Action from the Controller.-->
+                @Html.Action(
+                        "ShoppingCart", // Name of the Function
+                        "Customers", // Name of the Controller.
+                        new { currentCustomer.CustomerID }// Parameters passed.
+                    )
+            }
+        </div>        
     </div>
+</div>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            $('#productTable').DataTable({
-                scrollCollapse: true,
-                scrollX: false,
-                scrollY: 500,
-                paging: true,
-                pageLength: 20,
-                searching: true,
-                order: [0, 'asc'],
-                autoWidth: true,
-                columnDefs: [{
-                    "targets": 'no-sort',
-                    "orderable": false,
-                }]
-            });
+        $('#productTable').DataTable({
+            scrollCollapse: true,
+            scrollX: false,
+            scrollY: 500,
+            paging: true,
+            pageLength: 20,
+            searching: true,
+            order: [0, 'asc'],
+            autoWidth: true,
+            columnDefs: [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }]
         });
+    });
 
 
-    </script>
+</script>

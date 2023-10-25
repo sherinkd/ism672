@@ -166,6 +166,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Metadata\clsCustomerMetaData.cs" />
+    <Compile Include="Models\Metadata\clsOrderMetaData.cs" />
     <Compile Include="Models\Metadata\clsProductMetaData.cs" />
     <Compile Include="Models\NWTradersEF.Context.cs">
       <AutoGen>True</AutoGen>
@@ -1652,6 +1653,7 @@
     <Content Include="Views\Suppliers\Details.cshtml" />
     <Content Include="Views\Suppliers\Edit.cshtml" />
     <Content Include="Views\Suppliers\Index.cshtml" />
+    <Content Include="Views\Customers\_ShoppingCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

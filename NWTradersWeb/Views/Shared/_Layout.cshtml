@@ -35,10 +35,13 @@
     @Styles.Render("~/Content/Button.css")
 
     @Styles.Render("~/Content/sass")
-
+    @using NWTradersWeb.Models;
 </head>
 
 <body class="container" style="">
+    @{
+        Customer currentCustomer = Session["currentCustomer"] as Customer;
+    }
     <!-- Header: The common header will appear on all pages.-->
     <div class="container shadow rounded-3 my-2 primary">
 
@@ -47,13 +50,30 @@
                 <div class="h2 nav-item">Northwind Traders </div>
 
                 <div class="nav-item btn rounded-lg w3-hover-shadow">
-                    <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                    @Html.ActionLink("NW Login", "Login", "Customers", new { },
-                        new
-                        {
-                            @class = "text-decoration-none",
-                            @title = "Login to view your information"
-                        })
+                    @if (currentCustomer == null)
+                    {
+                        <i class="fa-solid fa-right-from-bracket fa-lg"></i>
+                        @Html.ActionLink("NW Login", "Login", "Customers", new { },
+                             new
+                             {
+                                 @class = "text-decoration-none",
+                                 @title = "Login to view your information"
+                             })
+                    }
+                    else
+                    {
+                        <span>
+                            @Html.ActionLink(currentCustomer.CompanyName,
+                            "Details", "Customers",
+                            new { @id = currentCustomer.CustomerID },
+                            new
+                                 {
+                                @class = "text-decoration-none",
+                                @title = "Login to view your information"
+                                 }
+                            )
+                        </span>
+                    }
                 </div>
             </div>
         </div>
@@ -98,17 +118,17 @@
     </div>
 
     <!-- footer -->
-    <footer class="navbar container shadow rounded-lg mt-2 pt-2 px-4 small" 
-         style="background-color: palegoldenrod">
+    <footer class="navbar container shadow rounded-lg mt-2 pt-2 px-4 small"
+            style="background-color: palegoldenrod">
 
         <div class="">
             <img src="~/images/UNCG.png" width="150" height="40" alt="Alternate Text" />
-          </div>
+        </div>
 
-            <div class="">
-                &copy; @DateTime.Now.Year - ISM 672: Northwind Traders 
-            </div>
-        
+        <div class="">
+            &copy; @DateTime.Now.Year - ISM 672: Northwind Traders
+        </div>
+
 
     </footer>
 

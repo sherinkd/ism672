@@ -47,6 +47,26 @@ namespace NWTradersWeb.Models
 
 
         public bool isCustomerIDNotUnique;
+
+        public Order myShoppingCart;
+
+        public Boolean AddProductToCart(Product theProductToAdd, short howMany = 1)
+        {
+            if (myShoppingCart == null)
+            {
+                myShoppingCart = new Order();
+                myShoppingCart.Customer = this;
+                myShoppingCart.CustomerID = this.CustomerID;
+                myShoppingCart.OrderDate = System.DateTime.Today;
+            }
+
+            return this.myShoppingCart.AddToOrder(theProductToAdd, howMany);
+        }
+
+        public Boolean RemoveProductFromCart(Product theProductToRemove, short howMany = 1)
+        {
+            return this.myShoppingCart.RemoveFromOrder(theProductToRemove, howMany);
+        }
     }
 
 }
