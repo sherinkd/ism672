@@ -333,6 +333,22 @@ namespace NWTradersWeb.Controllers
 
         }
 
+        public ActionResult RemoveProductFromCart(int? ProductID = null)
+        {
+            if (ProductID == null)
+                return RedirectToAction("Index", "Products");
+
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null)
+                return RedirectToAction("Login", "Customers");
+
+            Product productToRemove = nwEntities.Products.Find(ProductID);
+            if (productToRemove == null)
+                return RedirectToAction("Index", "Products");
+
+            return RedirectToAction("Index", "Products");
+        }
+
         public ActionResult RemoveFromCart(int? ProductID = null)
         {
 

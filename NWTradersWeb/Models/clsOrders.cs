@@ -90,7 +90,17 @@ namespace NWTradersWeb.Models
 
         public bool RemoveFromOrder(Product theProductToRemove, short QuantityToRemove = 1)
         {
-            // LEFT FOR YOU TO IMPLEMENT
+            Order_Detail TheOneWiththeProductToAdd = this.
+                    Order_Details.
+                    Where(od => od.ProductID == theProductToRemove.ProductID).
+                    FirstOrDefault();
+
+            // Now we know while "line item" to add this to.
+            TheOneWiththeProductToAdd.Quantity -= QuantityToRemove;
+
+            if (TheOneWiththeProductToAdd.Quantity == 0) {
+                this.Order_Details = this.Order_Details.Where(od => od.ProductID != theProductToRemove.ProductID).ToList();
+            }
 
             return false;
         }

@@ -28,7 +28,7 @@
 
                             <a title="Delete"
                                class="px-3"
-                               href="@Url.Action("Delete", "Products")">
+                               href="@Url.Action("RemoveProductFromCart", "Customers", new { ProductID = od.ProductID })">
                                 <i class="fa-solid fa-trash-can text-danger"></i>
                             </a>
                         </div>
