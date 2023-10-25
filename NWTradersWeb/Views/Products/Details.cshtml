@@ -5,8 +5,6 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <div class="container">
     <div class="sub-header">
         <h4>Product: @Html.DisplayFor(model => model.ProductName)</h4>
@@ -114,7 +112,13 @@
     </div>
 </div>
 
-<p class="pt-4">
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="d-flex justify-content-end align-items-center gap-3 p-2 action-panel w3-hover-shadow sticky-bottom m-1">
+    @Html.ActionLink("Back to List", "Index", null, new {
+        @class = "btn btn-light"
+     })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }, new
+{
+    @class = "btn btn-primary"
+})
+
+</div>

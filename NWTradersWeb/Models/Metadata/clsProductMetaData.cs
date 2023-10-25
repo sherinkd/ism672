@@ -11,7 +11,9 @@ namespace NWTradersWeb.Models
     {
 
         public int ProductID { get; set; }
+        [Display(Name = "Supplier")]
         public Nullable<int> SupplierID { get; set; }
+        [Display(Name = "Category")]
         public Nullable<int> CategoryID { get; set; }
 
 
