@@ -115,7 +115,15 @@
         </table>
     </div>
 </div>
-<p class="pt-4">
-    @Html.ActionLink("Edit", "Edit", new { id = Model.OrderID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div class="d-flex justify-content-end align-items-center gap-3 p-2 action-panel w3-hover-shadow sticky-bottom mt-3">
+    @Html.ActionLink("Back to List", "Index", null, new
+    {
+        @class = "btn btn-light"
+     })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OrderID }, new
+{
+    @class = "btn btn-primary"
+})
+
+</div>
