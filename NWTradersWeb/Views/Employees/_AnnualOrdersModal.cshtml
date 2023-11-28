@@ -7,7 +7,7 @@
 <div >
 
     <div class="card-header py-2">
-        <h4> Insert Title Here.</h4>
+        <h4> Number of Orders for year: @year </h4>
     </div>
 
     <div class="card-body">
@@ -36,8 +36,6 @@
 <script type="">
 
     $(document).ready(function () {
-
-        debugger;
         google.charts.setOnLoadCallback(DrawAnnualOrdersModalChart('ModalTable', 'ModalChart'));
 
         function DrawAnnualOrdersModalChart(tableDivName, chartDivName)
