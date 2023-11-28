@@ -10,107 +10,170 @@
     List<BestCustomer> BestCustomers = Model.BestCustomers(5);
 }
 
-<div>
-    <div class="rounded-4 shadow my-2 py-2 alert-secondary w3-bottombar">
-        <h4 class="text-center ">
-            Welcome @Model.FirstName, @Model.LastName
-        </h4>
-    </div>
+<div class="shadow-sm w3-topbar px-4">
+    <!-- Bottom Nav-->
+    <div class="navbar w3-bar small ">
 
-    <div class="container mt-5">
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="AllEmployeeSales();" id="Products" style="cursor:pointer"
+             title="Compare sales for all Employees">
+            All Employee Sales
+        </div>
 
-        <div class="card-group mx-5">
+        <div> &nbsp;</div>
 
-           
-            <div class="card rounded-2 mx-2">
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="AnnualOrders();" id="Orders" style="cursor:pointer">
+            Orders
+        </div>
 
-                <div class="card-header h5 py-4" style="background-color: beige">
-                    Sales
-                </div>
+        <div> &nbsp;</div>
 
-                <div class="card-body">
-                    <div class="py-2 text-lg-center">
-                        <div>Total Orders Placed# @Model.Orders.Count() </div>
-                        <div>
-                            Territories: @foreach (Territory t in Model.Territories.Distinct())
-                            {
-                                @Html.DisplayFor(item => t.Region.RegionDescription)
-                                
-                                        }
-                        </div>
-                    </div>
-                </div>
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="AnnualRevenues();" id="Revenues" style="cursor:pointer"
+             title="Annual Revenues">
+            Revenues
+        </div>
 
-                <div class="card-footer text-center py-4" style="background-color: beige; font-size:small">
-                    &nbsp;
-                </div>
+        <div> &nbsp;</div>
 
-            </div>
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="ForYouToComplete();" id="Products" style="cursor:pointer"
+             title="All EmployeeProducts">
+            Top Products
+        </div>
 
-            
-            <div class="card rounded-2 mx-2">
-                <div class="card-header h5 py-4" style="background-color: beige">
-                    Best Selling Products
-                </div>
+        <div> &nbsp;</div>
 
-                <div class="card-body ">
-                    <table class="table table-hover small">
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Total Sales# </th>
-                        </tr>
-                        @foreach (BestSellingProduct product in BestSellingProducts)
-                        {
-                            <tr class="py-3">
-                                <td>
-                                    @product.ProductName
-                                </td>
-                                <td>
-                                    @product.NumberOfSales
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                </div>
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="ForYouToComplete();" id="Products" style="cursor:pointer"
+             title="All EmployeeProducts">
+            Top Customers
+        </div>
 
-                <div class="card-footer text-center py-4 " style="background-color: beige">
-                    &nbsp;
-                </div>
+        <div> &nbsp;</div>
 
-            </div>
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="ForYouToComplete();" id="Products" style="cursor:pointer"
+             title="Left for you to complete">
+            Top Product Categories
+        </div>
 
-          
-            <div class="card rounded-2 mx-2">
+        <div> &nbsp;</div>
 
-                <div class="card-header h5 py-4" style="background-color: beige">
-                    Best Customers
-                </div>
-
-                <div class="card-body">
-                    <table class="table table-hover small">
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Total Orders# </th>
-                        </tr>
-                        @foreach (BestCustomer customer in BestCustomers)
-                        {
-                            <tr class="py-3">
-                                <td>
-                                    @customer.CompanyName
-                                </td>
-                                <td>
-                                    @customer.NumberOfOrders
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-
-                <div class="card-footer text-center py-4" style="background-color:beige">
-                    &nbsp;
-                </div>
-            </div>
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             style="cursor:pointer" onclick="ForYouToComplete();"
+             title="Left for you to complete">
+            Others?
         </div>
 
     </div>
+
 </div>
+
+
+<div class="pt-2 rounded-2x shadow-sm">
+    <!-- Partials are dropped into this container. -->
+    <div id="Partials" class="container" style="min-height:500px">
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function ()
+    {
+        AllEmployeeSales();
+    });
+
+    function AllEmployeeSales()
+    {
+        debugger;
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+
+        $('#AllEmployeeSales').addClass(' w3-light-gray border-secondary');
+        $('#Partials').empty();
+
+        $.ajax({
+            url: '@Url.Action("AllEmployeeSales", "Employees")',
+            data: { },
+
+            success: function (result) { $('#Partials').html(result); },
+            error: (e) => { $('#Partials').html('Something went wrong in Annual Orders'); console.log(e) }
+        });
+    }
+
+    function AnnualOrders()
+    {
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('#AnnualOrders').addClass(' w3-light-gray border-secondary');
+        $('#Partials').empty();
+
+        $.ajax({
+            url: '@Url.Action("AnnualOrders", "Employees")',
+            data: { },
+
+            success: function (result) { $('#Partials').html(result); },
+            error: function () { $('#Partials').html('Something went wrong in Annual Orders'); }
+        });
+    }
+
+    function AnnualRevenues()
+    {
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('#AnnualRevenues').addClass(' w3-light-gray border-secondary');
+        $('#Partials').empty();
+
+        $.ajax({
+            url: '@Url.Action("AnnualRevenues", "Employees")',
+            data: { },
+
+            success: function (result) { $('#Partials').html(result); },
+            error: function () { $('#Partials').html('Something went wrong in Annual Revenues'); }
+        });
+    }
+
+    function EmployeeTopProducts()
+    {
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('#EmployeeTopProducts').addClass(' w3-light-gray border-secondary');
+        $('#Partials').empty();
+
+        $.ajax({
+            url: '@Url.Action("EmployeeTopProducts", "Employees")',
+            data: { },
+
+            success: function (result) { $('#Partials').html(result); },
+            error: function () { $('#Partials').html('Something went wrong in All Employee Products'); }
+        });
+    }
+
+    function EmployeeTopCustomers()
+    {
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('#EmployeeTopCustomers').addClass(' w3-light-gray border-secondary');
+        $('#Partials').empty();
+
+        $.ajax({
+            url: '@Url.Action("EmployeeTopCustomers", "Employees")',
+            data: { },
+
+            success: function (result) { $('#Partials').html(result); },
+            error: function () { $('#Partials').html('Something went wrong in All Employee Customers'); }
+        });
+    }
+
+    function ForYouToComplete()
+    {
+
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('#Open').addClass(' w3-light-gray active border-secondary');
+
+        $('#Partials').empty();
+        $('#Partials').html("<h4> Left for you to complete<h4>");
+    }
+
+
+</script>

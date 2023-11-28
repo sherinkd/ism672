@@ -31,6 +31,12 @@ namespace NWTradersWeb.Models
             { return this.Order_Details.Sum(od => od.Total); }
         }
 
+        public decimal TotalSales
+        {
+            get
+            { return this.Order_Details.Sum(od => od.Total); }
+        }
+
 
         /// <summary>
         ///  Get all the Products that were ordered.

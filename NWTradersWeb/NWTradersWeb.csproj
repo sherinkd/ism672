@@ -150,6 +150,7 @@
     <Compile Include="Models\clsCategory.cs" />
     <Compile Include="Models\clsCustomer.cs" />
     <Compile Include="Models\clsEmployee.cs" />
+    <Compile Include="Models\clsNWTradersClasses.cs" />
     <Compile Include="Models\clsNWTradersUtilities.cs" />
     <Compile Include="Models\clsOrderDetails.cs" />
     <Compile Include="Models\clsOrders.cs" />
@@ -1614,6 +1615,7 @@
     <Content Include="lib\datatables\Buttons-2.4.1\css\common.scss" />
     <Content Include="lib\datatables\Buttons-2.4.1\css\mixins.scss" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\RainbowVis.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1658,6 +1660,7 @@
     <Content Include="Views\Customers\_ShoppingCart.cshtml" />
     <Content Include="Views\Employees\Login.cshtml" />
     <Content Include="Views\Employees\Details.cshtml" />
+    <Content Include="Views\Employees\_AllEmployeeSales.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

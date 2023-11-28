@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace NWTradersWeb.Models
+{
+    public class OrderProducts
+    {
+        public int DateNumber;
+        public string DateString;
+        public int NumberOfOrders;
+    }
+    public class OrderRevenues
+    {
+        public string Date;
+        public decimal Sales;
+    }
+
+    public class EmployeeSales
+    {
+        public string theEmployee;
+        public decimal Sales;
+    }
+
+    public class ProductSales
+    {
+        public string ProductName;
+        public string ProductCategory;
+        public string Year;
+        public decimal Sales;
+    }
+
+    public class CustomerSales
+    {
+        public string theCustomer;
+        public string SalesPeriod;
+        public int SalesPeriodNumber;
+        public decimal Sales;
+        public int NumberOfOrders;
+        public int NumberOfProducts;
+    }
+
+}

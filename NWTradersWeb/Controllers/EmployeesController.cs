@@ -70,6 +70,58 @@ namespace NWTradersWeb.Controllers
             return View(employee);
         }
 
+        #region AllEmployeeSales
+
+        public ActionResult AllEmployeeSales(string Year = "All Years")
+        {
+            Employee theEmployee = Session["currentEmployee"] as Employee;
+            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
+
+            ViewBag.Year = Year;
+            ViewBag.YearsList = NWTradersUtilities.BeginToEndOrderYears();
+
+            return PartialView("_AllEmployeeSales", new List<EmployeeSales>());
+        }
+
+        public JsonResult GetAllEmployeeSales(string Year = "All Years")
+        {
+
+            IEnumerable<EmployeeSales> allEmployeeSales = new List<EmployeeSales>();
+
+            if (string.IsNullOrEmpty(Year) || Year.Equals("All Years"))
+            {
+                allEmployeeSales = nwEntities.Orders.
+                    GroupBy(order => new { order.Employee.FirstName, order.Employee.LastName }).
+                    OrderBy(a => a.Key.LastName).
+                    Select(empSales => new EmployeeSales
+                    {
+                        theEmployee = empSales.Key.FirstName + " " + empSales.Key.LastName,
+                        Sales = empSales.Sum(o => o.Order_Details.Sum(
+                            od => od.Quantity * od.UnitPrice))
+                    });
+            }
+            else
+            {
+                DateTime begin = NWTradersUtilities.BeginningOfYear(Year);
+                DateTime end = NWTradersUtilities.EndOfYear(Year);
+
+                allEmployeeSales = nwEntities.Orders.
+                    Where(order => (order.OrderDate >= begin) && (order.OrderDate <= end)).
+                    GroupBy(order => new { order.Employee.FirstName, order.Employee.LastName }).
+                    OrderBy(a => a.Key.LastName).
+                    Select(empSales => new EmployeeSales
+                    {
+                        theEmployee = empSales.Key.FirstName + " " + empSales.Key.LastName,
+                        Sales = empSales.Sum(o => o.Order_Details.Sum(
+                            od => od.Quantity * od.UnitPrice))
+                    });
+            }
+
+            return Json(new { JSONList = allEmployeeSales }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -11,6 +11,12 @@
     <script type="text/javascript" src="~/lib/jqueryui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="~/lib/jquery-validate/jquery.validate.min.js"></script>
 
+
+    <!-- This link allows you to use google charts in your site by loading the libraries for the chart types -->
+    <script type="text/javascript" src="~/Scripts/RainbowVis.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>google.charts.load('current', { 'packages': ['corechart', 'timeline', 'table', 'bar'] });</script>
+
     <!-- Data Tables-->
     <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
     <script type="text/javascript" src="~/lib/datatables/DateTime-1.5.1/js/dataTables.dateTime.min.js"></script>
@@ -114,6 +120,17 @@
                                  }
                             )
                         </span>
+
+                        <img class=""
+                             title="@Model.FullName"
+                             src="data:image/png;base64,
+ @Convert.ToBase64String(
+         Model.Photo, 78,
+         Model.Photo.Length-78 ,
+         Base64FormattingOptions.None
+     )"
+                             alt="@Model.FullName"
+                             width="30" height="30" />
 
                         @Html.ActionLink("Logout", "Login", "Employees",
                         new { },

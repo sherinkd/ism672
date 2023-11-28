@@ -106,5 +106,71 @@ namespace NWTradersWeb.Models
             get { return (new List<string> { "10", "15", "25", "50", "All" }); }
         }
 
+        /// <summary>
+        /// Returns the beginning date of the Year supplied, or of the current year if blank
+        /// </summary>
+        /// <param name="Year"></param>
+        /// <returns></returns>
+        public static DateTime BeginningOfYear(string Year = "")
+        {
+
+            int year;
+
+            if (string.IsNullOrEmpty(Year))
+                year = DateTime.Now.Year;
+            else
+                year = int.Parse(Year);
+
+            return new DateTime(year, 1, 1);
+
+        }
+
+        /// <summary>
+        /// Returns the ENDING date of the Year supplied, or of the current year if blank
+        /// </summary>
+        /// <param name="Year"></param>
+        /// <returns></returns>
+        public static DateTime EndOfYear(string Year = "")
+        {
+            return BeginningOfYear(Year).AddYears(1).AddDays(-1);
+        }
+
+        /// <summary>
+        /// returns the month name of the MonthNumber supplied
+        /// </summary>
+        /// <param name="MonthNumber"></param>
+        /// <returns></returns>
+        public static string MonthName(int MonthNumber)
+        {
+            return new DateTime(DateTime.Now.Year, MonthNumber, 1).ToString("MMMM");
+        }
+
+        public static List<string> AllMonthsNames()
+        {
+            List<string> monthNames = new List<string>();
+
+            for (int i = 0; i < 12; i++)
+            {
+                monthNames.Add(
+                    new DateTime(DateTime.Now.Year, i + 1, 1).ToString("MMMM")
+                    );
+            }
+            return monthNames;
+        }
+
+        public static List<string> BeginToEndOrderYears()
+        {
+            int FirstYear = nwEntities.Orders.Min(o => o.OrderDate.Value.Year);
+            int LastYear = nwEntities.Orders.Max(o => o.OrderDate.Value.Year);
+
+            List<string> Years = new List<string>();
+            for (int i = LastYear; i >= FirstYear; i--)
+            {
+                Years.Add(i.ToString());
+            }
+
+            return Years;
+        }
+
     }
 }
