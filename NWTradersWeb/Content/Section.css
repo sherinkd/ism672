@@ -22,3 +22,8 @@
 .content-header {
     font-weight: bold;
 }
+
+.sub-menu {
+    background-color: whitesmoke;
+    border-bottom: 1px solid lightgrey;
+}

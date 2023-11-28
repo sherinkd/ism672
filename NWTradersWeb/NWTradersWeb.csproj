@@ -1667,6 +1667,7 @@
     <Content Include="Views\Customers\Analysis.cshtml" />
     <Content Include="Views\Customers\_AnnualSales.cshtml" />
     <Content Include="Views\Customers\_AnnualSalesModal.cshtml" />
+    <Content Include="Views\Employees\Analysis.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

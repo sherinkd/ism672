@@ -70,6 +70,20 @@ namespace NWTradersWeb.Controllers
             return View(employee);
         }
 
+        public ActionResult Analysis(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Employee employee = nwEntities.Employees.Find(Int32.Parse(id));
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+            return View(employee);
+        }
+
         #region Utilities
 
         public double CompanyAverageAnnualOrders()

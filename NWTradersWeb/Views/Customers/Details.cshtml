@@ -13,15 +13,8 @@
 
 <div>
 
-    <div class="container shadow navbar rounded-3 w3-animate-right" style="background-color:khaki; opacity:0.8">
-        <div class="navbar ms-4">
-
-            <h4 class="text-center ">
-                Welcome @Model.CompanyName
-            </h4>
-        </div>
-
-        <div class="nav me-2 border-secondary-subtle">
+    <div class="container">
+        <div class="border-secondary-subtle">
             <div class="btn w3-hover-shadow" title="View your orders and related details">
                 @Html.ActionLink("Home", "Details", "Customers",
                     new { @id = currentCustomer.CustomerID },
@@ -36,8 +29,9 @@
 
         </div>
     </div>
+    <br />
 
-    <div class="container mt-5">
+    <div class="container">
 
         <div class="card-group mx-5">
 
