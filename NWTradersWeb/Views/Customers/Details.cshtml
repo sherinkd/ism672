@@ -4,19 +4,37 @@
 
 @{
     ViewBag.Title = "Details";
+    Customer currentCustomer = Session["currentCustomer"] as Customer;
 
     List<Order> CustomerOrders = Model.RecentOrders(5);
 
     List<Product> RecentPurchasedProduct = Model.RecentlyPurchasedProducts(5);
-
 }
 
 <div>
 
-    <div class="rounded-4 shadow my-2 py-2 alert-secondary w3-bottombar">
-        <h4 class="text-center ">
-            Welcome @Model.CompanyName
-        </h4>
+    <div class="container shadow navbar rounded-3 w3-animate-right" style="background-color:khaki; opacity:0.8">
+        <div class="navbar ms-4">
+
+            <h4 class="text-center ">
+                Welcome @Model.CompanyName
+            </h4>
+        </div>
+
+        <div class="nav me-2 border-secondary-subtle">
+            <div class="btn w3-hover-shadow" title="View your orders and related details">
+                @Html.ActionLink("Home", "Details", "Customers",
+                    new { @id = currentCustomer.CustomerID },
+                    new { @class = "text-decoration-none" })
+            </div>
+
+            <div class="btn w3-hover-shadow" title="View analysis">
+                @Html.ActionLink("Analysis", "Analysis", "Customers",
+                   new { @id = currentCustomer.CustomerID },
+                   new { @class = "text-decoration-none" })
+            </div>
+
+        </div>
     </div>
 
     <div class="container mt-5">

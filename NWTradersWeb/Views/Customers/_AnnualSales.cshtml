@@ -1,0 +1,211 @@
+﻿@using NWTradersWeb.Models;
+@model IEnumerable<CustomerSales>
+
+@{
+    Customer currentCustomer = Session["currentCustomer"] as Customer;
+
+}
+<div class="card my-4">
+    <div class="card-header navbar shadow">
+        <div class="">
+            <h5> Annual Sales for @currentCustomer.CompanyName </h5>
+        </div>
+
+    </div>
+
+    <div class="card-body small ">
+
+        <div class="row" style="min-height:400px">
+            <div class="col-3">
+                <table class="table-bordered table-striped ">
+
+                    <thead>
+                        <tr>
+                            <th class="text-right pt-2"> Year</th>
+                            <th class="text-right pt-2"> Orders</th>
+                            <th class="text-right pt-2"> Sales</th>
+                            <th class="text-center pt-2"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (CustomerSales item in Model)
+                        {
+                            <tr>
+                                <td class="text-right px-2">@item.SalesPeriod</td>
+                                <td class="text-right px-2">@item.NumberOfOrders</td>
+                                <td class="text-right px-2"> @item.Sales.ToString("c2")</td>
+                                <td class="w3-hover-shadow p-2 rounded-2x">
+                                    <i class="fa-solid fa-chart-column fa-lg "
+                                       style="color:cornflowerblue; cursor:pointer;"
+                                       onclick="ShowAnnualOrders('@item.SalesPeriod');"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#CustomerSalesModal"
+                                       title="Click to view orders placed in @item.SalesPeriod">
+
+                                    </i>
+                                    <i class="fa-solid fa-star fa-lg "
+                                       style="color:gold; cursor:pointer;"></i>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+
+                </table>
+
+                <div class="modal fade" id="CustomerSalesModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" style="min-width:900px; min-height:650px" id="CustomerSales">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="Chart" class="col-5">
+
+            </div>
+
+            <div id="Pie" class="col-4">
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script type="">
+
+    $(document).ready(function () {
+
+    google.charts.setOnLoadCallback(DrawAnnualSalesChart('Chart'));
+
+    function DrawAnnualSalesChart(divName)
+    {
+
+        $(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAnnualSales", "Customers")',
+                data: {CustomerID: '@currentCustomer.CustomerID'},
+                success: function (chartsdata) {
+
+                    var Data = chartsdata.JSONList;
+                    var data = new google.visualization.DataTable();
+
+                    console.log(chartsdata);
+                    console.log(Data);
+
+
+                    data.addColumn('string', 'Year');
+                    data.addColumn('number', 'Orders');
+
+                    //Loop through each element in the list data
+                    for (var i = 0; i < Data.length; i++)
+                    {
+                        data.addRow([
+                            Data[i].SalesPeriod,
+                            Data[i].Sales,
+                        ]);
+                    }
+
+                    // Coloring the columns.
+                    var rainbow = new Rainbow();
+                    rainbow.setNumberRange(1, data.getNumberOfRows());
+                    rainbow.setSpectrum('steelblue', 'goldenrod'); // get data.nRows colors between this range.
+
+                    //Add a column to specify the color
+                    data.addColumn({ 'type': 'string', 'role': 'style' });
+
+                    console.log(data);
+
+                    // for each row in the datatable, add a new color by asking "rainbow" for a color.
+                    for (var i = 0; i < data.getNumberOfRows(); i++) {
+                        data.setCell(i, 2, '' + rainbow.colorAt(i + 1) + '');
+                    }
+
+                    var formatter = new google.visualization.NumberFormat(
+                        { pattern: "$ #,##0" });
+
+                    // Apply formatter to second column
+                    formatter.format(data, 1);
+
+
+                    var view = new google.visualization.DataView(data);
+                    view.setColumns(
+                        [0, 1, 2,
+                            { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+
+                    var columnChartOptions =
+                    {
+                        title: 'Annual Orders for ' + '@currentCustomer.CompanyName',
+                        titleTextStyle: { fontSize: 18},
+                        titlePosition: 'top',
+                        fontName: 'Tahoma',
+                        dataOpacity: 0.8,
+                        legend: { position: "none" },
+
+                        vAxis:
+                        {
+                            title: 'Year',
+                            titleTextStyle: { fontSize: 14, italic: false },
+                            textStyle: { fontName: 'Tahoma', fontSize: 12, italic: false },
+                        },
+                        hAxis:
+                        {
+                            title: 'Sales',
+                            titleTextStyle: { fontSize: 14, italic: false },
+                            textStyle: { fontName: 'Tahoma', fontSize: 12 },
+                            format: 'currency',
+                        },
+                    };
+
+
+                    var pieChartOptions =
+                    {
+                        titlePosition: 'none',
+                        fontName: 'Tahoma',
+                        dataOpacity: 0.8,
+                        legend: { position: "bottom" },
+                        chartArea: { height: "75%", width: "100%" },
+
+                    };
+
+                    // Instantiate and draw our chart, passing in options
+                    //var chartColumns = new google.visualization.ColumnChart(document.getElementById(divName));
+                    var chart = new google.visualization.BarChart(document.getElementById(divName));
+                    var chartPie = new google.visualization.PieChart(document.getElementById("Pie"));
+
+                    chart.draw(view, columnChartOptions);
+                    chartPie.draw(view, pieChartOptions);
+
+                },
+
+                error: function () { alert("Error loading data! Please try again."); }
+
+            });
+        })
+    }
+    });
+
+    function ShowAnnualOrders(year)
+    {
+        $.ajax({
+            url: '@Url.Action("CustomerSalesModal", "Customers")',
+            data: { Year: year},
+
+            success: function (result)
+            { $('#CustomerSales').html(result); },
+
+            error: function ()
+            { $('#CustomerSales').html('Error in generating Orders Chart for ' + year); }
+
+        });
+
+    }
+
+</script>
+

@@ -215,6 +215,9 @@ namespace NWTradersWeb.Controllers
         public ActionResult AllEmployeeSales(string Year = "All Years")
         {
             Employee theEmployee = Session["currentEmployee"] as Employee;
+            if (theEmployee == null)
+                return RedirectToAction("Login");
+
             theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
 
             ViewBag.Year = Year;

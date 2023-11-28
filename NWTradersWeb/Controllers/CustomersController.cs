@@ -4,6 +4,7 @@
  * Most commonly, the usings are the 
  */
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -385,6 +386,143 @@ namespace NWTradersWeb.Controllers
 
         #endregion
 
+
+        public ActionResult Analysis(string id)
+        {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null || string.IsNullOrEmpty(id))
+                return RedirectToAction("Login");
+
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Customer customer = nwEntities.Customers.Find(id);
+
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(customer);
+
+        }
+
+        #region Sales
+
+        public ActionResult AverageSales()
+        {
+            List<OrderRevenues> AnnualAverageSales = new List<OrderRevenues>();
+
+            var AvgOrder = nwEntities.
+                Orders.
+                Where(o => o.OrderDate.Value.Year < 2021).
+                GroupBy(custOrder => new { custOrder.Customer, custOrder.OrderDate.Value.Year }).
+                Select(avgOrder => new {
+                    C = avgOrder.Key.Customer.CompanyName,
+                    Year = avgOrder.Key.Year,
+                    avg = avgOrder.Average(o => o.Order_Details.Sum(od => od.Quantity * od.UnitPrice)),
+                    annualSpend = avgOrder.Sum(o => o.Order_Details.Sum(od => od.Quantity * od.UnitPrice)),
+                    annualNumberOfOrders = avgOrder.Count(),
+                    Orders = avgOrder.ToList()
+                }).
+                ToList();
+
+            var avg = nwEntities.Orders.Where(o => o.OrderDate.Value.Year < 2021).
+                Average(o => o.Order_Details.Sum(od => od.Quantity * od.UnitPrice));
+
+            var avgAnnualOrder = nwEntities.Orders.
+                                Where(o => o.OrderDate.Value.Year < 2021).
+                                GroupBy(o => o.OrderDate.Value.Year).
+                                Select(avgOrder => new {
+                                    year = avgOrder.Key,
+                                    avg = avgOrder.Average(o => o.Order_Details.Sum(od => od.Quantity * od.UnitPrice))
+                                }).ToList();
+
+
+            decimal AverageAnnualCustOrder = AvgOrder.Average(o => o.avg);
+            ViewBag.AnnualOrder = AverageAnnualCustOrder;
+
+            decimal AverageAnnualSpend = AvgOrder.Average(o => o.annualSpend);
+            ViewBag.AnnualOrder = AverageAnnualCustOrder;
+
+            decimal MaxSpend = AvgOrder.Max(o => o.annualSpend);
+            decimal MinSpend = AvgOrder.Min(o => o.annualSpend);
+
+
+            var AnnualSpend = AvgOrder.
+                Select(o => o);
+
+            return View();
+        }
+
+        public ActionResult AnnualSales(string CustomerId)
+        {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null)
+                return RedirectToAction("Login");
+
+            Customer theCustomer = nwEntities.Customers.
+                Include(c => c.Orders).
+                Where(c => c.CustomerID.Equals(CustomerId)).
+                FirstOrDefault();
+
+            IEnumerable<CustomerSales> annualSales = theCustomer.CustomerAnnualSales();
+
+            return PartialView("_AnnualSales", annualSales);
+        }
+
+        public JsonResult GetAnnualSales(string CustomerID)
+        {
+            Customer theCustomer = nwEntities.Customers.
+                Include(c => c.Orders).
+                Where(c => c.CustomerID.Equals(CustomerID)).
+                FirstOrDefault();
+
+            IEnumerable<CustomerSales> annualSales = theCustomer.CustomerAnnualSales();
+
+            return Json(new { JSONList = annualSales }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CustomerSalesModal(string Year = "")
+        {
+            int year = DateTime.Now.Year;
+
+            if (string.IsNullOrEmpty(Year)) year = int.Parse(Year);
+            else year = int.Parse(Year);
+
+            Customer theCustomer = Session["currentCustomer"] as Customer;
+
+            theCustomer = nwEntities.Customers.
+                Include(c => c.Orders).
+                Where(c => c.CustomerID.Equals(theCustomer.CustomerID)).
+                FirstOrDefault();
+
+            IEnumerable<CustomerSales> annualSales = theCustomer.CustomerSalesInYear(Year);
+
+            ViewBag.Year = year;
+            return PartialView("_AnnualSalesModal", annualSales);
+        }
+
+        public JsonResult GetCustomerSalesModal(string Year = "")
+        {
+            int year = DateTime.Now.Year;
+            if (string.IsNullOrEmpty(Year)) year = int.Parse(Year);
+            else year = int.Parse(Year);
+
+            Customer theCustomer = Session["currentCustomer"] as Customer;
+
+            theCustomer = nwEntities.Customers.
+                Include(c => c.Orders).
+                Where(c => c.CustomerID.Equals(theCustomer.CustomerID)).
+                FirstOrDefault();
+
+            IEnumerable<CustomerSales> annualSales = theCustomer.CustomerSalesInYear(Year);
+            return Json(new { JSONList = annualSales }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

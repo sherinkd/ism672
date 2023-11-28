@@ -9,6 +9,82 @@ namespace NWTradersWeb.Models
     [MetadataType(typeof(CustomerMetaData))]
     public partial class Customer
     {
+        #region Analysis Functions
+
+        #region Customer Annual Sales
+
+        public IEnumerable<CustomerSales> CustomerAnnualSales()
+        {
+            List<CustomerSales> customerSales = new List<CustomerSales>();
+
+
+            customerSales = this.Orders.
+                GroupBy(o => o.OrderDate.Value.Year).
+                Select(ordersInYear =>
+                new CustomerSales
+                {
+                    theCustomer = this.CompanyName,
+                    SalesPeriod = ordersInYear.Key.ToString(),
+                    NumberOfOrders = ordersInYear.Count(),
+                    Sales = ordersInYear.Sum(o => o.TotalSales)
+                    //SelectMany(od => od.Order_Details).
+                    //Sum(od => od.Quantity*od.UnitPrice)
+                }).ToList();
+            return customerSales;
+        }
+
+        public IEnumerable<CustomerSales> CustomerSalesInYear(string Year)
+        {
+            DateTime YearBeginning = NWTradersUtilities.BeginningOfYear(Year);
+            DateTime YearEnd = NWTradersUtilities.EndOfYear(Year);
+
+            List<CustomerSales> customerSales = new List<CustomerSales>();
+
+            customerSales = this.Orders.
+                Where(od => od.OrderDate >= YearBeginning && od.OrderDate <= YearEnd).
+                GroupBy(o => o.OrderDate.Value.Month).
+                Select(ordersInMonth =>
+                new CustomerSales
+                {
+                    theCustomer = this.CompanyName,
+                    SalesPeriod = NWTradersUtilities.MonthName(ordersInMonth.Key),
+                    SalesPeriodNumber = ordersInMonth.Key,
+                    NumberOfOrders = ordersInMonth.Count(),
+                    Sales = ordersInMonth.Sum(o => o.TotalSales)
+                    //SelectMany(od => od.Order_Details).
+                    //Sum(od => od.Quantity*od.UnitPrice)
+                }).ToList();
+
+            List<string> monthsWithOrders = customerSales.Select(o => o.SalesPeriod).ToList();
+            List<string> AllMonths = NWTradersUtilities.AllMonthsNames();
+
+            // Now add the empty months with a zero for Number Of Orders.
+            for (int i = 0; i < AllMonths.Count(); i++)
+            {
+                if (monthsWithOrders.Contains(AllMonths.ElementAt(i)) == false)
+                    customerSales.Add(
+                        new CustomerSales
+                        {
+                            theCustomer = this.CompanyName,
+                            SalesPeriod = AllMonths.ElementAt(i),
+                            SalesPeriodNumber = i,
+                            NumberOfProducts = 0,
+                            Sales = 0,
+                            NumberOfOrders = 0
+                        });
+            }
+
+            return customerSales.OrderBy(c => c.SalesPeriodNumber);
+        }
+
+
+
+        #endregion
+
+
+
+        #endregion
+
         /// <summary>
         /// Returns the date when the last order was placed by a particular customer. 
         /// If no orders are placed, the function returns a <see langword="null"/> DateTime Object
