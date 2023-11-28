@@ -1,0 +1,367 @@
+﻿@using NWTradersWeb.Models
+@model IEnumerable<OrderRevenues>
+
+@{ 
+    Employee currentEmployee = Session["currentEmployee"] as Employee;
+}
+<div class="card">
+    <div class="card-header navbar">
+        <div class="">
+            <h5> Annual Revenues</h5>
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <!-- Employee Revenue-->
+        <div class="row border-secondary shadow-sm container mt-2">
+            <div class="col-2 ">
+                <h2> @ViewBag.EmployeeAverageAnnualRevenues.ToString("C0") </h2>
+                <h6> Your Annual Average </h6>
+            </div>
+            <div class="col-10">
+                <div class="" id="EmployeeAnnualRev" style="min-height:250px">
+
+                </div>
+                <div class="pt-2">
+                    <table class="table-striped table"
+                           style="width:90%">
+                        <tr>
+                            <th> Year </th>
+                            @foreach (var item in Model)
+                            {
+                                <td>
+                                    @item.Date
+                                    <i class="fa fa-external-link w3-hover-shadow small"
+                                       style="cursor:pointer;"
+                                       onclick="ModalFunctionHere();"
+                                       data-toggle="modal"
+                                       data-target="#RevenuesModal"
+                                       title="Click to view monthly revenues in @item.Date">
+                                    </i>
+
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <th> Sales </th>
+                            @foreach (var item in Model)
+                            {
+                                <td> @item.Sales.ToString("C0")</td>
+                            }
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Company Revenue-->
+        <div class="row border-secondary shadow-sm container mt-2">
+            <div class="col-2">
+                <h2> @ViewBag.CompanyAverageAnnualRevenues.ToString("C0") </h2>
+                <h6> Company Annual Average </h6>
+            </div>
+
+            <div class="col-10" id="CompanyAnnualRev" style="min-height:250px">
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="RevenuesModal" >
+        <div class="modal-dialog" role="document" >
+            <div class="modal-content" id="ModalOfAnnualRevenues" style="min-width:750px; height:500px">
+
+                <div class="card text-center">
+                    <h4>
+                        Display Monthly Revenues here.
+                        <span class="buton btn w3-right fa fa-times-circle fa-lg"
+                             style=""
+                             data-bs-dismiss="modal">
+
+                        </span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body small">
+
+        <div id="" class="row" style="min-height:400px">
+
+            <div class="col-2">
+                <table class="table-striped table">
+                    <tr>
+                        <th>Year</th>
+                        <th> Revenues </th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td> @item.Date</td>
+                            <td class="text-right px-2"> @item.Sales.ToString("$#, ###")</td>
+                        </tr>
+
+                    }
+                </table>
+            </div>
+
+            <div id="Chart" class="col-6">
+
+            </div>
+            <div id="Pie" class="col-4">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        google.charts.setOnLoadCallback(DrawAnnualRevenuesColumnChart('Chart'));
+        google.charts.setOnLoadCallback(DrawAnnualRevenuesLineChart('EmployeeAnnualRev'));
+        google.charts.setOnLoadCallback(DrawAllAnnualRevenuesLineChart('CompanyAnnualRev'));
+    })
+
+    function DrawAnnualRevenuesColumnChart(divName)
+    {
+
+          $(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("GetAnnualRevenues", "Employees")',
+                        data: { },
+
+                        success: function (chartsdata) {
+
+                            var Data = chartsdata.JSONList;
+                            var data = new google.visualization.DataTable();
+
+                            data.addColumn('string', 'Year');
+                            data.addColumn('number', 'Sales');
+
+                            //Loop through each element in the list data
+                            for (var i = 0; i < Data.length; i++)
+                            {
+                                data.addRow([
+                                    Data[i].Date,
+                                    Data[i].Sales
+                                ]);
+                            }
+
+                         var formatter = new google.visualization.NumberFormat({ pattern: '$ #,###' });
+                            formatter.format(data, 1);
+
+                var view = new google.visualization.DataView(data);
+                    view.setColumns(
+                        [0, 1,
+                            { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+
+                    var columnChartOptions =
+                    {
+                        title: 'Annual Revenues for ' + '@currentEmployee.FullName',
+                        titleTextStyle: { fontSize: 18},
+                        titlePosition: 'top',
+                        fontName: 'Tahoma',
+                        dataOpacity: 0.8,
+                        legend: { position: "none" },
+
+                        vAxis:
+                        {
+                            title: 'Orders',
+                            titleTextStyle: { fontSize: 14, italic: false },
+                            textStyle: { fontName: 'Tahoma', fontSize: 12, italic: false  },
+                        },
+                        hAxis:
+                        {
+                            title: 'Year',
+                            titleTextStyle: { fontSize: 14, italic: false },
+                            textStyle: { fontName: 'Tahoma', fontSize: 12 },
+                        },
+
+                    };
+
+
+                    var pieChartOptions =
+                    {
+                        titlePosition: 'none',
+                        fontName: 'Tahoma',
+                        dataOpacity: 0.8,
+                        legend: { position: "bottom" },
+                            };
+
+                            // Instantiate and draw our chart, passing in options
+                            var chartColumns = new google.visualization.ColumnChart(document.getElementById(divName));
+                            //var chart = new google.visualization.BarChart(document.getElementById(divName));
+
+                            var chartPie = new google.visualization.PieChart(document.getElementById("Pie"));
+
+                            chartColumns.draw(view, columnChartOptions);
+                            chartPie.draw(view, pieChartOptions);
+
+
+                        },
+
+                        error: function () {
+                            alert("Error loading data! Please try again.");
+                        }
+
+                    });
+          })
+
+    }
+
+    function DrawAnnualRevenuesLineChart(divName)
+    {
+
+          $(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("GetAnnualRevenues", "Employees")',
+                        data: { },
+
+                        success: function (chartsdata) {
+
+                            var Data = chartsdata.JSONList;
+                            var data = new google.visualization.DataTable();
+
+                            data.addColumn('string', 'Year');
+                            data.addColumn('number', 'Sales');
+                            data.addColumn({ type: 'string', role: 'style' });
+
+                            // Coloring the columns.
+                            var rainbow = new Rainbow();
+                            rainbow.setNumberRange(1, Data.length);
+                            rainbow.setSpectrum('forestgreen', 'firebrick'); // get data.nRows colors between this range.
+
+                            //Loop through each element in the list data
+                            for (var i = 0; i < Data.length; i++)
+                            {
+                                data.addRow([
+                                    Data[i].Date,
+                                    Data[i].Sales,
+                                    rainbow.colorAt(i+1)
+                                ]);
+                            }
+                            var formatter = new google.visualization.NumberFormat({ pattern: '$ #,###' });
+                            formatter.format(data, 1);
+
+                        var view = new google.visualization.DataView(data);
+                        view.setColumns(
+                            [0, 1, 2, 
+                                { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+
+                            var lineOneoptions = {
+
+                                title: 'Annual Revenues for ' + '@currentEmployee.FullName',
+                                titleTextStyle: { fontSize: 16},
+                                titlePosition: 'top',
+                                fontName: 'Tahoma',
+                                dataOpacity: 0.8,
+
+                                legend: { position: "none" },
+
+
+                                hAxis: {
+                                    title: 'Year'
+                                },
+                                vAxis: {
+                                    title: 'Revenues'
+                                },
+                                colors: ['#0c61b3']
+                            };
+
+                                // Instantiate and draw our chart, passing in options
+                            var lineOnechart = new google.visualization.LineChart(document.getElementById(divName));
+
+                            lineOnechart.draw(view, lineOneoptions);
+
+                            },
+
+                            error: function () {
+                                alert("Error loading data! Please try again.");
+                            }
+
+                    });
+          })
+
+    }
+
+    function DrawAllAnnualRevenuesLineChart(divName)
+    {
+
+          $(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("GetAllAnnualRevenues", "Employees")',
+                        data: { },
+
+                        success: function (chartsdata) {
+
+                            var Data = chartsdata.JSONList;
+                            var data = new google.visualization.DataTable();
+
+                            data.addColumn('string', 'Year');
+                            data.addColumn('number', 'Sales');
+
+                            //Loop through each element in the list data
+                            for (var i = 0; i < Data.length; i++)
+                            {
+                                data.addRow([
+                                    Data[i].Date,
+                                    Data[i].Sales
+                                ]);
+                            }
+
+                        var view = new google.visualization.DataView(data);
+                        view.setColumns(
+                            [0, 1,
+                                { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+
+                            var linetwooptions = {
+
+                                title: 'Company Cummulative Annual Revenues',
+                                titleTextStyle: { fontSize: 16},
+                                titlePosition: 'top',
+                                fontName: 'Tahoma',
+                                dataOpacity: 0.8,
+
+                                legend: { position: "none" },
+
+
+                                hAxis: {
+                                    title: 'Year'
+                                },
+                                vAxis: {
+                                    title: 'Revenues'
+                                },
+                                colors: ['#097138']
+                            };
+
+                                // Instantiate and draw our chart, passing in options
+                            var linetwochart = new google.visualization.LineChart(document.getElementById(divName));
+
+                            linetwochart.draw(view, linetwooptions);
+
+                            },
+
+                            error: function () {
+                                alert("Error loading data! Please try again.");
+                            }
+
+                    });
+          })
+
+    }
+
+
+
+</script>
