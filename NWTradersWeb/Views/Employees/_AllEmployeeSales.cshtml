@@ -7,50 +7,36 @@
     yearsList.Insert(0, "All Years");
 
     string year = ViewBag.Year;
+    string employee = ViewBag.Employee;
 }
 
 <div id="EmployeeSales">
+    <div class="container py-2">
+        <div class="row">
+            <div class="sub-header">
+                <h4>@year Sales of @employee</h4>
+            </div>
+            <div class="sub-body" id="Table">
 
-    <div class="navbar">
-        <!-- Select Year-->
-        <div class="input-group-sm p-2">
-            <div class="">Fiscal Year</div>
-            @Html.DropDownList("Year", new SelectList(yearsList),
-                 new
-                 {
-                     @class = "custom-select",
-                     @id = "SelectYear",
-                     @value = year,
-                     onchange = "RefreshPage();"
-                 })
+            </div>
         </div>
 
-        <div>
-            <h5> Sales Revenue for All Employees in @ViewBag.Year </h5>
-        </div>
+        <br />
 
-        <div>
-            &nbsp;
-        </div>
+        <div class="row">
+            <div class="sub-header">
+                <h4>@year Revenue of @employee</h4>
+            </div>
+            <div class="sub-body" id="Chart">
 
-    </div>
-
-    <div class=" pt-4 row" style="min-height:500px">
-
-        <div class="col-4 small" id="Table">
-
-        </div>
-
-        <div class="col-8" id="Chart">
-
+            </div>
         </div>
     </div>
-
 </div>
 
 
 
-<script type="">
+    <script type="">
 
     $(document).ready(function () {
 
@@ -62,7 +48,7 @@
                 $.ajax({
                     type: 'GET',
                     url: '@Url.Action("GetAllEmployeeSales", "Employees")',
-                    data: { Year: '@year' },
+                    data: { Year: '@year', Employee: '@employee' },
                     success: function (chartsdata)
                     {
                         var Data = chartsdata.JSONList;
@@ -185,23 +171,25 @@
     }
     });
 
-</script>
+    </script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     function RefreshPage()
     {
+        debugger;
         var year = $('#SelectYear').val();
+        var employee = $('#SelectEmployee').val();
         $(function () {
 
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("AllEmployeeSales", "Employees")',
-                data: { Year: year },
+                data: { Year: year, Employee: employee },
 
                 success: function (partialViewResult)
                 { $("#EmployeeSales").html(partialViewResult);}
             });
         })
     }
-</script>
+    </script>

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -81,6 +82,14 @@ namespace NWTradersWeb.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Year = "All Years";
+            ViewBag.Employee = "All Employees";
+            ViewBag.YearsList = NWTradersUtilities.BeginToEndOrderYears();    
+            ViewBag.EmployeeList = new List<string>
+            {
+                employee.FirstName + " " + employee.LastName
+            };
             return View(employee);
         }
 
@@ -226,21 +235,20 @@ namespace NWTradersWeb.Controllers
 
         #region AllEmployeeSales
 
-        public ActionResult AllEmployeeSales(string Year = "All Years")
+        public ActionResult AllEmployeeSales(string Year = "All Years", string Employee = "All Employees")
         {
             Employee theEmployee = Session["currentEmployee"] as Employee;
             if (theEmployee == null)
                 return RedirectToAction("Login");
 
-            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
-
             ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
             ViewBag.YearsList = NWTradersUtilities.BeginToEndOrderYears();
 
             return PartialView("_AllEmployeeSales", new List<EmployeeSales>());
         }
 
-        public JsonResult GetAllEmployeeSales(string Year = "All Years")
+        public JsonResult GetAllEmployeeSales(string Year = "All Years", string Employee = "All Employees")
         {
 
             IEnumerable<EmployeeSales> allEmployeeSales = new List<EmployeeSales>();
@@ -272,6 +280,11 @@ namespace NWTradersWeb.Controllers
                         Sales = empSales.Sum(o => o.Order_Details.Sum(
                             od => od.Quantity * od.UnitPrice))
                     });
+            }
+
+            if (!Employee.Equals("All Employees"))
+            {
+                allEmployeeSales = allEmployeeSales.Where(emp => emp.theEmployee.Equals(Employee)).ToList();
             }
 
             return Json(new { JSONList = allEmployeeSales }, JsonRequestBehavior.AllowGet);
@@ -383,6 +396,17 @@ namespace NWTradersWeb.Controllers
             return Json(new { JSONList = allannualRevenues }, JsonRequestBehavior.AllowGet);
 
         }
+        #endregion
+
+        #region Top Products
+        public ActionResult EmployeeTopProducts()
+        {
+            Employee currentEmployee = Session["currentEmployee"] as Employee;
+            currentEmployee = nwEntities.Employees.Find(currentEmployee.EmployeeID);            
+            return PartialView("_TopProducts");
+        }
+
+
         #endregion
 
         protected override void Dispose(bool disposing)

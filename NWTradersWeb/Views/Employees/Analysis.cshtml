@@ -4,6 +4,14 @@
 
 @{
     ViewBag.Title = "Details";
+    List<string> yearsList = ViewBag.YearsList;
+    yearsList.Insert(0, "All Years");
+
+    List<string> employeeList = ViewBag.EmployeeList;
+    employeeList.Insert(0, "All Employees");
+
+    string year = ViewBag.Year;
+    string employee = ViewBag.Employee;
     Employee currentEmployee = Session["currentEmployee"] as Employee;
 
     List<BestSellingProduct> BestSellingProducts = Model.BestSellingProducts(5);
@@ -29,15 +37,43 @@
 </div>
 <br />
 
+<nav class="navbar bg-body-tertiary">
+    <form class="container-fluid">
+        <div class="input-group-sm p-2">
+            <div class="input-group-sm ">Fiscal Year</div>
+            @Html.DropDownList("Year", new SelectList(yearsList),
+                 new
+                 {
+                     @class = "form-select form-control",
+                     @id = "SelectYear",
+                     @value = year,
+                     onchange = "RefreshPage();"
+                 })
+        </div>
+        <div class="input-group-sm p-2">
+            <div class="input-group-sm ">Employee</div>
+            @Html.DropDownList("Employee", new SelectList(employeeList),
+                 new
+                 {
+                     @class = "form-select form-control",
+                     @id = "SelectEmployee",
+                     @value = employee,
+                     onchange = "RefreshPage();"
+                 })
+        </div>
+    </form>
+</nav>
+
 <div class="shadow-sm w3-topbar px-4">
   
     <!-- Bottom Nav-->
     <div class="navbar w3-bar small ">
 
         <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="AllEmployeeSales();" id="Products" style="cursor:pointer"
+             onclick="All
+();" id="Products" style="cursor:pointer"
              title="Compare sales for all Employees">
-            All Employee Sales
+            Sales
         </div>
 
         <div> &nbsp;</div>
@@ -110,7 +146,6 @@
 
     function AllEmployeeSales()
     {
-        debugger;
         $('.tab').removeClass(' w3-light-gray active border-secondary');
 
         $('#AllEmployeeSales').addClass(' w3-light-gray border-secondary');
@@ -118,7 +153,7 @@
 
         $.ajax({
             url: '@Url.Action("AllEmployeeSales", "Employees")',
-            data: { },
+            data: {  },
 
             success: function (result) { $('#Partials').html(result); },
             error: (e) => { $('#Partials').html('Something went wrong in Annual Orders'); console.log(e) }

@@ -1,0 +1,10 @@
+﻿@using NWTradersWeb.Models;
+@model IEnumerable<EmployeeSales>
+
+@{
+
+    List<string> yearsList = ViewBag.YearsList;
+    yearsList.Insert(0, "All Years");
+
+    string year = ViewBag.Year;
+}
