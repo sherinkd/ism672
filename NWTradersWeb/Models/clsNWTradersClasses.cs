@@ -57,6 +57,12 @@ namespace NWTradersWeb.Models
         public decimal Sales;
     }
 
+    public class ProductCategoryOrder
+    {
+        public string Year;
+        public int NumberOfOrders;
+    }
+
     public class CustomerSales
     {
         public string theCustomer;

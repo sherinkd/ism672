@@ -46,6 +46,10 @@
                 <div class="row" id="Chart">
 
                 </div>
+                <br />
+                <div class="row" id="NoOfProductCategoriesSold">
+
+                </div>
             </div>
         </div>
     </div>
@@ -54,11 +58,13 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        google.charts.setOnLoadCallback(DrawTop10ProductCategorySales('Table'));
-        google.charts.setOnLoadCallback(DrawProductCategoryRevenue('Chart'));
+        google.charts.setOnLoadCallback(DrawTop10ProductCategorySales());
+        google.charts.setOnLoadCallback(DrawProductCategoryRevenue());
+        google.charts.setOnLoadCallback(DrawNoOfProductCategorySold());
     })
 
-    function DrawTop10ProductCategorySales(divName)
+
+    function DrawTop10ProductCategorySales()
     {
         var year = $('#SelectYear').val();
         var employee = $('#SelectEmployee').val();
@@ -114,7 +120,7 @@
 
     }
 
-    function DrawProductCategoryRevenue(divName)
+    function DrawProductCategoryRevenue()
     {
          var year = $('#SelectYear').val();
          var employee = $('#SelectEmployee').val();
@@ -146,7 +152,7 @@
                                  [0, 1,
                                      { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
                          }
-                        
+
 
                          //Loop through each element in the list data
                          for (var i = 0; i < Data.length; i++)
@@ -195,7 +201,94 @@
                  });
        })
 
- }
+    }
+
+    function DrawNoOfProductCategorySold() {
+        var year = $('#SelectYear').val();
+        var employee = $('#SelectEmployee').val();
+        var category = $('#SelectProductCategory').val();
+        $(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetNoOfProductCategorySold", "Employees")',
+                data: { Year: year, Employee: employee, ProductCategory: category },
+
+                success: function (chartsdata) {
+                    debugger;
+                    var Data = chartsdata.JSONList;
+                    var data = new google.visualization.DataTable();
+
+                    data.addColumn('string', 'Year');
+                    data.addColumn('number', 'Number Of Orders');
+
+                    //Loop through each element in the list data
+                    for (var i = 0; i < Data.length; i++) {
+                        data.addRow([
+                            Data[i].Year,
+                            Data[i].NumberOfOrders,
+                        ]);
+                    }
+
+                    var rainbow = new Rainbow();
+                    if (Data.length > 1) {
+                        rainbow.setNumberRange(1, data.getNumberOfRows());
+                        rainbow.setSpectrum('steelblue', 'goldenrod'); // get data.nRows colors between this range.
+
+                        //Add a column to specify the color
+                        data.addColumn({ 'type': 'string', 'role': 'style' });
+
+                        // for each row in the datatable, add a new color by asking "rainbow" for a color.
+                        for (var i = 0; i < data.getNumberOfRows(); i++) {
+                            data.setCell(i, 2, '' + rainbow.colorAt(i + 1) + '');
+                        }
+
+
+                        var view = new google.visualization.DataView(data);
+                        view.setColumns(
+                            [0, 1, 2,
+                                { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+                    }
+                    else {
+                        var view = new google.visualization.DataView(data);
+                        view.setColumns(
+                            [0, 1,
+                                { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+
+                    }
+
+                    var columnChartOptions =
+                    {
+                        fontName: 'Tahoma',
+                        dataOpacity: 0.8,
+                        legend: { position: "none" },
+
+                        vAxis:
+                        {
+                            title: 'Number Of Orders',
+                            titleTextStyle: { fontSize: 12, italic: false },
+                            textStyle: { fontName: 'Tahoma', fontSize: 12, italic: false },
+                        },
+
+                        hAxis:
+                        {
+                            title: 'Year',
+                            titleTextStyle: { fontSize: 12, italic: false },
+                            textStyle: { fontName: 'Tahoma', fontSize: 12 },
+                        },
+                    };
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById('NoOfProductCategoriesSold'));
+                    chart.draw(view, columnChartOptions);
+                },
+
+                error: function () {
+                    alert("Error loading data! Please try again.");
+                }
+
+            });
+        })
+
+    }
 </script>
 
 <script type="text/javascript">

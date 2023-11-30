@@ -621,6 +621,25 @@ namespace NWTradersWeb.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetNoOfProductCategorySold(string Year = "All Years",
+            string Employee = "All Employees",
+            string ProductCategory = "")
+        {
+            Employee theEmployee = Session["currentEmployee"] as Employee;
+            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
+            ViewBag.ProductCategory = ProductCategory;
+            return Json(new
+            {
+                JSONList = GetnoOfProductCategoryRevenueByCategory(
+                 Year.Equals("All Years") ? null : Int32.Parse(Year),
+                 Employee.Equals("All Employees") ? null : theEmployee.EmployeeID,
+                 ProductCategory
+                )
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public IEnumerable<ProductCategorySales> GetProductCategorySales(int? Year, int? employeeID)
         {
             return nwEntities
@@ -650,6 +669,23 @@ namespace NWTradersWeb.Controllers
                     {
                         Year = ps.Key.ToString(),
                         Sales = ps.Sum(od => od.Quantity * od.UnitPrice)
+                    })
+                    .ToList();
+        }
+
+        public IEnumerable<ProductCategoryOrder> GetnoOfProductCategoryRevenueByCategory(int? Year, int? employeeID, string category)
+        {
+            return nwEntities
+                .Order_Details
+                .Where(od => od.Order.OrderDate.Value.Year == Year || (Year == null && od.Order.OrderDate.Value.Year <= DateTime.Now.Year))
+                .Where(od => !od.Product.Discontinued)
+                .Where(od => employeeID == null || od.Order.EmployeeID == employeeID)
+                .Where(od => od.Product.Category.CategoryName.Equals(category))
+                .GroupBy(od => od.Order.OrderDate.Value.Year).
+                    Select(ps => new ProductCategoryOrder
+                    {
+                        Year = ps.Key.ToString(),
+                        NumberOfOrders = ps.Count()
                     })
                     .ToList();
         }
