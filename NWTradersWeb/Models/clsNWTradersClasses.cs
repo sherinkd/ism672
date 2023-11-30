@@ -21,6 +21,7 @@ namespace NWTradersWeb.Models
     public class CustomerRevenue
     {
         public string CustomerName;
+        public string DateString;
         public decimal Sales;
     }
 
@@ -41,6 +42,12 @@ namespace NWTradersWeb.Models
         public string ProductName;
         public string ProductCategory;
         public string Year;
+        public decimal Sales;
+    }
+
+    public class ProductCategorySales
+    {
+        public string ProductCategory;        
         public decimal Sales;
     }
 

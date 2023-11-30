@@ -122,19 +122,12 @@
         <div> &nbsp;</div>
 
         <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="ForYouToComplete();" id="Products" style="cursor:pointer"
+             onclick="ProductCategory();" id="Products" style="cursor:pointer"
              title="Left for you to complete">
             Top Product Categories
         </div>
 
         <div> &nbsp;</div>
-
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             style="cursor:pointer" onclick="ForYouToComplete();"
-             title="Left for you to complete">
-            Others?
-        </div>
-
     </div>
 
 </div>
@@ -265,7 +258,7 @@
         });
     }
 
-    function ForYouToComplete()
+    function ProductCategory()
     {
 
         $('.tab').removeClass(' w3-light-gray active border-secondary');
@@ -273,6 +266,15 @@
 
         $('#Partials').empty();
         $('#Partials').html("<h4> Left for you to complete<h4>");
+
+
+        $.ajax({
+            url: '@Url.Action("ProductCategory", "Employees")',
+            data: { },
+
+            success: function (result) { $('#Partials').html(result); },
+            error: function () { $('#Partials').html('Something went wrong in All Employee Customers'); }
+        });
     }
 
 

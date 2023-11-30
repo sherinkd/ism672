@@ -566,6 +566,50 @@ namespace NWTradersWeb.Controllers
         }
         #endregion Bottom Customers
 
+        #region Product Category
+
+        public ActionResult ProductCategory(string Year = "All Years", string Employee = "All Employees")
+        {
+            Employee currentEmployee = Session["currentEmployee"] as Employee;
+            currentEmployee = nwEntities.Employees.Find(currentEmployee.EmployeeID);
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
+            return PartialView("_ProductCategoryAnnualRevenues");
+        }
+
+        public JsonResult GetTopProductCategories(string Year = "All Years", string Employee = "All Employees")
+        {
+            Employee theEmployee = Session["currentEmployee"] as Employee;
+            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
+            return Json(new
+            {
+                JSONList = GetProductCategorySales(
+                 Year.Equals("All Years") ? null : Int32.Parse(Year),
+                 Employee.Equals("All Employees") ? null : theEmployee.EmployeeID
+                ).OrderByDescending(ps => ps.Sales)
+                    .Take(10)
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public IEnumerable<ProductCategorySales> GetProductCategorySales(int? Year, int? employeeID)
+        {
+            return nwEntities
+                .Order_Details
+                .Where(od => od.Order.OrderDate.Value.Year == Year || (Year == null && od.Order.OrderDate.Value.Year <= DateTime.Now.Year))
+                .Where(od => !od.Product.Discontinued)
+                .Where(od => employeeID == null || od.Order.EmployeeID == employeeID)
+                .GroupBy(od => od.Product.Category.CategoryName).
+                    Select(ps => new ProductCategorySales
+                    {                        
+                        ProductCategory = ps.Key,
+                        Sales = ps.Sum(od => od.Quantity * od.UnitPrice)
+                    })
+                    .ToList();
+        }
+        #endregion Product Category
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

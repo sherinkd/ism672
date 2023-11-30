@@ -1,0 +1,111 @@
+﻿@using NWTradersWeb.Models
+@model IEnumerable<OrderRevenues>
+
+@{
+    Employee currentEmployee = Session["currentEmployee"] as Employee;
+    string year = ViewBag.Year;
+    string employee = ViewBag.Employee;
+}
+
+<div id="ProductCategoryAnnualRevenues">
+    <div class="container py-2">
+        <div class="row">
+            <div class="sub-header">
+                <h4>@year Product Category Sales of @employee</h4>
+            </div>
+            <div class="sub-body-no-max container">
+                <div class="row" id="Table">
+
+                </div>
+                <br />
+
+                <div class="row" id="Chart">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        google.charts.setOnLoadCallback(DrawTop10ProductCategorySales('Table'));
+    })
+
+    function DrawTop10ProductCategorySales(divName)
+    {
+        var year = $('#SelectYear').val();
+        var employee = $('#SelectEmployee').val();
+          $(function () {
+              $.ajax({
+                  type: 'GET',
+                  url: '@Url.Action("GetTopProductCategories", "Employees")',
+                  data: { Year: year, Employee: employee },
+
+                  success: function (chartsdata) {
+                      debugger;
+                      var Data = chartsdata.JSONList;
+                      if (Data.length > 0) {
+                          var dataForTable = new google.visualization.DataTable();
+                          dataForTable.addColumn('string', 'Product Category');
+                          dataForTable.addColumn('number', 'Sales');
+                          for (var i = 0; i < Data.length; i++) {
+                              dataForTable.addRow([
+                                  Data[i].ProductCategory,
+                                  Data[i].Sales,
+                              ]);
+                          }
+
+                          var formatter = new google.visualization.NumberFormat(
+                              { pattern: "$ #,##0" });
+
+                          // Apply formatter to second column
+                          formatter.format(dataForTable, 1); // Apply formatter to second column
+                          var classNames = {
+                              tableCell: 'gTableCell',
+                              headerRow: 'h5',
+                          };
+                          var tableOptions = {
+                              allowHtml: true,
+                              cssClassNames: classNames,
+                              width: '100%',
+                          };
+                          var formatter = new google.visualization.BarFormat();
+                          formatter.format(dataForTable, 1);
+
+                          var table = new google.visualization.Table(document.getElementById('Table'));
+                          table.draw(dataForTable, tableOptions);
+                      }
+
+                  },
+
+                  error: function () {
+                      alert("Error loading data! Please try again.");
+                  }
+
+              });
+          })
+
+    }
+</script>
+
+<script type="text/javascript">
+
+    function RefreshPage()
+    {
+        var year = $('#SelectYear').val();
+        var employee = $('#SelectEmployee').val();
+        debugger;
+        $(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ProductCategory", "Employees")',
+                data: { Year: year, Employee: employee },
+
+                success: function (partialViewResult)
+                { $("#ProductCategoryAnnualRevenues").html(partialViewResult);}
+            });
+        })
+    }
+</script>
