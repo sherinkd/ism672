@@ -1674,6 +1674,7 @@
     <Content Include="Views\Employees\_BottomCustomers.cshtml" />
     <Content Include="Views\Employees\_ProductCategoryAnnualRevenues.cshtml" />
     <Content Include="Views\Customers\_TopProducts.cshtml" />
+    <Content Include="Views\Customers\_TopProductCategories.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

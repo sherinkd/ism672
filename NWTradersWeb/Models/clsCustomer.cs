@@ -101,6 +101,27 @@ namespace NWTradersWeb.Models
 
         #endregion Top Products
 
+        #region Top Product Categories
+
+        public IEnumerable<ProductCategorySales> TopProductCategories(int? Year)
+        {
+            return this
+                .Orders
+                .Where(od => od.OrderDate.Value.Year == Year || (Year == null && od.OrderDate.Value.Year <= DateTime.Now.Year))
+                .SelectMany(od => od.Order_Details)
+                .Where(od => !od.Product.Discontinued)
+                .GroupBy(od => od.Product.Category.CategoryName)
+                .Select(ps => new ProductCategorySales
+                {
+                    ProductCategory = ps.Key,
+                    Sales = ps.Sum(s => s.Quantity * s.UnitPrice)
+                })
+                .ToList();
+
+        }
+
+        #endregion Top Product Categories
+
         /// <summary>
         /// Returns the date when the last order was placed by a particular customer. 
         /// If no orders are placed, the function returns a <see langword="null"/> DateTime Object

@@ -384,8 +384,7 @@ namespace NWTradersWeb.Controllers
             currentEmployee = nwEntities.Employees.Find(currentEmployee.EmployeeID);
             IEnumerable<OrderRevenues> annualRevenues = currentEmployee.AnnualRevenues();
 
-            ViewBag.CompanyAverageAnnualRevenues = AllEmployeesAverageAnnualRevenues();
-            //ViewBag.EmployeeAverageAnnualRevenues = EmployeeAverageAnnualRevenues(theEmployee.EmployeeID);
+            ViewBag.CompanyAverageAnnualRevenues = AllEmployeesAverageAnnualRevenues();            
             ViewBag.EmployeeAverageAnnualRevenues = currentEmployee.AverageAnnualRevenues();
             return PartialView("_AnnualRevenues", annualRevenues);
         }

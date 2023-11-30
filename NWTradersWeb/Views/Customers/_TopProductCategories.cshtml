@@ -1,0 +1,184 @@
+﻿@using NWTradersWeb.Models;
+@model IEnumerable<EmployeeSales>
+
+@{
+
+    string year = ViewBag.Year;
+    string employee = ViewBag.Employee;
+}
+
+<div id="TopProductCategories">
+    <div class="container py-2">
+        <div class="row">
+            <div class="sub-header">
+                <h4>@year Product Category Sales</h4>
+            </div>
+            <div class="sub-body-no-max container">
+                <div class="row" id="Table">
+
+                </div>
+                <br />
+
+                <div class="row" id="Chart">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="">
+
+ $(document).ready(function () {
+     google.charts.setOnLoadCallback(DrawEmployeeSalesChart());
+     var year = $('#SelectYear').val();       
+     function DrawEmployeeSalesChart()
+     {
+         $(function () {
+             $.ajax({
+                 type: 'GET',
+                 url: '@Url.Action("GetTopProductCategories", "Customers")',
+                 data: { Year: year },
+                 success: function (chartsdata)
+                 {
+                     debugger;
+                     var Data = chartsdata.JSONList;
+                     if (Data.length > 0) {
+                         var data = new google.visualization.DataTable();
+                         var dataForTable = new google.visualization.DataTable();
+
+                         data.addColumn('string', 'Product Category');
+                         data.addColumn('number', 'Sales');
+
+                         dataForTable.addColumn('string', 'Product Category');
+                         dataForTable.addColumn('number', 'Sales');
+
+                         //Loop through each element in the list data
+                         for (var i = 0; i < Data.length; i++) {
+
+                             data.addRow([
+                                 Data[i].ProductCategory,
+                                 Data[i].Sales,
+                             ]);
+
+                             dataForTable.addRow([
+                                 Data[i].ProductCategory,
+                                 Data[i].Sales,
+                             ]);
+
+                         }
+
+                         // Coloring the columns.
+                         var rainbow = new Rainbow();
+                         if (Data.length > 1) {
+                             rainbow.setNumberRange(1, data.getNumberOfRows());
+                             rainbow.setSpectrum('steelblue', 'goldenrod');
+
+                             //Add a column to specify the color
+                             data.addColumn({ 'type': 'string', 'role': 'style' });
+
+                             // for each row in the datatable, add a new color by asking "rainbow" for a color.
+                             for (var i = 0; i < data.getNumberOfRows(); i++) {
+                                 data.setCell(i, 2, '' + rainbow.colorAt(i + 1) + '');
+                             }
+
+                             var view = new google.visualization.DataView(data);
+                             view.setColumns(
+                                 [0, 1, 2,
+                                     { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+                         }
+                         else {
+                             var view = new google.visualization.DataView(data);
+                             view.setColumns(
+                                 [0, 1,
+                                     { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+
+                         }
+
+                         var formatter = new google.visualization.NumberFormat(
+                             { pattern: "$ #,##0" });
+
+                         // Apply formatter to second column
+                         formatter.format(data, 1);
+                         formatter.format(dataForTable, 1); // Apply formatter to second column
+
+                         var columnChartOptions =
+                         {                             
+                             fontName: 'Tahoma',
+                             dataOpacity: 0.8,
+                             legend: { position: "none" },
+
+                             vAxis:
+                             {
+                                 title: 'Sales ($)',
+                                 titleTextStyle: { fontSize: 12, italic: false },
+                                 textStyle: { fontName: 'Tahoma', fontSize: 12, italic: false },
+                                 format: 'currency',
+                             },
+                             hAxis:
+                             {
+                                 title: 'Product Category',
+                                 titleTextStyle: { fontSize: 12, italic: false },
+                                 textStyle: { fontName: 'Tahoma', fontSize: 12 },
+                             },
+
+                         };
+
+                         // Instantiate and draw our chart, passing in options
+                         var chartColumns = new google.visualization.ColumnChart(document.getElementById('Chart'));
+                         chartColumns.draw(view, columnChartOptions);
+
+                         // Draw a data table to show the values.
+                         var classNames = {
+                             tableCell: 'gTableCell',
+                             headerRow: 'h5',
+                         };
+
+                         var tableOptions = {
+                             allowHtml: true,
+                             cssClassNames: classNames,
+                             width: '100%',
+                         };
+
+                         var formatter = new google.visualization.BarFormat();
+                         formatter.format(dataForTable, 1);
+
+                         var table = new google.visualization.Table(document.getElementById('Table'));
+                         table.draw(dataForTable, tableOptions);
+                     }
+                     else
+                     {
+                          $("#Header").html('Sales Revenue information is not available' );
+                     }
+             },
+                 error: function () {
+                     alert("Error loading data! Please try again.");
+                 }
+         });
+     })
+ }
+ });
+
+</script>
+
+<script type="text/javascript">
+
+ function RefreshPage()
+ {     
+     var year = $('#SelectYear').val();     
+     $(function () {
+
+         $.ajax({
+             type: 'GET',
+             url: '@Url.Action("TopProductCategories", "Customers")',
+             data: { Year: year },
+
+             success: function (partialViewResult)
+             {
+                 debugger;
+                 $("#TopProductCategories").html(partialViewResult);
+             }
+         });
+     })
+ }
+</script>

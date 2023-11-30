@@ -554,6 +554,38 @@ namespace NWTradersWeb.Controllers
 
         #endregion Top Products
 
+        #region Top Product Categories
+
+        public ActionResult TopProductCategories(string Year = "All Years")
+        {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null)
+                return RedirectToAction("Login");
+
+            ViewBag.Year = Year;
+            return PartialView("_TopProductCategories");
+        }
+
+        public JsonResult GetTopProductCategories(string Year = "All Years")
+        {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            Customer theCustomer = nwEntities.Customers.
+                Include(c => c.Orders).
+                Where(c => c.CustomerID.Equals(currentCustomer.CustomerID)).
+                FirstOrDefault();
+
+            ;
+            ViewBag.Year = Year;
+            return Json(new
+            {
+                JSONList = theCustomer.TopProductCategories(
+                Year.Equals("All Years") ? null : Int32.Parse(Year)
+                ).OrderByDescending(od => od.Sales).Take(10)
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion Top Product Categories
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

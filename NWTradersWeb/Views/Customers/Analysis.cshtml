@@ -71,7 +71,7 @@
 
             <li class="nav-item px-2">
                 <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-2x"
-                     onclick="ForYouToComplete();" id="TopProductCategories" style="cursor:pointer"
+                     onclick="TopCategories();" id="TopProductCategories" style="cursor:pointer"
                      title="Categories of the Top Products Bought by @Model.CompanyName">
                     Top Product Categories
                 </div>
@@ -123,6 +123,7 @@
     function TopProducts()
     {
         debugger;
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
         $('#Partials').empty();
         var year = $('#SelectYear').val();
          $.ajax({
@@ -142,7 +143,7 @@
         $('#Partials').empty();
         var year = $('#SelectYear').val();
          $.ajax({
-            url: '@Url.Action("CustomerTopCategories", "Customers")',
+            url: '@Url.Action("TopProductCategories", "Customers")',
              data: { Year: year },
 
             success: function (result) { $('#Partials').html(result); },
