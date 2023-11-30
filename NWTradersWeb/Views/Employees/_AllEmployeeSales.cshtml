@@ -1,11 +1,7 @@
 @using NWTradersWeb.Models;
 @model IEnumerable<EmployeeSales>
 
-@{
-
-    List<string> yearsList = ViewBag.YearsList;
-    yearsList.Insert(0, "All Years");
-
+@{   
     string year = ViewBag.Year;
     string employee = ViewBag.Employee;
 }
@@ -51,6 +47,7 @@
                     data: { Year: '@year', Employee: '@employee' },
                     success: function (chartsdata)
                     {
+                        debugger;
                         var Data = chartsdata.JSONList;
                         if (Data.length > 0) {
                             var data = new google.visualization.DataTable();

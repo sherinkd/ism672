@@ -12,10 +12,10 @@ namespace NWTradersWeb.Models
         { get { return FirstName + " " + LastName; } }
 
 
-        public IEnumerable<OrderProducts> AnnualOrders()
+        public IEnumerable<OrderProducts> AnnualOrders(int? Year)
         {
             List<OrderProducts> annualOrders = this.Orders.
-                Where(od => od.OrderDate.Value.Year <= 2020).
+                Where(od => od.OrderDate.Value.Year == Year || (Year == null && od.OrderDate.Value.Year <= DateTime.Now.Year)).
                 GroupBy(od => od.OrderDate.Value.Year).
                     Select(annual => new OrderProducts
                     {

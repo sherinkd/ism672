@@ -15,6 +15,16 @@
     overflow-y: auto;
 }
 
+
+.sub-body-no-max {
+    background-color: var(--secondary-x-lite);
+    height: 100%;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;    
+    font-size: small;
+    overflow-y: auto;
+}
+
 .sub-group-label {
     padding-bottom: 22px;
 }

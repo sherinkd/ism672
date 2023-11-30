@@ -101,7 +101,7 @@ namespace NWTradersWeb.Controllers
 
             averageAnnualOrders = nwEntities.
                 Orders.
-                Where(o => o.OrderDate.Value.Year <= 2020).
+                Where(o => o.OrderDate.Value.Year <= DateTime.Now.Year).
                 GroupBy(empOrder => new
                 {
                     emp = empOrder.EmployeeID,
@@ -117,7 +117,22 @@ namespace NWTradersWeb.Controllers
             return averageAnnualOrders;
         }
 
-        public double EmployeeAverageAnnualOrders(int? EmployeeID)
+        public IEnumerable<OrderProducts> EntireAnnualOrders(int? Year)
+        {
+            List<OrderProducts> annualOrders = nwEntities.Orders.                
+                Where(od => od.OrderDate.Value.Year == Year || (Year == null && od.OrderDate.Value.Year <= DateTime.Now.Year)).
+                GroupBy(od => od.OrderDate.Value.Year).
+                    Select(annual => new OrderProducts
+                    {
+                        DateNumber = annual.Key,
+                        DateString = annual.Key.ToString(),
+                        NumberOfOrders = annual.Count()
+                    }).ToList();
+
+            return annualOrders;
+        }
+
+        public double EmployeeAverageAnnualOrders(int? EmployeeID, int? Year)
         {
             double averageAnnualOrders = 0D;
 
@@ -126,8 +141,8 @@ namespace NWTradersWeb.Controllers
 
             averageAnnualOrders = nwEntities.
                 Orders.
-                Where(o => o.EmployeeID == EmployeeID).
-                Where(o => o.OrderDate.Value.Year <= 2020).
+                Where(o => EmployeeID == null || o.EmployeeID == EmployeeID).
+                Where(od => od.OrderDate.Value.Year <= Year || (Year == null && od.OrderDate.Value.Year <= DateTime.Now.Year)).
                 GroupBy(empOrder => new
                 {
                     emp = empOrder.EmployeeID,
@@ -294,23 +309,33 @@ namespace NWTradersWeb.Controllers
 
         #region Annual Orders
 
-        public ActionResult AnnualOrders()
+        public ActionResult AnnualOrders(string Year = "All Years", string Employee = "All Employees")
         {
             Employee theEmployee = Session["currentEmployee"] as Employee;
-            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
-            IEnumerable<OrderProducts> annualOrders = theEmployee.AnnualOrders();
+            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID); 
 
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
             ViewBag.CompanyAverageAnnualOrders = CompanyAverageAnnualOrders();
-            ViewBag.EmployeeAverageAnnualOrders = EmployeeAverageAnnualOrders(theEmployee.EmployeeID);
+            ViewBag.EmployeeAverageAnnualOrders = EmployeeAverageAnnualOrders(
+                                theEmployee.EmployeeID, null);
 
-            return PartialView("_AnnualOrders", annualOrders);
+            return PartialView("_AnnualOrders", new List<OrderProducts>());
         }
 
-        public JsonResult GetAnnualOrders()
+        public JsonResult GetAnnualOrders(string Year = "All Years", string Employee = "All Employees")
         {
             Employee theEmployee = Session["currentEmployee"] as Employee;
             theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
-            IEnumerable<OrderProducts> annualOrders = theEmployee.AnnualOrders();
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
+            if (Employee.Equals("All Employees")) {
+                return Json(new { JSONList = EntireAnnualOrders(Year.Equals("All Years") ? null : Int32.Parse(Year)) }, JsonRequestBehavior.AllowGet);
+            }
+
+            IEnumerable<OrderProducts> annualOrders = theEmployee.AnnualOrders(
+                 Year.Equals("All Years") ? null : Int32.Parse(Year)
+                );
 
             return Json(new { JSONList = annualOrders }, JsonRequestBehavior.AllowGet);
         }

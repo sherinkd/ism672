@@ -147,13 +147,14 @@
     function AllEmployeeSales()
     {
         $('.tab').removeClass(' w3-light-gray active border-secondary');
-
+        debugger;
         $('#AllEmployeeSales').addClass(' w3-light-gray border-secondary');
         $('#Partials').empty();
-
+        var year = $('#SelectYear').val();
+        var employee = $('#SelectEmployee').val();
         $.ajax({
             url: '@Url.Action("AllEmployeeSales", "Employees")',
-            data: {  },
+            data: { Year: year, Employee: employee },
 
             success: function (result) { $('#Partials').html(result); },
             error: (e) => { $('#Partials').html('Something went wrong in Annual Orders'); console.log(e) }
@@ -165,10 +166,12 @@
         $('.tab').removeClass(' w3-light-gray active border-secondary');
         $('#AnnualOrders').addClass(' w3-light-gray border-secondary');
         $('#Partials').empty();
-
+        debugger;
+        var year = $('#SelectYear').val();
+        var employee = $('#SelectEmployee').val();
         $.ajax({
             url: '@Url.Action("AnnualOrders", "Employees")',
-            data: { },
+            data: { Year: year, Employee: employee },
 
             success: function (result) { $('#Partials').html(result); },
             error: function () { $('#Partials').html('Something went wrong in Annual Orders'); }
