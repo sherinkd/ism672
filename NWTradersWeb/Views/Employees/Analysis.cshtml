@@ -99,6 +99,12 @@
             Top Products
         </div>
 
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="EmployeeBottomProducts();" id="Products" style="cursor:pointer"
+             title="All EmployeeProducts">
+            Bottom Products
+        </div>
+
         <div> &nbsp;</div>
 
         <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
@@ -208,6 +214,21 @@
         });
     }
 
+    function EmployeeBottomProducts()
+{
+    $('.tab').removeClass(' w3-light-gray active border-secondary');
+    $('#EmployeeBottomProducts').addClass(' w3-light-gray border-secondary');
+    $('#Partials').empty();
+
+    $.ajax({
+        url: '@Url.Action("EmployeeBottomProducts", "Employees")',
+        data: { },
+
+        success: function (result) { $('#Partials').html(result); },
+        error: function () { $('#Partials').html('Something went wrong in All Employee Products'); }
+    });
+}
+
     function EmployeeTopCustomers()
     {
         $('.tab').removeClass(' w3-light-gray active border-secondary');
@@ -216,6 +237,21 @@
 
         $.ajax({
             url: '@Url.Action("EmployeeTopCustomers", "Employees")',
+            data: { },
+
+            success: function (result) { $('#Partials').html(result); },
+            error: function () { $('#Partials').html('Something went wrong in All Employee Customers'); }
+        });
+    }
+
+    function EmployeeBottomCustomers()
+    {
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('#EmployeeBottomCustomers').addClass(' w3-light-gray border-secondary');
+        $('#Partials').empty();
+
+        $.ajax({
+            url: '@Url.Action("EmployeeBottomCustomers", "Employees")',
             data: { },
 
             success: function (result) { $('#Partials').html(result); },
