@@ -5,7 +5,9 @@
 
     ViewBag.Title = "Analysis";
     Customer currentCustomer = Session["currentCustomer"] as Customer;
-
+    List<string> yearsList = ViewBag.YearsList;
+    yearsList.Insert(0, "All Years");
+    string year = ViewBag.Year;
 }
 
 <div class="">
@@ -27,6 +29,26 @@
         </div>
     </div>
 
+    <br />
+
+    <nav class="navbar bg-body-tertiary">
+        <form class="container">
+            <div class="d-flex align-items-center">
+                <div class="input-group-sm p-2">
+                    <div class="input-group-sm ">Fiscal Year</div>
+                    @Html.DropDownList("Year", new SelectList(yearsList),
+                         new
+                         {
+                             @class = "form-select form-control",
+                             @id = "SelectYear",
+                             @value = year,
+                             onchange = "RefreshPage();"
+                         })
+                </div>
+            </div>
+        </form>
+    </nav>
+
     <div class="container">
 
         <ul class="nav nav-tabs small border-0">
@@ -41,7 +63,7 @@
 
             <li class="nav-item px-2">
                 <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-2x"
-                     onclick="ForYouToComplete();" id="TopProducts" style="cursor:pointer"
+                     onclick="TopProducts();" id="TopProducts" style="cursor:pointer"
                      title="Top Products Bought by @Model.CompanyName">
                     Top Products
                 </div>
@@ -81,30 +103,31 @@
 
     $(document).ready(function ()
     {
-
+        AnnualSales();
     });
 
      function AnnualSales()
-    {
+     {
+        $('.tab').removeClass(' w3-light-gray active border-secondary');        
         $('#Partials').empty();
-
-         //$('#Partials').html("<h4 class=text-center p-4 rounded-2x> From the new Annual Sales Function</h4>");
-
+         var year = $('#SelectYear').val();
          $.ajax({
             url: '@Url.Action("AnnualSales", "Customers")',
-            data: {CustomerID: '@Model.CustomerID' },
+            data: { Year: year },
 
             success: function (result) { $('#Partials').html(result); },
             error: function () { $('#Partials').html('Something went wrong in Annual Orders'); }
         });
     }
 
-     function TopProducts()
+    function TopProducts()
     {
-         $('#Partials').empty();
+        debugger;
+        $('#Partials').empty();
+        var year = $('#SelectYear').val();
          $.ajax({
-            url: '@Url.Action("CustomerTopProducts", "Customers")',
-            data: {},
+            url: '@Url.Action("TopProducts", "Customers")',
+             data: { Year: year },
 
             success: function (result) { $('#Partials').html(result); },
             error: function () { $('#Partials').html('Something went wrong in Customer Top Products'); }
@@ -114,10 +137,13 @@
 
     function TopCategories()
     {
-         $('#Partials').empty();
+      
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('#Partials').empty();
+        var year = $('#SelectYear').val();
          $.ajax({
             url: '@Url.Action("CustomerTopCategories", "Customers")',
-            data: {},
+             data: { Year: year },
 
             success: function (result) { $('#Partials').html(result); },
             error: function () { $('#Partials').html('Something went wrong in Customer Top Products'); }
@@ -126,8 +152,8 @@
 
     function ForYouToComplete()
     {
+        $('.tab').removeClass(' w3-light-gray active border-secondary');
         $('#Partials').empty();
-        $('#Partials').html("<h4 class=text-center p-4 rounded-2x> Left for you to complete </h4>");
     }
 
 

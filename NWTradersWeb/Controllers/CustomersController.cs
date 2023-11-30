@@ -404,6 +404,9 @@ namespace NWTradersWeb.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.YearsList = NWTradersUtilities.BeginToEndOrderYears();
+            ViewBag.Year = "All Years";
             return View(customer);
 
         }
@@ -464,7 +467,7 @@ namespace NWTradersWeb.Controllers
 
             Customer theCustomer = nwEntities.Customers.
                 Include(c => c.Orders).
-                Where(c => c.CustomerID.Equals(CustomerId)).
+                Where(c => c.CustomerID.Equals(currentCustomer.CustomerID)).
                 FirstOrDefault();
 
             IEnumerable<CustomerSales> annualSales = theCustomer.CustomerAnnualSales();
@@ -523,6 +526,33 @@ namespace NWTradersWeb.Controllers
         }
 
         #endregion
+
+        #region Top Products
+        public ActionResult TopProducts(string Year = "All Years")
+        {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            if (currentCustomer == null)
+                return RedirectToAction("Login");
+
+            ViewBag.Year = Year;            
+            return PartialView("_TopProducts");
+        }
+        public JsonResult GetTopProducts(string Year = "All Years")
+        {
+            Customer currentCustomer = Session["currentCustomer"] as Customer;
+            Customer theCustomer = nwEntities.Customers.
+                Include(c => c.Orders).
+                Where(c => c.CustomerID.Equals(currentCustomer.CustomerID)).
+                FirstOrDefault();
+
+            ;
+            ViewBag.Year = Year;
+            return Json(new { JSONList = theCustomer.CustomerSalesInYear(
+                Year.Equals("All Years") ? null : Int32.Parse(Year)
+                ).OrderByDescending(od => od.Sales).Take(10) }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion Top Products
 
         protected override void Dispose(bool disposing)
         {

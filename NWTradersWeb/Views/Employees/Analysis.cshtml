@@ -72,8 +72,7 @@
     <div class="navbar w3-bar small ">
 
         <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="All
-();" id="Products" style="cursor:pointer"
+             onclick="AllEmployeeSales();" id="Products" style="cursor:pointer"
              title="Compare sales for all Employees">
             Sales
         </div>
@@ -170,6 +169,7 @@
 
     function AnnualOrders()
     {
+        debugger;
         $('.tab').removeClass(' w3-light-gray active border-secondary');
         $('#AnnualOrders').addClass(' w3-light-gray border-secondary');
         $('#Partials').empty();

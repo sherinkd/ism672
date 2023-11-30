@@ -81,9 +81,25 @@ namespace NWTradersWeb.Models
 
         #endregion
 
+        #region Top Products
 
+        public IEnumerable<ProductSales> CustomerSalesInYear(int? Year)
+        {
+            return this
+                .Orders
+                .Where(od => od.OrderDate.Value.Year == Year || (Year == null && od.OrderDate.Value.Year <= DateTime.Now.Year))
+                .SelectMany(od => od.Order_Details)
+                .Where(od => !od.Product.Discontinued)
+                .GroupBy(od => od.Product)
+                .Select(ps => new ProductSales {
+                    ProductName = ps.Key.ProductName,
+                    Sales = ps.Sum(s => s.Quantity * s.UnitPrice)
+                })
+                .ToList();
+                
+        }
 
-        #endregion
+        #endregion Top Products
 
         /// <summary>
         /// Returns the date when the last order was placed by a particular customer. 
@@ -154,5 +170,5 @@ namespace NWTradersWeb.Models
             return this.myShoppingCart.RemoveProductFromOrder(theProductToRemove);
         }
     }
-
+    #endregion
 }
