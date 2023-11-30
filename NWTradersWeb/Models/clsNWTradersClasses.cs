@@ -18,6 +18,12 @@ namespace NWTradersWeb.Models
         public decimal Sales;
     }
 
+    public class CustomerRevenue
+    {
+        public string CustomerName;
+        public decimal Sales;
+    }
+
     public class OrderRevenues
     {
         public string Date;

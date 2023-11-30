@@ -108,9 +108,15 @@
         <div> &nbsp;</div>
 
         <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="ForYouToComplete();" id="Products" style="cursor:pointer"
+             onclick="TopCustomers();" id="Products" style="cursor:pointer"
              title="All EmployeeProducts">
             Top Customers
+        </div>
+
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
+             onclick="BottomCustomers();" id="Products" style="cursor:pointer"
+             title="All EmployeeProducts">
+            Bottom Customers
         </div>
 
         <div> &nbsp;</div>
@@ -229,14 +235,14 @@
     });
 }
 
-    function EmployeeTopCustomers()
+    function TopCustomers()
     {
         $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#EmployeeTopCustomers').addClass(' w3-light-gray border-secondary');
+        $('#TopCustomers').addClass(' w3-light-gray border-secondary');
         $('#Partials').empty();
 
         $.ajax({
-            url: '@Url.Action("EmployeeTopCustomers", "Employees")',
+            url: '@Url.Action("TopCustomers", "Employees")',
             data: { },
 
             success: function (result) { $('#Partials').html(result); },
@@ -244,14 +250,14 @@
         });
     }
 
-    function EmployeeBottomCustomers()
+    function BottomCustomers()
     {
         $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#EmployeeBottomCustomers').addClass(' w3-light-gray border-secondary');
+        $('#BottomCustomers').addClass(' w3-light-gray border-secondary');
         $('#Partials').empty();
 
         $.ajax({
-            url: '@Url.Action("EmployeeBottomCustomers", "Employees")',
+            url: '@Url.Action("BottomCustomers", "Employees")',
             data: { },
 
             success: function (result) { $('#Partials').html(result); },
