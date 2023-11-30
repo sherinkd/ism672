@@ -38,28 +38,30 @@
 <br />
 
 <nav class="navbar bg-body-tertiary">
-    <form class="container-fluid">
-        <div class="input-group-sm p-2">
-            <div class="input-group-sm ">Fiscal Year</div>
-            @Html.DropDownList("Year", new SelectList(yearsList),
-                 new
-                 {
-                     @class = "form-select form-control",
-                     @id = "SelectYear",
-                     @value = year,
-                     onchange = "RefreshPage();"
-                 })
-        </div>
-        <div class="input-group-sm p-2">
-            <div class="input-group-sm ">Employee</div>
-            @Html.DropDownList("Employee", new SelectList(employeeList),
-                 new
-                 {
-                     @class = "form-select form-control",
-                     @id = "SelectEmployee",
-                     @value = employee,
-                     onchange = "RefreshPage();"
-                 })
+    <form class="container">
+        <div class="d-flex align-items-center">
+            <div class="input-group-sm p-2">
+                <div class="input-group-sm ">Fiscal Year</div>
+                @Html.DropDownList("Year", new SelectList(yearsList),
+                     new
+                     {
+                         @class = "form-select form-control",
+                         @id = "SelectYear",
+                         @value = year,
+                         onchange = "RefreshPage();"
+                     })
+            </div>
+            <div class="input-group-sm p-2">
+                <div class="input-group-sm ">Employee</div>
+                @Html.DropDownList("Employee", new SelectList(employeeList),
+                     new
+                     {
+                         @class = "form-select form-control",
+                         @id = "SelectEmployee",
+                         @value = employee,
+                         onchange = "RefreshPage();"
+                     })
+            </div>
         </div>
     </form>
 </nav>

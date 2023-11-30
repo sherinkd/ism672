@@ -568,21 +568,30 @@ namespace NWTradersWeb.Controllers
 
         #region Product Category
 
-        public ActionResult ProductCategory(string Year = "All Years", string Employee = "All Employees")
+        public ActionResult ProductCategory(
+            string Year = "All Years",
+            string Employee = "All Employees",
+            string ProductCategory = ""
+            )
         {
             Employee currentEmployee = Session["currentEmployee"] as Employee;
             currentEmployee = nwEntities.Employees.Find(currentEmployee.EmployeeID);
             ViewBag.Year = Year;
             ViewBag.Employee = Employee;
+            ViewBag.ProductCategory = ProductCategory;
+            ViewBag.ProductCategories = this.GetDistinctProductCategories();
             return PartialView("_ProductCategoryAnnualRevenues");
         }
 
-        public JsonResult GetTopProductCategories(string Year = "All Years", string Employee = "All Employees")
+        public JsonResult GetTopProductCategories(string Year = "All Years",
+            string Employee = "All Employees",
+            string ProductCategory = "")
         {
             Employee theEmployee = Session["currentEmployee"] as Employee;
             theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
             ViewBag.Year = Year;
             ViewBag.Employee = Employee;
+            ViewBag.ProductCategory = ProductCategory;
             return Json(new
             {
                 JSONList = GetProductCategorySales(
@@ -590,6 +599,25 @@ namespace NWTradersWeb.Controllers
                  Employee.Equals("All Employees") ? null : theEmployee.EmployeeID
                 ).OrderByDescending(ps => ps.Sales)
                     .Take(10)
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetProductCategoryRevenues(string Year = "All Years",
+            string Employee = "All Employees",
+            string ProductCategory = "")
+        {
+            Employee theEmployee = Session["currentEmployee"] as Employee;
+            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
+            ViewBag.ProductCategory = ProductCategory;
+            return Json(new
+            {
+                JSONList = GetProductCategoryRevenueByCategory(
+                 Year.Equals("All Years") ? null : Int32.Parse(Year),
+                 Employee.Equals("All Employees") ? null : theEmployee.EmployeeID,
+                 ProductCategory
+                )
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -607,6 +635,31 @@ namespace NWTradersWeb.Controllers
                         Sales = ps.Sum(od => od.Quantity * od.UnitPrice)
                     })
                     .ToList();
+        }
+
+        public IEnumerable<ProductCategoryRevenue> GetProductCategoryRevenueByCategory(int? Year, int? employeeID, string category)
+        {
+            return nwEntities
+                .Order_Details
+                .Where(od => od.Order.OrderDate.Value.Year == Year || (Year == null && od.Order.OrderDate.Value.Year <= DateTime.Now.Year))
+                .Where(od => !od.Product.Discontinued)
+                .Where(od => employeeID == null || od.Order.EmployeeID == employeeID)
+                .Where(od => od.Product.Category.CategoryName.Equals(category))
+                .GroupBy(od => od.Order.OrderDate.Value.Year).
+                    Select(ps => new ProductCategoryRevenue
+                    {
+                        Year = ps.Key.ToString(),
+                        Sales = ps.Sum(od => od.Quantity * od.UnitPrice)
+                    })
+                    .ToList();
+        }
+
+        public IEnumerable<string> GetDistinctProductCategories() {
+            return nwEntities
+                .Categories
+                .Select((sm) => sm.CategoryName)
+                .Distinct()
+                .ToList();
         }
         #endregion Product Category
 

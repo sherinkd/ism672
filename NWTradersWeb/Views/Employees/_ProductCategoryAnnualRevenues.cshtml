@@ -5,6 +5,9 @@
     Employee currentEmployee = Session["currentEmployee"] as Employee;
     string year = ViewBag.Year;
     string employee = ViewBag.Employee;
+    string productCategory = ViewBag.ProductCategory;
+    List<string> productCategories = ViewBag.ProductCategories;
+    productCategories.Insert(0, "Select a Category");
 }
 
 <div id="ProductCategoryAnnualRevenues">
@@ -17,8 +20,29 @@
                 <div class="row" id="Table">
 
                 </div>
-                <br />
+                <br />              
+            </div>
+        </div>
+        <br />
 
+        <div class="row">
+            <div class="sub-header">
+                <div class="d-flex align-items-center">
+                    <div>@year Product Category:</div> 
+                    <div class="input-group-sm p-2">
+                        @Html.DropDownList("ProductCategory", new SelectList(productCategories),
+                             new
+                             {
+                                 @class = "form-select form-control",
+                                 @id = "SelectProductCategory",
+                                 @value = productCategory,
+                                 onchange = "RefreshPage();"
+                             })
+                    </div>
+                    <div>Revenue of @employee</div>
+                </div>
+            </div>
+            <div class="sub-body-no-max container">
                 <div class="row" id="Chart">
 
                 </div>
@@ -31,17 +55,19 @@
 
     $(document).ready(function () {
         google.charts.setOnLoadCallback(DrawTop10ProductCategorySales('Table'));
+        google.charts.setOnLoadCallback(DrawProductCategoryRevenue('Chart'));
     })
 
     function DrawTop10ProductCategorySales(divName)
     {
         var year = $('#SelectYear').val();
         var employee = $('#SelectEmployee').val();
+        var category = $('#SelectProductCategory').val();
           $(function () {
               $.ajax({
                   type: 'GET',
                   url: '@Url.Action("GetTopProductCategories", "Employees")',
-                  data: { Year: year, Employee: employee },
+                  data: { Year: year, Employee: employee, ProductCategory: category },
 
                   success: function (chartsdata) {
                       debugger;
@@ -77,7 +103,6 @@
                           var table = new google.visualization.Table(document.getElementById('Table'));
                           table.draw(dataForTable, tableOptions);
                       }
-
                   },
 
                   error: function () {
@@ -88,6 +113,89 @@
           })
 
     }
+
+    function DrawProductCategoryRevenue(divName)
+    {
+         var year = $('#SelectYear').val();
+         var employee = $('#SelectEmployee').val();
+         var category = $('#SelectProductCategory').val();
+       $(function () {
+                 $.ajax({
+                     type: 'GET',
+                     url: '@Url.Action("GetProductCategoryRevenues", "Employees")',
+                     data: { Year: year, Employee: employee, ProductCategory: category },
+
+                     success: function (chartsdata) {
+                         debugger;
+                         var Data = chartsdata.JSONList;
+                         var data = new google.visualization.DataTable();
+
+                         data.addColumn('string', 'Year');
+                         data.addColumn('number', 'Sales');
+                         data.addColumn({ type: 'string', role: 'style' });
+
+                         // Coloring the columns.
+                         var rainbow = new Rainbow();
+                         if (Data.length > 1) {
+                             rainbow.setNumberRange(1, Data.length);
+                             rainbow.setSpectrum('forestgreen', 'firebrick'); // get data.nRows colors between this range.
+                         }
+                         else {
+                             var view = new google.visualization.DataView(data);
+                             view.setColumns(
+                                 [0, 1,
+                                     { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+                         }
+                        
+
+                         //Loop through each element in the list data
+                         for (var i = 0; i < Data.length; i++)
+                         {
+                             data.addRow([
+                                 Data[i].Year,
+                                 Data[i].Sales,
+                                 rainbow.colorAt(i+1)
+                             ]);
+                         }
+                         var formatter = new google.visualization.NumberFormat({ pattern: '$ #,###' });
+                         formatter.format(data, 1);
+
+                     var view = new google.visualization.DataView(data);
+                     view.setColumns(
+                         [0, 1, 2,
+                             { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
+
+                         var lineOneoptions = {
+                             fontName: 'Tahoma',
+                             dataOpacity: 0.8,
+
+                             legend: { position: "none" },
+
+
+                             hAxis: {
+                                 title: 'Year'
+                             },
+                             vAxis: {
+                                 title: 'Revenues'
+                             },
+                             colors: ['#0c61b3']
+                         };
+
+                             // Instantiate and draw our chart, passing in options
+                         var lineOnechart = new google.visualization.LineChart(document.getElementById('Chart'));
+
+                         lineOnechart.draw(view, lineOneoptions);
+
+                         },
+
+                         error: function () {
+                             alert("Error loading data! Please try again.");
+                         }
+
+                 });
+       })
+
+ }
 </script>
 
 <script type="text/javascript">
@@ -96,12 +204,13 @@
     {
         var year = $('#SelectYear').val();
         var employee = $('#SelectEmployee').val();
+        var category = $('#SelectProductCategory').val();
         debugger;
         $(function () {
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("ProductCategory", "Employees")',
-                data: { Year: year, Employee: employee },
+                data: { Year: year, Employee: employee, ProductCategory: category },
 
                 success: function (partialViewResult)
                 { $("#ProductCategoryAnnualRevenues").html(partialViewResult);}
