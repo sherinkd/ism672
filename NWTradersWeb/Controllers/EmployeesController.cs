@@ -424,14 +424,46 @@ namespace NWTradersWeb.Controllers
         #endregion
 
         #region Top Products
-        public ActionResult EmployeeTopProducts()
+        public ActionResult EmployeeTopProducts(string Year = "All Years", string Employee = "All Employees")
         {
             Employee currentEmployee = Session["currentEmployee"] as Employee;
-            currentEmployee = nwEntities.Employees.Find(currentEmployee.EmployeeID);            
+            currentEmployee = nwEntities.Employees.Find(currentEmployee.EmployeeID);
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;            
             return PartialView("_TopProducts");
         }
 
+        public JsonResult GetEmployeeTopProducts(string Year = "All Years", string Employee = "All Employees")
+        {
+            Employee theEmployee = Session["currentEmployee"] as Employee;
+            theEmployee = nwEntities.Employees.Find(theEmployee.EmployeeID);
+            ViewBag.Year = Year;
+            ViewBag.Employee = Employee;
+            return Json(new { JSONList = GetAllProductSales(
+                 Year.Equals("All Years") ? null : Int32.Parse(Year),
+                 Employee.Equals("All Employees") ? null : theEmployee.EmployeeID
+                ) }, JsonRequestBehavior.AllowGet);
+        }
 
+
+        public IEnumerable<ProductSale> GetAllProductSales(int? Year, int? employeeID)
+        {
+            return nwEntities
+                .Order_Details
+                .Where(od => od.Order.OrderDate.Value.Year == Year || (Year == null && od.Order.OrderDate.Value.Year <= DateTime.Now.Year))
+                .Where(od => !od.Product.Discontinued)
+                .Where(od => employeeID == null || od.Order.EmployeeID == employeeID)
+                .GroupBy(od => od.Product).
+                    Select(ps => new ProductSale
+                    {
+                        ProductName = ps.Key.ProductName,
+                        ProductCategory = ps.Key.Category.CategoryName,
+                        Sales = ps.Sum(od => od.Quantity * od.UnitPrice)
+                    })
+                    .ToList()
+                    .OrderByDescending(ps => ps.Sales)
+                    .Take(10);
+        }
         #endregion
 
         protected override void Dispose(bool disposing)

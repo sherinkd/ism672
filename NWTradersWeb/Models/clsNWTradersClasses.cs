@@ -11,6 +11,13 @@ namespace NWTradersWeb.Models
         public string DateString;
         public int NumberOfOrders;
     }
+
+    public class ProductSale {
+        public string ProductName;
+        public string ProductCategory;
+        public decimal Sales;
+    }
+
     public class OrderRevenues
     {
         public string Date;
