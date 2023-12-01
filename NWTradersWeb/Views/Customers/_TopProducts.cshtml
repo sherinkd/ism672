@@ -22,6 +22,12 @@
                 <div class="row" id="Chart">
 
                 </div>
+
+                <br />
+
+                <div class="row" id="Pie">
+
+                </div>
             </div>
         </div>
     </div>
@@ -106,8 +112,7 @@
                          {                             
                              fontName: 'Tahoma',
                              dataOpacity: 0.8,
-                             legend: { position: "none" },
-
+                             legend: { position: "none" },                             
                              vAxis:
                              {
                                  title: 'Sales ($)',
@@ -124,9 +129,7 @@
 
                          };
 
-                         // Instantiate and draw our chart, passing in options
-                         var chartColumns = new google.visualization.ColumnChart(document.getElementById('Chart'));
-                         chartColumns.draw(view, columnChartOptions);
+                      
 
                          // Draw a data table to show the values.
                          var classNames = {
@@ -140,11 +143,27 @@
                              width: '100%',
                          };
 
+                         var pieChartOptions =
+                         {
+                             titlePosition: 'none',
+                             dataOpacity: 0.8,
+                             legend: { position: "bottom" },
+                             chartArea: { height: "100%", width: "100%" },
+
+                         };
+
                          var formatter = new google.visualization.BarFormat();
                          formatter.format(dataForTable, 1);
 
+
+                         var chartColumns = new google.visualization.ColumnChart(document.getElementById('Chart'));
+                         chartColumns.draw(view, columnChartOptions);
+
                          var table = new google.visualization.Table(document.getElementById('Table'));
                          table.draw(dataForTable, tableOptions);
+
+                         var chartPie = new google.visualization.PieChart(document.getElementById("Pie"));
+                         chartPie.draw(view, pieChartOptions);
                      }
                      else
                      {

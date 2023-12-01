@@ -134,9 +134,9 @@
 </div>
 
 
-<div class="pt-2 rounded-2x shadow-sm">
+<div class="shadow-sm rounded-2x tab-pane mt-4 w3-animate-bottom">
     <!-- Partials are dropped into this container. -->
-    <div id="Partials" class="container" style="min-height:500px">
+    <div id="Partials" style="min-height:500px">
 
     </div>
 </div>
@@ -152,8 +152,7 @@
 
     function AllEmployeeSales()
     {
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
-        debugger;
+        $('.tab').removeClass(' w3-light-gray active border-secondary');        
         $('#AllEmployeeSales').addClass(' w3-light-gray border-secondary');
         $('#Partials').empty();
         var year = $('#SelectYear').val();
@@ -168,8 +167,7 @@
     }
 
     function AnnualOrders()
-    {
-        debugger;
+    {        
         $('.tab').removeClass(' w3-light-gray active border-secondary');
         $('#AnnualOrders').addClass(' w3-light-gray border-secondary');
         $('#Partials').empty();

@@ -49,48 +49,41 @@
         </form>
     </nav>
 
-    <div class="container">
 
-        <ul class="nav nav-tabs small border-0">
+    <div class="shadow-sm w3-topbar px-4">
 
-            <li class="nav-item pl-2">
-                <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-2x"
-                     onclick="AnnualSales();" id="AnnualSales" style="cursor:pointer"
-                     title="Left for you to complete">
-                    Annual Sales
-                </div>
-            </li>
+        <!-- Bottom Nav-->
+        <div class="navbar w3-bar small ">
 
-            <li class="nav-item px-2">
-                <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-2x"
-                     onclick="TopProducts();" id="TopProducts" style="cursor:pointer"
-                     title="Top Products Bought by @Model.CompanyName">
-                    Top Products
-                </div>
-            </li>
+            <div class="w3-button primary w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+                 onclick="AnnualSales();" id="AnnualSalesTab" style="cursor:pointer">
+                Annual Sales
+            </div>
 
-            <li class="nav-item px-2">
-                <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-2x"
-                     onclick="TopCategories();" id="TopProductCategories" style="cursor:pointer"
-                     title="Categories of the Top Products Bought by @Model.CompanyName">
-                    Top Product Categories
-                </div>
-            </li>
+            <div> &nbsp;</div>
 
-            <li class="nav-item px-2">
-                <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-2x"
-                     onclick="ForYouToComplete();" id="Discounts" style="cursor:pointer"
-                     title="This can be here or on the details(Home) Page for the customer">
-                    Valued Customer Discounts
-                </div>
-            </li>
-        </ul>
+            <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+                 onclick="TopProducts();" id="TopProductsTab" style="cursor:pointer">
+                Top Products
+            </div>
+
+            <div> &nbsp;</div>
+
+            <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+                 onclick="TopCategories();" id="TopProductCategoriesTab" style="cursor:pointer">
+                Top Product Categories
+            </div>
+
+            <div> &nbsp;</div>
+        </div>
+
     </div>
+
 
     <div class=" shadow-sm rounded-2x tab-pane mt-4 w3-animate-bottom">
 
         <!-- Partials are dropped into this container. -->
-        <div id="Partials" class="" style="min-height:400px">
+        <div id="Partials" style="min-height:400px">
 
         </div>
 
@@ -108,7 +101,8 @@
 
      function AnnualSales()
      {
-        $('.tab').removeClass(' w3-light-gray active border-secondary');        
+         $('.w3-button').removeClass('primary text-bold');        
+         $('#AnnualSalesTab').addClass('primary text-bold');
         $('#Partials').empty();
          var year = $('#SelectYear').val();
          $.ajax({
@@ -122,8 +116,8 @@
 
     function TopProducts()
     {
-        debugger;
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('.w3-button').removeClass('primary text-bold');
+        $('#TopProductsTab').addClass('primary text-bold');
         $('#Partials').empty();
         var year = $('#SelectYear').val();
          $.ajax({
@@ -139,7 +133,8 @@
     function TopCategories()
     {
       
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
+        $('.w3-button').removeClass('primary text-bold');
+        $('#TopProductCategoriesTab').addClass('primary text-bold');
         $('#Partials').empty();
         var year = $('#SelectYear').val();
          $.ajax({

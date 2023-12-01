@@ -22,6 +22,12 @@
                 <div class="row" id="Chart">
 
                 </div>
+
+                <br />
+
+                <div class="row" id="Pie">
+
+                </div>
             </div>
         </div>
     </div>
@@ -145,6 +151,17 @@
 
                          var table = new google.visualization.Table(document.getElementById('Table'));
                          table.draw(dataForTable, tableOptions);
+
+                         var pieChartOptions =
+                         {
+                             titlePosition: 'none',
+                             dataOpacity: 0.8,
+                             legend: { position: "bottom" },
+                             chartArea: { height: "100%", width: "100%" },
+
+                         };
+                         var chartPie = new google.visualization.PieChart(document.getElementById("Pie"));
+                         chartPie.draw(view, pieChartOptions);
                      }
                      else
                      {
