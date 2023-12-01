@@ -71,59 +71,59 @@
     <!-- Bottom Nav-->
     <div class="navbar w3-bar small ">
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="AllEmployeeSales();" id="Products" style="cursor:pointer"
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="AllEmployeeSales();" id="AllEmployeeSalesTab" style="cursor:pointer"
              title="Compare sales for all Employees">
             Sales
         </div>
 
         <div> &nbsp;</div>
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="AnnualOrders();" id="Orders" style="cursor:pointer">
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="AnnualOrders();" id="AnnualOrdersTab" style="cursor:pointer">
             Orders
         </div>
 
         <div> &nbsp;</div>
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="AnnualRevenues();" id="Revenues" style="cursor:pointer"
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="AnnualRevenues();" id="AnnualRevenuesTab" style="cursor:pointer"
              title="Annual Revenues">
             Revenues
         </div>
 
         <div> &nbsp;</div>
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="EmployeeTopProducts();" id="Products" style="cursor:pointer"
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="EmployeeTopProducts();" id="EmployeeTopProductsTab" style="cursor:pointer"
              title="All EmployeeProducts">
             Top Products
         </div>
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="EmployeeBottomProducts();" id="Products" style="cursor:pointer"
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="EmployeeBottomProducts();" id="EmployeeBottomProductsTab" style="cursor:pointer"
              title="All EmployeeProducts">
             Bottom Products
         </div>
 
         <div> &nbsp;</div>
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="TopCustomers();" id="Products" style="cursor:pointer"
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="TopCustomers();" id="TopCustomersTab" style="cursor:pointer"
              title="All EmployeeProducts">
             Top Customers
         </div>
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="BottomCustomers();" id="Products" style="cursor:pointer"
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="BottomCustomers();" id="BottomCustomersTab" style="cursor:pointer"
              title="All EmployeeProducts">
             Bottom Customers
         </div>
 
         <div> &nbsp;</div>
 
-        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded-lg"
-             onclick="ProductCategory();" id="Products" style="cursor:pointer"
+        <div class="w3-button w3-bottombar w3-hover-light-gray w3-hover-shadow rounded"
+             onclick="ProductCategory();" id="ProductCategoryTab" style="cursor:pointer"
              title="Left for you to complete">
             Top Product Categories
         </div>
@@ -152,8 +152,8 @@
 
     function AllEmployeeSales()
     {
-        $('.tab').removeClass(' w3-light-gray active border-secondary');        
-        $('#AllEmployeeSales').addClass(' w3-light-gray border-secondary');
+        $('.w3-button').removeClass('primary');
+        $('#AllEmployeeSalesTab').addClass('primary');
         $('#Partials').empty();
         var year = $('#SelectYear').val();
         var employee = $('#SelectEmployee').val();
@@ -168,8 +168,8 @@
 
     function AnnualOrders()
     {        
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#AnnualOrders').addClass(' w3-light-gray border-secondary');
+        $('.w3-button').removeClass('primary');
+        $('#AnnualOrdersTab').addClass('primary');
         $('#Partials').empty();
         debugger;
         var year = $('#SelectYear').val();
@@ -185,8 +185,8 @@
 
     function AnnualRevenues()
     {
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#AnnualRevenues').addClass(' w3-light-gray border-secondary');
+        $('.w3-button').removeClass('primary');
+        $('#AnnualRevenuesTab').addClass('primary');
         $('#Partials').empty();
 
         $.ajax({
@@ -200,8 +200,8 @@
 
     function EmployeeTopProducts()
     {
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#EmployeeTopProducts').addClass(' w3-light-gray border-secondary');
+        $('.w3-button').removeClass('primary');
+        $('#EmployeeTopProductsTab').addClass('primary');
         $('#Partials').empty();
 
         $.ajax({
@@ -213,25 +213,24 @@
         });
     }
 
-    function EmployeeBottomProducts()
-{
-    $('.tab').removeClass(' w3-light-gray active border-secondary');
-    $('#EmployeeBottomProducts').addClass(' w3-light-gray border-secondary');
-    $('#Partials').empty();
+    function EmployeeBottomProducts() {
+        $('.w3-button').removeClass('primary');
+        $('#EmployeeBottomProductsTab').addClass('primary');
+        $('#Partials').empty();
 
-    $.ajax({
-        url: '@Url.Action("EmployeeBottomProducts", "Employees")',
-        data: { },
+        $.ajax({
+            url: '@Url.Action("EmployeeBottomProducts", "Employees")',
+            data: {},
 
-        success: function (result) { $('#Partials').html(result); },
-        error: function () { $('#Partials').html('Something went wrong in All Employee Products'); }
-    });
-}
+            success: function (result) { $('#Partials').html(result); },
+            error: function () { $('#Partials').html('Something went wrong in All Employee Products'); }
+        });
+    }
 
     function TopCustomers()
     {
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#TopCustomers').addClass(' w3-light-gray border-secondary');
+        $('.w3-button').removeClass('primary');
+        $('#TopCustomersTab').addClass('primary');
         $('#Partials').empty();
 
         $.ajax({
@@ -245,8 +244,8 @@
 
     function BottomCustomers()
     {
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#BottomCustomers').addClass(' w3-light-gray border-secondary');
+        $('.w3-button').removeClass('primary');
+        $('#BottomCustomersTab').addClass('primary');
         $('#Partials').empty();
 
         $.ajax({
@@ -261,11 +260,10 @@
     function ProductCategory()
     {
 
-        $('.tab').removeClass(' w3-light-gray active border-secondary');
-        $('#Open').addClass(' w3-light-gray active border-secondary');
+        $('.w3-button').removeClass('primary');
+        $('#ProductCategoryTab').addClass('primary');
 
         $('#Partials').empty();
-        $('#Partials').html("<h4> Left for you to complete<h4>");
 
 
         $.ajax({
